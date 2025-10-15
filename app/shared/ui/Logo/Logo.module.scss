@@ -1,0 +1,11 @@
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity var(--transition-delay), filter var(--transition-delay);
+
+  &:hover {
+    filter: drop-shadow(0 0 2px var(--color-hover));
+    opacity: 0.8;
+  }
+}
