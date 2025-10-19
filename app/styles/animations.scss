@@ -1,0 +1,13 @@
+@keyframes up-down {
+  0% {
+    translate: 0 -0.25rem;
+  }
+
+  50% {
+    translate: 0 0.25rem;
+  }
+
+  100% {
+    translate: 0 -0.25rem;
+  }
+}
