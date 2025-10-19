@@ -22,6 +22,7 @@ const Header = () => {
                 height={18}
                 src={link.iconPath}
                 alt={link.title}
+                unoptimized
               />
               <Link href={link.path}>{link.title}</Link>
             </div>
