@@ -30,22 +30,17 @@ const ITEMS = [
 
 const Mechanics = () => {
   return (
-    <>
-      <h2 className={`${st.mechanics__title} text-lg`}>
-        Уникальные механики проекта
-      </h2>
-      <ul className={`${st.mechanics__list} container`}>
-        {ITEMS.map((el) => (
-          <li className={st.mechanics__item} key={el.title}>
-            <Image width={30} height={30} src={el.iconPath} alt={el.title} />
-            <h3 className={`${st.mechanics__title} text-md`}>{el.title}</h3>
-            <p className={`${st.mechanics__description} text-sm`}>
-              {el.description}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul className={`${st.mechanics} container`}>
+      {ITEMS.map((el) => (
+        <li className={st.mechanics__item} key={el.title}>
+          <Image width={30} height={30} src={el.iconPath} alt={el.title} />
+          <h3 className={`${st.mechanics__title} text-md`}>{el.title}</h3>
+          <p className={`${st.mechanics__description} text-sm`}>
+            {el.description}
+          </p>
+        </li>
+      ))}
+    </ul>
   );
 };
 

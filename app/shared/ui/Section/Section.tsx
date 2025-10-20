@@ -1,23 +1,23 @@
+import { clsx } from "clsx";
 import type { ReactNode } from "react";
+import st from "./Section.module.scss";
 
 interface SectionProps {
   children: ReactNode;
-  orientation?: "row" | "column" | "row-reverse" | "column-reverse";
+  title?: string;
   fullH?: boolean;
   extraClass?: string;
 }
 
 const Section = ({
   children,
-  orientation = "row",
+  title,
   fullH = false,
-  extraClass = "",
+  extraClass = undefined,
 }: SectionProps) => {
   return (
-    <section
-      className={`section ${extraClass} ${fullH ? "h-full" : ""}`}
-      style={{ flexDirection: orientation }}
-    >
+    <section className={clsx([st.section], extraClass, { "h-full": fullH })}>
+      {title && <h2>{title}</h2>}
       {children}
     </section>
   );

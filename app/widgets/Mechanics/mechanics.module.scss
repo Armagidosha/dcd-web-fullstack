@@ -1,9 +1,8 @@
-.mechanics__list {
+.mechanics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   place-items: start center;
   gap: 2rem;
-  margin-top: 2rem;
 }
 
 .mechanics__title {
