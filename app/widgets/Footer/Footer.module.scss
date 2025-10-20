@@ -1,0 +1,31 @@
+.footer {
+  background-color: var(--color-surface-alpha);
+  width: 100%;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 2px var(--color-border);
+  margin-top: 6.5rem;
+  padding: 2rem 1rem;
+  z-index: 100;
+}
+
+.footer__container {
+  display: grid;
+  margin: 0 auto;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+
+  &_withPadding {
+    padding-left: 0.25rem;
+  }
+}
+
+.footer__link {
+  color: var(--color-primary)
+}
