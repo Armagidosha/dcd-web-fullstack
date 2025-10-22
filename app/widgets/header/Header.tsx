@@ -1,5 +1,10 @@
+"use client";
+
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import IpCopy from "@/app/shared/ui/IpCopy/IpCopy";
 import Logo from "@/app/shared/ui/Logo/Logo";
 import st from "./Header.module.scss";
 
@@ -10,16 +15,20 @@ const LINKS = [
 ];
 
 const Header = () => {
+  const [isOpened, setIsOpened] = useState(false);
+
+  const handleClick = () => setIsOpened(!isOpened);
+
   return (
     <header className={st.header}>
-      <div className={st.header_container}>
-        <Logo withText={true} />
+      <div className={clsx(st.inner, { [st.opened]: isOpened })}>
+        <Logo withText />
         <nav className={st.nav}>
           {LINKS.map((link) => (
-            <div key={link.title} className={st.link_container}>
+            <div key={link.title}>
               <Image
                 width={18}
-                height={18}
+                height={19}
                 src={link.iconPath}
                 alt={link.title}
                 unoptimized
@@ -28,9 +37,20 @@ const Header = () => {
             </div>
           ))}
         </nav>
-        <div className={st.ip}>
-          <p>IP: mc.draimcido.net</p>
-        </div>
+        <IpCopy extraClass={st.copy} />
+        <button
+          className={clsx(st.burger, { [st.opened]: isOpened })}
+          type="button"
+          onClick={handleClick}
+        >
+          <Image
+            src={isOpened ? "/icons/x.svg" : "/icons/burger.svg"}
+            alt={isOpened ? "Закрыть" : "Меню"}
+            width={24}
+            height={24}
+            unoptimized
+          />
+        </button>
       </div>
     </header>
   );
