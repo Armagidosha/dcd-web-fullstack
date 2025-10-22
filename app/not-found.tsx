@@ -16,7 +16,7 @@ const NotFound = () => {
           написании адреса, или страница была перемещена на другой URL.
         </p>
         <Link href={"/"}>
-          <button type="button" className={st.oHome}>
+          <button type="button" className={st.toHome}>
             На главную
           </button>
         </Link>
