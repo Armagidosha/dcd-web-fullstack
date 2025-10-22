@@ -19,18 +19,16 @@ const NewsCard = memo((props: NewsCardProps) => {
     <div className={st.card}>
       {props.image && (
         <Image
-          className={st.card__image}
+          className={st.image}
           height={100}
           width={450}
           src={props.image}
           alt={props.title}
         />
       )}
-      <h3 className={clsx(st.card__title, "text-sm text-overflow")}>
-        {props.title}
-      </h3>
-      <div className={clsx(st.card__text, "text-sm")}>{props.text}</div>
-      <p className={clsx(st.card__date, "text-sm text-dimmed")}>
+      <h3 className={clsx(st.title, "text-sm text-overflow")}>{props.title}</h3>
+      <div className={clsx(st.text, "text-sm")}>{props.text}</div>
+      <p className={clsx(st.date, "text-sm text-dimmed")}>
         {formatDistance(props.publishDate ?? dateNow, dateNow, {
           locale: ru,
           addSuffix: true,

@@ -5,15 +5,15 @@ import st from "./Footer.module.scss";
 const Footer = () => {
   return (
     <footer className={`${st.footer} text-sm`}>
-      <div className={`${st.footer__container} container`}>
+      <div className={`${st.container} container`}>
         {/* Юр инфо */}
         <div>
           <Logo width={150} withText />
-          <ul className={`${st.footer__list} ${st.footer__list_withPadding}`}>
+          <ul className={`${st.list} ${st.list_withPadding}`}>
             <li>ИНН: 772879961873</li>
             <li>
               Почта:&nbsp;
-              <a className={st.footer__link} href="mailto:draimcido@gmail.com">
+              <a className={st.link} href="mailto:draimcido@gmail.com">
                 draimcido@gmail.com
               </a>
             </li>
@@ -26,7 +26,7 @@ const Footer = () => {
         {/* Политика */}
         <div>
           <h3 className="text-md">Документы</h3>
-          <ul className={st.footer__list}>
+          <ul className={st.list}>
             <li>
               <Link href={"/"}>Политика конфиденциальности</Link>
             </li>
@@ -39,7 +39,7 @@ const Footer = () => {
         {/* Соц линки */}
         <div>
           <h3 className="text-md">Связь с нами</h3>
-          <ul className={st.footer__list}>
+          <ul className={st.list}>
             <li>
               <Link href={"/"}>Discord</Link>
             </li>
@@ -52,7 +52,7 @@ const Footer = () => {
         {/* Навигация по странице */}
         <nav>
           <h3 className="text-md">Навигация</h3>
-          <ul className={st.footer__list}>
+          <ul className={st.list}>
             <li>
               <Link href={"/"}>Главная</Link>
             </li>

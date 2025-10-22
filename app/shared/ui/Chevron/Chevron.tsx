@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -25,7 +26,7 @@ const Chevron = ({ extraClass, size, hideOnScroll }: ChevronProps) => {
 
   return (
     <Image
-      className={`${extraClass} ${isScrolled ? "hidden" : ""}`}
+      className={clsx({ hidden: isScrolled }, extraClass)}
       width={size}
       height={size}
       src="/icons/right-chevron.svg"

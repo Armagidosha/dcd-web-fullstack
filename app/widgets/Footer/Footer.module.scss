@@ -8,14 +8,14 @@
   z-index: 100;
 }
 
-.footer__container {
+.container {
   display: grid;
   margin: 0 auto;
   gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-.footer__list {
+.list {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -26,6 +26,6 @@
   }
 }
 
-.footer__link {
+.link {
   color: var(--color-primary)
 }

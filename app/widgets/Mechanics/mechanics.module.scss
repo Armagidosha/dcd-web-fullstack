@@ -5,11 +5,11 @@
   gap: 2rem;
 }
 
-.mechanics__title {
+.title {
   text-align: center;
 }
 
-.mechanics__item {
+.item {
   display: flex;
   gap: 0.5rem;
   flex-direction: column;
@@ -18,6 +18,6 @@
   max-width: 300px;
 }
 
-.mechanics__description {
+.description {
   text-wrap: balance;
 }

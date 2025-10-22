@@ -9,14 +9,14 @@ const NotFound = () => {
   return (
     <Section fullH>
       <div className={st.notFound}>
-        <span className={st.notFound__label}>404</span>
-        <h1 className={st.notFound__title}>Ты нашёл секретное место.</h1>
-        <p className={st.notFound__description}>
+        <span className={st.label}>404</span>
+        <h1 className={st.title}>Ты нашёл секретное место.</h1>
+        <p className={st.description}>
           К сожалению, это всего лишь страница с ошибкой 404. Возможно, ошибка в
           написании адреса, или страница была перемещена на другой URL.
         </p>
         <Link href={"/"}>
-          <button type="button" className={st.notFound__toHome}>
+          <button type="button" className={st.oHome}>
             На главную
           </button>
         </Link>
