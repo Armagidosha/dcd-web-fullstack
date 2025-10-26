@@ -30,7 +30,7 @@ const ITEMS = [
 
 const Mechanics = () => {
   return (
-    <ul className={`${st.mechanics} container`}>
+    <ul className={st.mechanics}>
       {ITEMS.map((el) => (
         <li className={st.item} key={el.title}>
           <Image width={30} height={30} src={el.iconPath} alt={el.title} />

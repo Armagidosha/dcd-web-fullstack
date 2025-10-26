@@ -1,0 +1,58 @@
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14.7rem, 1fr)); //14.7
+  width: 100%;
+  gap: 1rem;
+}
+
+.image {
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  width: 100%;
+  border-radius: 0.5rem;
+  background: radial-gradient(circle, rgba(244, 63, 94, .3) 0%, rgba(26, 27, 38, 0.9) 70%);
+  transition: scale var(--transition-delay)
+}
+
+.card {
+  background-color: var(--color-surface-alpha);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 1px var(--color-border);
+  transition: scale var(--transition-delay), box-shadow var(--transition-delay);
+
+  &:hover {
+    scale: 1.02;
+    box-shadow: 0 0 3px var(--color-border);
+
+    & .image {
+      scale: 1.05;
+    }
+  }
+}
+
+.container {
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  background-color: #009ce2;
+}
+
+.name {
+  margin: 0.5rem 0 .25rem;
+  color: var(--color-primary);
+}
+
+.filter {
+  position: sticky;
+  top: 6rem;
+  width: 20rem;
+  height: 20rem;
+  background-color: var(--color-surface-alpha)
+}

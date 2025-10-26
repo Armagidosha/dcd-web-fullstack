@@ -1,9 +1,18 @@
 .section {
-  display: flex;
-  flex-direction: column;
+  padding: 6rem 0.5rem 0;
+  width: 100%;
   justify-content: center;
   align-items: center;
-  padding: 6rem 0.5rem 2rem;
-  width: 100%;
-  gap: 3rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
 }

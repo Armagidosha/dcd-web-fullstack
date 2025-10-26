@@ -1,0 +1,75 @@
+:root {
+  --color-bg: #0f0f14;
+  --color-surface: rgb(26, 27, 38);
+  --color-surface-alpha: rgba(26, 27, 38, 0.9);
+  --color-primary: #f43f5e;
+  --color-secondary: #9f1239; // Надо на что-то поменять
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #aaadb3;
+  --color-border: rgb(180, 180, 180);
+  --color-hover: rgb(180, 180, 180);
+  --transition-delay: 0.2s;
+}
+
+body {
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  margin: 0;
+  // background: center fixed url("/background.jpg") 
+  // background: repeat url("/background-pattern.png")
+}
+
+// Global styles
+
+.hidden {
+  visibility: hidden;
+}
+
+.h-full {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1240px;
+  width: calc(100% - 1rem);
+}
+
+.text {
+  &-sm {
+    font-size: clamp(0.8rem, calc(0.75rem + 0.3vw), 0.875rem);
+  }
+
+  &-md {
+    font-size: clamp(0.875rem, calc(0.8rem + 0.4vw), 1rem);
+  }
+
+  &-lg {
+    font-size: clamp(1rem, calc(0.9rem + 0.5vw), 1.125rem);
+  }
+
+  &-xl {
+    font-size: clamp(1.25rem, calc(1.1rem + 0.8vw), 1.75rem);
+  }
+
+  &-2xl {
+    font-size: clamp(2rem, calc(1.5rem + 2vw), 3.25rem);
+  }
+
+  &-dimmed {
+    color: var(--color-text-secondary)
+  }
+
+  &-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// Media queries
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}

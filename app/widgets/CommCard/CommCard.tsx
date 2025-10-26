@@ -5,7 +5,7 @@ import st from "./CommCard.module.scss";
 
 const CommCard = () => {
   return (
-    <div className={clsx(st.comm, "container")}>
+    <div className={clsx(st.comm)}>
       <div className={st.container}>
         <Image
           width={250}

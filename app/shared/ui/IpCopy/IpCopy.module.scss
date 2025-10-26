@@ -1,0 +1,14 @@
+@use "@/styles/mixins.scss";
+
+.ip {
+  background-color: var(--color-primary);
+  padding: 0.65rem 2.5rem;
+  border-radius: 1.5rem;
+  text-align: center;
+
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
