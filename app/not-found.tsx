@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { metadata as metadataConfig } from "@/constants";
+import { metadata as metadataConfig } from "@/app/shared/utils/constants";
 import st from "./not-found.module.scss";
 import Section from "./shared/ui/Section/Section";
 

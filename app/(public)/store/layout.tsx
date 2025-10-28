@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
-import { metadata as metadataConfig } from "@/app/shared/lib/constants";
-import Footer from "@/app/widgets/Footer/Footer";
-import Header from "@/app/widgets/Header/Header";
+import { metadata as metadataConfig } from "@/app/shared/utils/constants";
+import Footer from "@/app/shared/widgets/Footer/Footer";
+import Header from "@/app/shared/widgets/Header/Header";
 
 interface DonatePageLayoutProps {
   children: ReactNode;

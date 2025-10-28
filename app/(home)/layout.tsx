@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import Footer from "../widgets/Footer/Footer";
-import Header from "../widgets/Header/Header";
+import Footer from "../shared/widgets/Footer/Footer";
+import Header from "../shared/widgets/Header/Header";
 
 interface HomePageLayoutProps {
   children: ReactNode;

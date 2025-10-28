@@ -21,7 +21,7 @@
     "paths": {
       "@/*": ["./*"],
       "@/styles/*": ["./app/styles/*"],
-      "@/constants": ["./app/shared/lib/constants.ts"]
+      "@/constants": ["./app/shared/utils/constants.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

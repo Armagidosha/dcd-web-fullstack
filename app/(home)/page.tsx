@@ -2,9 +2,9 @@ import clsx from "clsx";
 import Image from "next/image";
 import Chevron from "../shared/ui/Chevron/Chevron";
 import Section from "../shared/ui/Section/Section";
-import CommCard from "../widgets/CommCard/CommCard";
-import Mechanics from "../widgets/Mechanics/mechanics";
-import NewsCard from "../widgets/NewsCard/NewsCard";
+import CommCard from "../shared/widgets/CommCard/CommCard";
+import Mechanics from "../shared/widgets/Mechanics/mechanics";
+import NewsCard from "../shared/widgets/NewsCard/NewsCard";
 import st from "./page.module.scss";
 
 const mockNewsData = [

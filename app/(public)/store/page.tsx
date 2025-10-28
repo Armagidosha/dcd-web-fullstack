@@ -1,59 +1,56 @@
+"use server";
+
 import clsx from "clsx";
 import Image from "next/image";
+import LoginButton from "@/app/shared/ui/LoginButton/LoginButton";
 import Section from "@/app/shared/ui/Section/Section";
+import prisma from "@/lib/prisma";
 import st from "./page.module.scss";
 
 interface DonateCardProps {
   name: string;
   image: string;
+  price: number;
   category: string;
 }
 
-const DonateCard = (props: DonateCardProps) => {
+const DonateCard = ({ category, name, price, image }: DonateCardProps) => {
   return (
     <li className={st.card}>
       <Image
         className={st.image}
         width={200}
         height={200}
-        src={props.image}
-        alt={props.name}
+        src={image}
+        alt={name}
+        priority
       />
       <div className={st.container}>
-        <span className={clsx(st.badge, "text-sm")}>{props.category}</span>
-        <h3 className={clsx(st.name, "text-md")}>{props.name}</h3>
-        <span className={"text-lg"}>1999 P</span>
+        <span className={clsx(st.badge, "text-sm")}>{category}</span>
+        <h3 className={clsx(st.name, "text-md")}>{name}</h3>
+        <span className={"text-lg"}>{price}</span>
       </div>
     </li>
   );
 };
 
-const DonatePage = () => {
+const DonatePage = async () => {
+  const products = await prisma.product.findMany();
   return (
     <Section title="Донат-услуги" axis="row">
-      <div className={st.filter}></div>
+      <div className={st.filter}>
+        <LoginButton />
+      </div>
       <ul className={st.list}>
-        <DonateCard
-          name="Warden"
-          image="/images/greeting.png"
-          category={"Другое"}
-        />
-        <DonateCard
-          name="Warden"
-          image="/images/ban.png"
-          category={"Привилегии"}
-        />
-        <DonateCard
-          name="Warden"
-          image="/images/support.png"
-          category={"Другое"}
-        />
-        <DonateCard name="Warden" image="/images/ban.png" category={"Ключи"} />
-        <DonateCard
-          name="Warden"
-          image="/images/greeting.png"
-          category={"Другое"}
-        />
+        {products.map((el) => (
+          <DonateCard
+            key={el.id}
+            category={el.category}
+            name={el.name}
+            price={el.price}
+            image={el.image}
+          />
+        ))}
       </ul>
     </Section>
   );
