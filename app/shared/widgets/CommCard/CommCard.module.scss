@@ -10,7 +10,8 @@
   align-items: center;
   padding: 1rem;
   background-color: var(--color-surface-alpha);
-  box-shadow: 0 0 2px var(--color-border);
+  box-shadow:
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 2px inset;
   border-radius: 0.5rem;
 
 }

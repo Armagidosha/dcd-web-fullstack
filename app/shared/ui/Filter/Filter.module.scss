@@ -1,0 +1,23 @@
+.filter_container {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  background-color: var(--color-surface);
+}
+
+.filter_item {
+  padding: 0.5rem 2rem;
+  border-radius: 0.755rem;
+  background-color: var(--color-primary);
+  cursor: pointer;
+  transition:
+    opacity linear var(--transition-delay),
+    transform linear var(--transition-delay);
+
+
+  &:hover {
+    opacity: 0.9;
+    transform: scale(1.05)
+  }
+}

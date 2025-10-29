@@ -9,7 +9,8 @@
   width: calc(100% - .75rem);
   backdrop-filter: blur(6px);
   background-color: var(--color-surface-alpha);
-  box-shadow: 0 0 2px var(--color-border);
+  box-shadow:
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 2px inset;
   border-radius: 1.75rem;
   z-index: 100;
 }
@@ -20,7 +21,8 @@
   align-items: center;
   justify-content: space-between;
   padding: .5rem;
-  transition: max-height var(--transition-delay);
+  transition:
+    max-height linear var(--transition-delay);
 
   &.opened {
     max-height: 18rem;

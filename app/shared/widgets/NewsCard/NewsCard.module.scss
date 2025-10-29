@@ -7,7 +7,8 @@
   width: 100%;
   border-radius: 0.5rem;
   padding: 1rem;
-  box-shadow: 0 0 2px var(--color-border);
+  box-shadow:
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
   background-color: var(--color-surface-alpha);
   transition:
     background-color linear var(--transition-delay),
@@ -15,9 +16,10 @@
     transform linear var(--transition-delay);
 
   &:hover {
-    box-shadow: 0 0 2px var(--color-primary);
+    box-shadow:
+      rgba(255, 255, 255, 0.1) 0px 0px 0px 2px inset;
     background-color: var(--color-surface);
-    transform: scale(1.025);
+    transform: scale(1.01);
   }
 }
 

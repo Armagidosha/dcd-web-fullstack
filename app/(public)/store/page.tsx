@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import LoginButton from "@/app/shared/ui/LoginButton/LoginButton";
+import Filter from "@/app/shared/ui/Filter/Filter";
 import Section from "@/app/shared/ui/Section/Section";
 import prisma from "@/lib/prisma";
 import st from "./page.module.scss";
@@ -34,13 +34,16 @@ const DonateCard = ({ category, name, price, image }: DonateCardProps) => {
   );
 };
 
+const mock = ["Привилегии", "Ключи", "Другое"];
+
 const DonatePage = async () => {
   const products = await prisma.product.findMany();
   return (
-    <Section title="Донат-услуги" axis="row">
-      <div className={st.filter}>
-        <LoginButton />
-      </div>
+    <Section title="Донат-услуги">
+      <Filter
+        items={mock}
+        // onSelect={(category: string) => console.log(category)} Он тут должен быть, но не могу вызвать
+      />
       <ul className={st.list}>
         {products.map((el) => (
           <DonateCard

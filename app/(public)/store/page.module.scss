@@ -11,22 +11,28 @@
   width: 100%;
   border-radius: 0.5rem;
   background: radial-gradient(circle, rgba(244, 63, 94, .3) 0%, rgba(26, 27, 38, 0.9) 70%);
-  transition: scale var(--transition-delay)
+  transition:
+    transform linear var(--transition-delay)
 }
 
 .card {
-  background-color: var(--color-surface-alpha);
+  background-color: var(--color-surface);
   padding: 0.75rem;
   border-radius: 0.5rem;
-  box-shadow: 0 0 1px var(--color-border);
-  transition: scale var(--transition-delay), box-shadow var(--transition-delay);
+  box-shadow:
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+  cursor: pointer;
+  transition:
+    transform linear var(--transition-delay),
+    box-shadow linear var(--transition-delay);
 
   &:hover {
-    scale: 1.02;
-    box-shadow: 0 0 3px var(--color-border);
+    transform: scale(1.01);
+    box-shadow:
+      rgba(255, 255, 255, 0.1) 0px 0px 0px 2px inset;
 
     & .image {
-      scale: 1.05;
+      transform: scale(1.05);
     }
   }
 }
@@ -47,12 +53,4 @@
 .name {
   margin: 0.5rem 0 .25rem;
   color: var(--color-primary);
-}
-
-.filter {
-  position: sticky;
-  top: 6rem;
-  width: 20rem;
-  height: 20rem;
-  background-color: var(--color-surface-alpha)
 }
