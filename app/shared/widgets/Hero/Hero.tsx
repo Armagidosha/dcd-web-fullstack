@@ -3,7 +3,7 @@ import Chevron from "../../ui/Chevron/Chevron";
 
 export default function Hero() {
   return (
-    <section className="section flex justify-center h-screen !pt-24">
+    <section className="section flex justify-center h-screen pt-24!">
       <div className="flex items-center flex-col md:flex-row">
         <div>
           <h1 className={"text-2xl md:text-3xl"}>DraimCiDo</h1>
