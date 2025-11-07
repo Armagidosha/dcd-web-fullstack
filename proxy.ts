@@ -5,6 +5,7 @@ const protectedRoutes = ["/dashboard"];
 
 export async function proxy(request: NextRequest) {
   const session = await auth();
+
   const { pathname } = request.nextUrl;
   const isProtected = protectedRoutes.some((route) =>
     pathname.startsWith(route),
@@ -17,7 +18,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  runtime: "nodejs",
   matcher: [
     // Exclude API routes, static files, image optimizations, and .png files
     "/((?!api|_next/static|_next/image|.*\\.png$).*)",

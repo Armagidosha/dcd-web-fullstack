@@ -18,4 +18,9 @@ export const metadata = {
       follow: false,
     },
   },
+  rulesPage: {
+    title: "Правила",
+    description:
+      "Изучите правила проекта DraimCiDo, чтобы обеспечить приятную и комфортную игровую атмосферу для всех участников.",
+  },
 } as const satisfies Record<string, Metadata>;

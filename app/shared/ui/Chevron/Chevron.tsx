@@ -5,12 +5,12 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface ChevronProps {
-  extraClass: string;
+  className: string;
   size: number;
   hideOnScroll?: boolean;
 }
 
-const Chevron = ({ extraClass, size, hideOnScroll }: ChevronProps) => {
+const Chevron = ({ className, size, hideOnScroll }: ChevronProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -26,10 +26,12 @@ const Chevron = ({ extraClass, size, hideOnScroll }: ChevronProps) => {
 
   return (
     <Image
-      className={clsx({ hidden: isScrolled }, extraClass)}
+      className={clsx(className, {
+        "opacity-0 pointer-events-none transition-opacity": isScrolled,
+      })}
       width={size}
       height={size}
-      src="/icons/right-chevron.svg"
+      src="/icons/chevron-down.svg"
       alt="\/"
       unoptimized
     />

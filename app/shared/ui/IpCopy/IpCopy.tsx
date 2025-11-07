@@ -1,13 +1,17 @@
 import clsx from "clsx";
-import st from "./IpCopy.module.scss";
 
 interface IpCopyProps {
-  extraClass?: string;
+  className?: string;
 }
 
-const IpCopy = ({ extraClass }: IpCopyProps) => {
+const IpCopy = ({ className }: IpCopyProps) => {
   return (
-    <div className={clsx(st.ip, extraClass)}>
+    <div
+      className={clsx(
+        "bg-primary px-10 py-2.5 text-center rounded-3xl cursor-pointer hover:opacity-90",
+        className,
+      )}
+    >
       <p>mc.draimcido.net</p>
     </div>
   );

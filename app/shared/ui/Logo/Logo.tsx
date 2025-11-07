@@ -1,13 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import st from "./Logo.module.scss";
 
-interface ILogoProps {
+interface LogoProps {
   withText?: boolean;
   width?: number;
 }
 
-const Logo = ({ withText, width }: ILogoProps) => {
+const Logo = ({ withText, width }: LogoProps) => {
   const logoPath = withText ? "/logo-with-text.svg" : "/logo-without-text.svg";
 
   const aspectRatio = 45 / 196;
@@ -18,7 +17,10 @@ const Logo = ({ withText, width }: ILogoProps) => {
   const actualHeight = Math.round(actualWidth * aspectRatio);
 
   return (
-    <Link href="/" className={st.logo}>
+    <Link
+      href="/"
+      className="flex items-center gap-2 transition hover:opacity-90 hover:drop-shadow-md hover:drop-shadow-primary"
+    >
       <Image
         width={actualWidth}
         height={actualHeight}

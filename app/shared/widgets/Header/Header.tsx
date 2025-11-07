@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useState } from "react";
 import IpCopy from "@/app/shared/ui/IpCopy/IpCopy";
 import Logo from "@/app/shared/ui/Logo/Logo";
-import st from "./Header.module.scss";
 
 const LINKS = [
   { title: "Главная", path: "/", iconPath: "/icons/home.svg" },
@@ -20,12 +19,17 @@ const Header = () => {
   const handleClick = () => setIsOpened(!isOpened);
 
   return (
-    <header className={st.header}>
-      <div className={clsx(st.inner, { [st.opened]: isOpened })}>
+    <header className="fixed w-[calc(100%-1rem)] xl:max-w-330 left-2/4 top-4 -translate-x-2/4 bg-surface/90 backdrop-blur-xs rounded-[1.75rem] ring-1 ring-zinc-600 z-50">
+      <div
+        className={clsx(
+          "relative flex flex-col items-start xl:items-center justify-between xl:flex-row gap-8 overflow-y-hidden max-h-15 p-2 transition-[max-height]",
+          isOpened ? "max-h-72" : "max-h-15",
+        )}
+      >
         <Logo withText />
-        <nav className={st.nav}>
+        <nav className="flex flex-col xl:flex-row gap-4 xl:gap-8 ml-2">
           {LINKS.map((link) => (
-            <div key={link.title}>
+            <Link className="flex gap-2" key={link.title} href={link.path}>
               <Image
                 width={18}
                 height={19}
@@ -33,13 +37,16 @@ const Header = () => {
                 alt={link.title}
                 unoptimized
               />
-              <Link href={link.path}>{link.title}</Link>
-            </div>
+              {link.title}
+            </Link>
           ))}
         </nav>
-        <IpCopy extraClass={st.copy} />
+        <IpCopy className="w-full xl:w-fit" />
         <button
-          className={clsx(st.burger, { [st.opened]: isOpened })}
+          className={clsx(
+            "absolute right-3 top-2.5 rounded-full p-2 block xl:hidden hover:bg-primary",
+            isOpened && "bg-primary",
+          )}
           type="button"
           onClick={handleClick}
         >

@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: oklch(17.082% 0.01036 285.234);
+  --color-surface: oklch(22.629% 0.0214 280.483);
+  --color-primary: oklch(64.501% 0.21541 16.421);
+  /* Под вопросом --color-secondary */
+  --color-secondary: #9f1239;
+}
+
+body {
+  color: #fff;
+  background: #0f0f14;
+  padding: 0 1rem;
+  margin: 0;
+}
+
+.section {
+  @apply py-12 max-w-7xl w-full mx-auto;
+}
+
+.section-heading {
+  @apply text-2xl font-semibold text-center mb-8;
+}

@@ -1,5 +1,4 @@
-import Image from "next/image";
-import st from "./mechanics.module.scss";
+import MechanicsCard from "../../ui/MechanicsCard/MechanicsCard";
 
 const ITEMS = [
   {
@@ -30,15 +29,20 @@ const ITEMS = [
 
 const Mechanics = () => {
   return (
-    <ul className={st.mechanics}>
-      {ITEMS.map((el) => (
-        <li className={st.item} key={el.title}>
-          <Image width={30} height={30} src={el.iconPath} alt={el.title} />
-          <h3 className={`${st.title} text-md`}>{el.title}</h3>
-          <p className={`${st.description} text-sm`}>{el.description}</p>
-        </li>
-      ))}
-    </ul>
+    <section className="section">
+      <h2 className="section-heading">Механики</h2>
+      <ul className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 place-items-start">
+        {ITEMS.map((el) => (
+          <li key={el.title}>
+            <MechanicsCard
+              title={el.title}
+              iconPath={el.iconPath}
+              description={el.description}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 };
 

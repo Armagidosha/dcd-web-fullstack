@@ -13,8 +13,8 @@ export const metadata = metadataConfig.donatePage;
 const DonatePageLayout = ({ children }: DonatePageLayoutProps) => {
   return (
     <>
-      <Header /> <main></main>
-      {children}
+      <Header />
+      <main>{children}</main>
       <Footer />
     </>
   );

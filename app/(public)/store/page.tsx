@@ -1,61 +1,105 @@
 "use server";
 
-import clsx from "clsx";
-import Image from "next/image";
-import Filter from "@/app/shared/ui/Filter/Filter";
-import Section from "@/app/shared/ui/Section/Section";
-import prisma from "@/lib/prisma";
-import st from "./page.module.scss";
+import LoginButton from "@/app/shared/ui/LoginButton/LoginButton";
 
-interface DonateCardProps {
-  name: string;
-  image: string;
-  price: number;
-  category: string;
-}
+import Products from "@/app/shared/widgets/Products/Products";
 
-const DonateCard = ({ category, name, price, image }: DonateCardProps) => {
-  return (
-    <li className={st.card}>
-      <Image
-        className={st.image}
-        width={200}
-        height={200}
-        src={image}
-        alt={name}
-        priority
-      />
-      <div className={st.container}>
-        <span className={clsx(st.badge, "text-sm")}>{category}</span>
-        <h3 className={clsx(st.name, "text-md")}>{name}</h3>
-        <span className={"text-lg"}>{price}</span>
-      </div>
-    </li>
-  );
-};
-
+// TODO: Убрать моковые данные
 const mock = ["Привилегии", "Ключи", "Другое"];
+// TODO: Убрать моковые данные
+const mockProductData = [
+  {
+    id: "uniq1",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq2",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq3",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq4",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq5",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq6",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq7",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq8",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq9",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq10",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq11",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+  {
+    id: "uniq12",
+    name: "Пенис оленя",
+    price: 220,
+    category: mock[0],
+    image: "/images/greeting.png",
+  },
+];
 
 const DonatePage = async () => {
-  const products = await prisma.product.findMany();
   return (
-    <Section title="Донат-услуги">
-      <Filter
-        items={mock}
-        // onSelect={(category: string) => console.log(category)} Он тут должен быть, но не могу вызвать
-      />
-      <ul className={st.list}>
-        {products.map((el) => (
-          <DonateCard
-            key={el.id}
-            category={el.category}
-            name={el.name}
-            price={el.price}
-            image={el.image}
-          />
-        ))}
-      </ul>
-    </Section>
+    <section className="section flex flex-col">
+      <LoginButton />
+      <Products products={mockProductData} />
+    </section>
   );
 };
 

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { metadata as metadataConfig } from "@/app/shared/utils/constants";
 
-import "@/styles/reset.css";
-import "@/styles/globals.scss";
+import "@/styles/globals.css";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",

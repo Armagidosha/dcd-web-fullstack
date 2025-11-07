@@ -1,12 +1,9 @@
-import clsx from "clsx";
-import Image from "next/image";
-import Chevron from "../shared/ui/Chevron/Chevron";
-import Section from "../shared/ui/Section/Section";
-import CommCard from "../shared/widgets/CommCard/CommCard";
+import CommCard from "../shared/widgets/Feedback/Feedback";
+import Hero from "../shared/widgets/Hero/Hero";
 import Mechanics from "../shared/widgets/Mechanics/mechanics";
-import NewsCard from "../shared/widgets/NewsCard/NewsCard";
-import st from "./page.module.scss";
+import News from "../shared/widgets/News/News";
 
+// TODO: Убрать моковые данные
 const mockNewsData = [
   {
     title: "Первый фон, переживший рестарт",
@@ -37,47 +34,16 @@ const mockNewsData = [
 const HomePage = () => {
   return (
     <>
-      <Section fullH>
-        <div className={clsx(st.hero)}>
-          <div>
-            <h1 className={"text-2xl"}>DraimCiDo</h1>
-            <p className={clsx(st.hero__text, "text-lg")}>
-              Вступайте в наше дружественное игровое комьюнити, познавайте новые
-              просторы игры и наслаждайтесь игрой вместе с другими игроками.
-            </p>
-          </div>
-          <Image
-            className={st.hero__image}
-            width={375}
-            height={450}
-            priority
-            src="/images/greeting.png"
-            alt="Приветствие"
-          />
-        </div>
-        <Chevron extraClass={st.hero__chevron} size={24} hideOnScroll />
-      </Section>
+      <Hero />
 
       {/* Блок Новости проекта */}
-      <Section title="Новости">
-        <ul className={clsx(st.news)}>
-          {mockNewsData.map((el) => (
-            <li key={el.title}>
-              <NewsCard {...el} />{" "}
-            </li>
-          ))}
-        </ul>
-      </Section>
+      <News news={mockNewsData} />
 
       {/* Особенности проекта */}
-      <Section title="Механики проекта">
-        <Mechanics />
-      </Section>
+      <Mechanics />
 
       {/* Тех. поддержка, Жалобы */}
-      <Section>
-        <CommCard />
-      </Section>
+      <CommCard />
     </>
   );
 };
