@@ -18,7 +18,7 @@ const NotFound = () => {
           написании адреса, или страница была перемещена на другой URL.
         </p>
         <Link
-          className="px-8 py-2 mt-4 rounded-3xl bg-primary transition-opacity hover:opacity-90"
+          className="px-8 py-2 mt-4 rounded-3xl bg-primary transition hover:opacity-90 hover:scale-103"
           href={"/"}
         >
           На главную

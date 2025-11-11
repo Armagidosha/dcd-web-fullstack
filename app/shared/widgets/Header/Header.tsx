@@ -31,8 +31,8 @@ const Header = () => {
           {LINKS.map((link) => (
             <Link className="flex gap-2" key={link.title} href={link.path}>
               <Image
-                width={18}
-                height={19}
+                width={19}
+                height={24}
                 src={link.iconPath}
                 alt={link.title}
                 unoptimized

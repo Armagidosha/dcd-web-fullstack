@@ -3,7 +3,7 @@ import Logo from "@/app/shared/ui/Logo/Logo";
 
 const Footer = () => {
   return (
-    <footer className="bg-surface/90 max-w-330 mx-auto w-full backdrop-blur-xs ring-1 ring-zinc-600 mt-24 py-8 px-4 z-50 rounded-t-lg">
+    <footer className="bg-surface/90 max-w-330 mx-auto w-full backdrop-blur-xs ring-1 ring-zinc-600 mt-24 py-4 px-4 z-50 rounded-t-lg">
       <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8">
         {/* Юр инфо */}
         <div>
@@ -15,10 +15,6 @@ const Footer = () => {
               <a className="text-primary" href="mailto:draimcido@gmail.com">
                 draimcido@gmail.com
               </a>
-            </p>
-            <p>
-              &copy; DraimCiDo {new Date().getFullYear()}{" "}
-              Все&nbsp;права&nbsp;защищены.
             </p>
           </address>
         </div>
@@ -65,6 +61,11 @@ const Footer = () => {
           </ul>
         </nav>
       </div>
+
+      <p className="mt-4 text-zinc-500">
+        &copy; DraimCiDo {new Date().getFullYear()}{" "}
+        Все&nbsp;права&nbsp;защищены.
+      </p>
     </footer>
   );
 };
