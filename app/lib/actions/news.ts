@@ -1,8 +1,11 @@
 "use server";
 
-export const getNews = async () => {
-  const res = await fetch(`${process.env.URL}/api/news`);
+import prisma from "@/lib/prisma";
 
-  if (!res.ok) return { news: [] };
-  return res.json().then((data) => data.data);
+export const getNews = async () => {
+  const news = await prisma.news.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 8,
+  });
+  return news;
 };
