@@ -22,6 +22,7 @@ const Logo = ({ withText, width }: LogoProps) => {
       className="flex items-center gap-2 transition hover:opacity-90 hover:drop-shadow-md hover:drop-shadow-primary"
     >
       <Image
+        loading="eager"
         width={actualWidth}
         height={actualHeight}
         src={logoPath}
