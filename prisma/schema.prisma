@@ -90,3 +90,20 @@ model News {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Rule {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Latest {
+  id          String   @id @default(cuid())
+  nickname    String
+  productName String
+  image       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
