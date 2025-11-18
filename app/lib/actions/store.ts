@@ -8,8 +8,10 @@ export const getProducts = async () => {
     include: { category: true },
   });
 
-  // TODO: Добавить запрос к бд
-  const latest = ["Test1", "Test2"];
+  const latest = await prisma.latest.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 6,
+  });
 
   const categories = await prisma.category.findMany({
     orderBy: { name: "asc" },

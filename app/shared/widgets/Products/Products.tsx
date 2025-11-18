@@ -1,23 +1,78 @@
+"use client";
+
+import { useState } from "react";
+import Modal from "../../ui/Modal/Modal";
 import ProductCard from "../../ui/ProductCard/ProductCard";
+import ProductCardModal from "../../ui/ProductCardModal/ProductCardModal";
+import ProductFilter from "../../ui/ProductFilter/ProductFilter";
+import type {
+  CategoriesWithCount,
+  ProductsWithCategory,
+} from "../../utils/types/categories";
 
 interface ProductsProps {
-  products: any[];
+  products: ProductsWithCategory[];
+  categories: CategoriesWithCount[];
 }
 
-export default function Products({ products }: ProductsProps) {
+export default function Products({ products, categories }: ProductsProps) {
+  const [filtered, setFiltered] = useState(products);
+  const [active, setActive] = useState<ProductsWithCategory | null>(null);
+
+  const categoriesWithAll = [
+    { id: "all", name: "Все", _count: { products: products.length } },
+    ...categories,
+  ];
+
+  const filterProducts = (categoryId: string) => {
+    if (categoryId === "all") {
+      setFiltered(products);
+      return;
+    }
+
+    const filteredProducts = products.filter(
+      (el) => el.category.id === categoryId,
+    );
+    setFiltered(filteredProducts);
+  };
+
   return (
-    <section className="section">
-      <ul className="grid gap-4 grid-cols-[minmax(14rem,20rem)] justify-center sm:place-items-stretch sm:grid-cols-[repeat(2,minmax(14rem,1fr))] md:grid-cols-[repeat(3,minmax(14rem,1fr))] lg:grid-cols-[repeat(4,minmax(14rem,1fr))] xl:grid-cols-[repeat(5,minmax(14rem,1fr))] ">
-        {products.map((el) => (
-          <ProductCard
-            key={el.id}
-            category={el.category}
-            name={el.name}
-            price={el.price}
-            image={el.image}
+    <section className="section pt-25!">
+      <ProductFilter
+        categories={categoriesWithAll}
+        title="Категории"
+        onClick={filterProducts}
+      />
+
+      <Modal
+        title={active?.name ?? "Подробности"}
+        opened={!!active}
+        onClose={() => setActive(null)}
+        size="lg"
+      >
+        {active && (
+          <ProductCardModal
+            description={active.description}
+            price={active.price}
           />
-        ))}
-      </ul>
+        )}
+      </Modal>
+
+      {products.length ? (
+        <ul className="grid gap-4 mt-4 grid-cols-[minmax(14rem,20rem)] justify-center sm:place-items-stretch sm:grid-cols-[repeat(2,minmax(14rem,1fr))] md:grid-cols-[repeat(3,minmax(14rem,1fr))] lg:grid-cols-[repeat(4,minmax(14rem,1fr))] xl:grid-cols-[repeat(5,minmax(14rem,1fr))] ">
+          {filtered.map((el) => (
+            <ProductCard
+              key={el.id}
+              card={el}
+              onClick={(card: ProductsWithCategory) => setActive(card)}
+            />
+          ))}
+        </ul>
+      ) : (
+        <div className="w-full p-4 mt-4 rounded-xl gradient-bg border border-border/30">
+          <p className="text-center text-dim-text text-xl">Пока ничего нет</p>
+        </div>
+      )}
     </section>
   );
 }
