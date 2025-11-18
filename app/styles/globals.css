@@ -1,11 +1,20 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
+@layer components {
+  .gradient-bg {
+    background: linear-gradient(135deg, oklch(22.629% 0.0214 280.483 / 0.85),oklch(17.082% 0.01036 285.234 / 0.85));
+  }
+}
 @theme {
+  /* Основные цвета проекта */
   --color-bg: oklch(17.082% 0.01036 285.234);
   --color-surface: oklch(22.629% 0.0214 280.483);
+  --color-surface-variant: oklch(25% 0.02 280);
   --color-primary: oklch(64.501% 0.21541 16.421);
-  /* Под вопросом --color-secondary */
-  --color-secondary: #9f1239;
+  --color-border: var(--color-zinc-600);
+  --color-dim-text: oklch(60% 0.015 280);
+  --color-light-text: oklch(90% 0.01 280);
 }
 
 body {
@@ -22,4 +31,8 @@ main {
 
 .section-heading {
   @apply text-2xl font-semibold text-center mb-8;
+}
+
+.unreset > * {
+    all: revert;
 }
