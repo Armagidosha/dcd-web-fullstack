@@ -21,12 +21,12 @@ export default function NewsCard(props: NewsCardProps) {
   return (
     <button
       type="button"
-      className="flex flex-col text-left gap-2 h-100 w-full rounded-lg p-4 ring-1 ring-zinc-600 transition bg-surface/90 hover:ring-2 hover:bg-surface hover:scale-103 cursor-pointer"
+      className="flex flex-col text-left gap-2 h-100 w-full gradient-bg rounded-lg p-4 border border-border/40 transition-all duration-300 bg-surface/90 hover:border-border/80 hover:bg-surface hover:scale-103 cursor-pointer"
       onClick={() => onClick({ image, author, title, content, formattedDate })}
     >
       {image && (
         <Image
-          className="object-cover h-full w-full max-h-52 bg-zinc-700/20 rounded-md"
+          className="object-cover h-full w-full max-h-52 bg-surface-variant/30 border border-border/20 rounded-md"
           width={450}
           height={100}
           src={image}
@@ -37,7 +37,7 @@ export default function NewsCard(props: NewsCardProps) {
         {title}
       </h3>
       <div className="overflow-hidden line-clamp-4">{content}</div>
-      <p className="mt-auto text-zinc-500 text-sm">{formattedDate}</p>
+      <p className="mt-auto text-dim-text text-sm">{formattedDate}</p>
     </button>
   );
 }

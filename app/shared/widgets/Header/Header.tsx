@@ -27,10 +27,10 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="fixed w-[calc(100%-1rem)] xl:max-w-330 left-2/4 top-4 -translate-x-2/4 bg-surface/90 backdrop-blur-xs rounded-[1.75rem] ring-1 ring-zinc-600 z-40">
+    <header className="gradient-bg fixed w-[calc(100%-1rem)] xl:max-w-330 left-2/4 top-4 -translate-x-2/4 backdrop-blur-sm rounded-[1.75rem] ring-1 ring-border z-40">
       <div
         className={clsx(
-          "relative flex flex-col items-start xl:items-center justify-between xl:flex-row gap-8 overflow-y-hidden max-h-15 p-2 transition-[max-height]",
+          "relative flex flex-col items-start xl:items-center justify-between xl:flex-row gap-8 overflow-y-hidden max-h-15 p-2 transition-[max-height] duration-300",
           isOpen ? "max-h-72" : "max-h-15",
         )}
       >

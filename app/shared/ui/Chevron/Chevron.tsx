@@ -27,7 +27,8 @@ const Chevron = ({ className, size, hideOnScroll }: ChevronProps) => {
   return (
     <Image
       className={clsx(className, {
-        "opacity-0 pointer-events-none transition-opacity": isScrolled,
+        "opacity-0 pointer-events-none transition-opacity duration-300":
+          isScrolled,
       })}
       width={size}
       height={size}

@@ -19,7 +19,7 @@ const Logo = ({ withText, width }: LogoProps) => {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2 transition hover:opacity-90 hover:drop-shadow-md hover:drop-shadow-primary"
+      className="flex items-center gap-2 transition duration-300 hover:opacity-90 hover:drop-shadow-md hover:drop-shadow-primary"
     >
       <Image
         loading="eager"
