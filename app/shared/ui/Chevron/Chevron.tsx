@@ -1,40 +1,34 @@
 "use client";
 
 import clsx from "clsx";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import { ChevronIcon } from "../../icons/icons";
 
 interface ChevronProps {
   className: string;
-  size: number;
-  hideOnScroll?: boolean;
 }
 
-const Chevron = ({ className, size, hideOnScroll }: ChevronProps) => {
+const Chevron = ({ className: extraClass }: ChevronProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    if (!hideOnScroll) return;
-
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
 
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [hideOnScroll]);
+  }, []);
 
   return (
-    <Image
-      className={clsx(className, {
-        "opacity-0 pointer-events-none transition-opacity duration-300":
-          isScrolled,
-      })}
-      width={size}
-      height={size}
-      src="/icons/chevron-down.svg"
-      alt="\/"
-      unoptimized
+    <ChevronIcon
+      className={clsx(
+        extraClass,
+        "transition-opacity duration-300 text-dim-text",
+        {
+          "opacity-1": isScrolled,
+        },
+      )}
     />
   );
 };

@@ -6,13 +6,13 @@ import { useState } from "react";
 
 export default function ImageWithFallback({ src, ...props }: ImageProps) {
   const [error, setError] = useState(false);
-  const fallback = "/images/fallback1.png";
-
+  const fallback = "/images/fallback.png";
+  const source = typeof src === "string" ? (!src.length ? fallback : src) : src;
   return (
     <Image
       {...props}
       onError={() => setError(true)}
-      src={error ? fallback : src}
+      src={error ? fallback : source}
     />
   );
 }

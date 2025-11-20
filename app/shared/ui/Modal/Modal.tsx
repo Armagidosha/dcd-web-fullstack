@@ -3,9 +3,9 @@
 import clsx from "clsx";
 import { FocusTrap } from "focus-trap-react";
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { CrossIcon } from "../../icons/icons";
 import { hasWindow } from "../../utils/functions";
 
 interface ModalProps {
@@ -81,6 +81,7 @@ export default function Modal({
                     {title}
                   </h2>
                 )}
+
                 {/* Кнопка закрытия модалки */}
                 <button
                   className="absolute -right-2 top-2/4 -translate-y-2/4 rounded-lg p-2 transition-colors duration-300 hover:bg-primary focus-visible:outline-1 cursor-pointer"
@@ -88,9 +89,10 @@ export default function Modal({
                   onClick={onClose}
                   aria-label="Закрыть"
                 >
-                  <Image width={24} height={24} src={"/icons/x.svg"} alt="X" />
+                  <CrossIcon />
                 </button>
               </div>
+
               {/* Контент модалки */}
               <div
                 className={clsx(

@@ -1,33 +1,39 @@
+import {
+  BrushIcon,
+  ChartIcon,
+  PaletteIcon,
+  ScaleIcon,
+} from "../../icons/icons";
 import MechanicsCard from "../../ui/MechanicsCard/MechanicsCard";
 
 const ITEMS = [
   {
-    iconPath: "/icons/chart-column.svg",
+    icon: <ChartIcon width={30} height={30} className="text-primary" />,
     title: "Системы прогрессии",
     description:
       "Мы внедрили продуманную систему прогрессии — от профессий до навыков, чтобы вы могли постепенно погружаться в проект и лучше понимать его механику.",
   },
   {
-    iconPath: "/icons/paintbrush.svg",
+    icon: <BrushIcon width={30} height={30} className="text-primary" />,
     title: "Кастомные текстуры",
     description:
       "Проект с уникальными текстурами и множеством кастомных предметов делает игровой мир атмосферным и увлекательным для исследования.",
   },
   {
-    iconPath: "/icons/scale.svg",
+    icon: <ScaleIcon width={30} height={30} className="text-primary" />,
     title: "Сбалансированный донат",
     description:
       "Мы переработали систему доната так, чтобы каждый игрок имел доступ к полезным возможностям, не нарушая баланс и комфорт игры.",
   },
   {
-    iconPath: "/icons/palette.svg",
+    icon: <PaletteIcon width={30} height={30} className="text-primary" />,
     title: "Красивое оформление",
     description:
       "Проект создан на актуальной версии Minecraft с современными механиками, объединяющими удобство, стабильность и атмосферу живого мира.",
   },
 ];
 
-const Mechanics = () => {
+export default function Mechanics() {
   return (
     <section className="section">
       <h2 className="section-heading">Механики</h2>
@@ -36,7 +42,7 @@ const Mechanics = () => {
           <li key={el.title}>
             <MechanicsCard
               title={el.title}
-              iconPath={el.iconPath}
+              icon={el.icon}
               description={el.description}
             />
           </li>
@@ -44,6 +50,4 @@ const Mechanics = () => {
       </ul>
     </section>
   );
-};
-
-export default Mechanics;
+}

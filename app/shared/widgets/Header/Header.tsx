@@ -1,16 +1,34 @@
 "use client";
 
 import clsx from "clsx";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import IpCopy from "@/app/shared/ui/IpCopy/IpCopy";
 import Logo from "@/app/shared/ui/Logo/Logo";
+import {
+  BurgerIcon,
+  CartIcon,
+  CrossIcon,
+  HomeIcon,
+  RulesIcon,
+} from "../../icons/icons";
 
 const LINKS = [
-  { title: "Главная", path: "/", iconPath: "/icons/home.svg" },
-  { title: "Донат-услуги", path: "/store", iconPath: "/icons/cart.svg" },
-  { title: "Правила", path: "/rules", iconPath: "/icons/rules.svg" },
+  {
+    title: "Главная",
+    path: "/",
+    icon: <HomeIcon width={20} />,
+  },
+  {
+    title: "Донат-услуги",
+    path: "/store",
+    icon: <CartIcon width={20} />,
+  },
+  {
+    title: "Правила",
+    path: "/rules",
+    icon: <RulesIcon width={20} />,
+  },
 ];
 
 const Header = () => {
@@ -35,6 +53,7 @@ const Header = () => {
         )}
       >
         <Logo withText />
+
         {/* Бургер меню */}
         <button
           className={clsx(
@@ -46,14 +65,9 @@ const Header = () => {
           aria-expanded={isOpen}
           aria-controls="main-navigation"
         >
-          <Image
-            src={isOpen ? "/icons/x.svg" : "/icons/burger.svg"}
-            alt={isOpen ? "Закрыть" : "Меню"}
-            width={24}
-            height={24}
-            unoptimized
-          />
+          {isOpen ? <CrossIcon /> : <BurgerIcon />}
         </button>
+
         {/* Навигация по страницам */}
         <nav
           id="main-navigation"
@@ -64,22 +78,17 @@ const Header = () => {
           {LINKS.map((link) => (
             <Link
               key={link.title}
+              className="flex gap-1.5"
+              href={link.path}
               tabIndex={!isDesktop && !isOpen ? -1 : undefined}
               onClick={() => setIsOpen(false)}
-              className="flex gap-2"
-              href={link.path}
             >
-              <Image
-                width={19}
-                height={24}
-                src={link.iconPath}
-                alt={link.title}
-                unoptimized
-              />
+              {link.icon}
               {link.title}
             </Link>
           ))}
         </nav>
+
         {/* Копирование IP */}
         <IpCopy className="w-full xl:w-fit" />
       </div>

@@ -1,33 +1,22 @@
-import Image from "next/image";
 import Link from "next/link";
+import { LogoIconWithText, LogoWithoutText } from "../../icons/icons";
 
 interface LogoProps {
   withText?: boolean;
-  width?: number;
+  SVGProps?: React.SVGProps<SVGSVGElement>;
 }
 
-const Logo = ({ withText, width }: LogoProps) => {
-  const logoPath = withText ? "/logo-with-text.svg" : "/logo-without-text.svg";
-
-  const aspectRatio = 45 / 196;
-
-  const defaultWidth = withText ? 196 : 45;
-
-  const actualWidth = width ?? defaultWidth;
-  const actualHeight = Math.round(actualWidth * aspectRatio);
-
+const Logo = ({ withText, SVGProps }: LogoProps) => {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2 transition duration-300 hover:opacity-90 hover:drop-shadow-md hover:drop-shadow-primary"
+      className="inline-block transition duration-300 hover:opacity-90 hover:drop-shadow-[0_2.5px_2.5px_rgba(0,0,0,0.25)] hover:drop-shadow-primary"
     >
-      <Image
-        loading="eager"
-        width={actualWidth}
-        height={actualHeight}
-        src={logoPath}
-        alt="Логотип DraimCiDo"
-      />
+      {withText ? (
+        <LogoIconWithText {...SVGProps} />
+      ) : (
+        <LogoWithoutText {...SVGProps} />
+      )}
     </Link>
   );
 };

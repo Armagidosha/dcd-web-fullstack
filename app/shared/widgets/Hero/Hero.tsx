@@ -21,11 +21,7 @@ export default function Hero() {
           alt="Приветствие"
         />
       </div>
-      <Chevron
-        className="absolute hidden md:block bottom-8 left-2/4 -translate-x-2/4 animate-bounce"
-        size={30}
-        hideOnScroll
-      />
+      <Chevron className="absolute hidden md:block bottom-8 left-2/4 -translate-x-2/4 animate-bounce" />
     </section>
   );
 }
