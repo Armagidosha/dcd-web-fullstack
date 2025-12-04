@@ -77,7 +77,7 @@ export default function ProductsTable({
                   onClick={() => onEditClick(product, "category")}
                   type="button"
                 >
-                  <span className="bg-primary px-3 py-1 rounded-full text-nowrap text-sm font-medium hover:opacity-80 transition-opacity">
+                  <span className="bg-primary px-3 py-1 rounded-full text-nowrap text-sm font-medium hover:opacity-80 transition-opacity duration-300">
                     {product.category?.name || "Нет категории"}
                   </span>
                 </button>
@@ -88,7 +88,7 @@ export default function ProductsTable({
                   onClick={() => onActionClick(product)}
                   className="p-2 cursor-pointer rounded-lg group"
                 >
-                  <TrashIcon className="text-primary group-hover:scale-125" />
+                  <TrashIcon className="text-primary group-hover:scale-125 duration-300" />
                 </button>
               </td>
             </tr>

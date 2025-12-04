@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import ImageWithFallback from "@/app/shared/ui/ImageWithFallback/ImageWithFallback";
 import MarkdownEditor from "@/app/shared/ui/MarkDownEditor";
