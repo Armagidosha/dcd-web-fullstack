@@ -6,13 +6,13 @@ import ProductCard from "../../ui/ProductCard/ProductCard";
 import ProductCardModal from "../../ui/ProductCardModal/ProductCardModal";
 import ProductFilter from "../../ui/ProductFilter/ProductFilter";
 import type {
-  CategoriesWithCount,
+  CategoryWithCount,
   ProductsWithCategory,
 } from "../../utils/types/categories";
 
 interface ProductsProps {
   products: ProductsWithCategory[];
-  categories: CategoriesWithCount[];
+  categories: CategoryWithCount[];
 }
 
 export default function Products({ products, categories }: ProductsProps) {
@@ -31,7 +31,7 @@ export default function Products({ products, categories }: ProductsProps) {
     }
 
     const filteredProducts = products.filter(
-      (el) => el.category.id === categoryId,
+      (el) => el.category?.id === categoryId,
     );
     setFiltered(filteredProducts);
   };

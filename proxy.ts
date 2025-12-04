@@ -1,18 +1,21 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { auth } from "./app/lib/auth";
+import { checkRights } from "./app/lib/actions/utils";
 
 const protectedRoutes = ["/dashboard"];
 
 export async function proxy(request: NextRequest) {
-  const session = await auth();
-
   const { pathname } = request.nextUrl;
   const isProtected = protectedRoutes.some((route) =>
     pathname.startsWith(route),
   );
 
-  if (!session && isProtected)
-    return NextResponse.rewrite(new URL("/404", request.nextUrl));
+  if (isProtected) {
+    try {
+      await checkRights();
+    } catch {
+      return NextResponse.rewrite(new URL("/404", request.nextUrl));
+    }
+  }
 
   return NextResponse.next();
 }

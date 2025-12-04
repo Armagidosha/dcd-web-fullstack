@@ -1,4 +1,4 @@
-import { getProducts } from "@/app/lib/actions/store";
+import { getProducts } from "@/app/lib/actions/product";
 import Latest from "@/app/shared/widgets/Latest/Latest";
 import Products from "@/app/shared/widgets/Products/Products";
 

@@ -39,11 +39,13 @@ export default function ProductCard({ card, onClick }: DonateCardProps) {
         </div>
 
         {/* Бейдж категории - абсолютное позиционирование */}
-        <div className="absolute bottom-6 left-6 z-10">
-          <span className="inline-flex px-3 py-1.5 text-xs font-medium rounded-full bg-surface-variant/90 backdrop-blur-md border border-border/30 text-light-text/90 shadow-lg">
-            {category.name}
-          </span>
-        </div>
+        {category && (
+          <div className="absolute bottom-6 left-6 z-10">
+            <span className="inline-flex px-3 py-1.5 text-xs font-medium rounded-full bg-surface-variant/90 backdrop-blur-md border border-border/30 text-light-text/90 shadow-lg">
+              {category.name}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Информация о продукте */}

@@ -12,6 +12,7 @@
   --color-surface: oklch(22.629% 0.0214 280.483);
   --color-surface-variant: oklch(25% 0.02 280);
   --color-primary: oklch(64.501% 0.21541 16.421);
+  --color-secondary: oklch(55.366% 0.22628 268.661);
   --color-border: var(--color-zinc-600);
   --color-dim-text: oklch(60% 0.015 280);
   --color-light-text: oklch(90% 0.01 280);

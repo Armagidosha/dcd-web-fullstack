@@ -14,7 +14,6 @@ export default function LatestCard({
   createdAt,
   nickname,
 }: LatestProps) {
-  console.log;
   const formattedDate = createdAt
     ? format(createdAt, "H:mm d MMM", { locale: ru })
     : "Дата неизвестна";
