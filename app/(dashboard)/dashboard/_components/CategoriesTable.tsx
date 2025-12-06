@@ -34,7 +34,7 @@ export default function CategoriesTable({
                 <button
                   type="button"
                   onClick={() => onEditClick(category)}
-                  className="truncate cursor-pointer group-hover:text-primary transition-colors text-left w-full"
+                  className="truncate cursor-pointer group-hover:text-primary transition-colors duration-300 text-left w-full"
                 >
                   {category.name}
                 </button>
@@ -46,9 +46,9 @@ export default function CategoriesTable({
                 <button
                   type="button"
                   onClick={() => onActionClick(category)}
-                  className="p-2 text-primary cursor-pointer rounded-lg group/button"
+                  className="p-2 text-primary cursor-pointer group/button rounded-lg"
                 >
-                  <TrashIcon className="text-primary group-hover/button:scale-125" />
+                  <TrashIcon className="text-primary group-hover/button:scale-125 transition-transform duration-300" />
                 </button>
               </td>
             </tr>

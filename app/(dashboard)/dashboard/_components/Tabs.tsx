@@ -94,9 +94,9 @@ const Tabs = ({
               <button
                 type="button"
                 onClick={() => setIsAddModalOpened(true)}
-                className="flex items-center gap-2 bg-primary px-6 py-3 rounded-xl font-semibold cursor-pointer duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 bg-primary hover:bg-primary/80 transition-colors duration-300 px-6 py-3 rounded-xl font-semibold cursor-pointer group disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <PlusIcon className="group-hover:scale-110" />
+                <PlusIcon className="group-hover:scale-110 transition-transform duration-300" />
                 Добавить продукт
               </button>
             </div>

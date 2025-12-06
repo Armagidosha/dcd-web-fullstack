@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ImageWithFallback from "@/app/shared/ui/ImageWithFallback/ImageWithFallback";
+import FileInput from "@/app/shared/ui/Input/FileInput";
+import NumberInput from "@/app/shared/ui/Input/NumberInput";
+import TextInput from "@/app/shared/ui/Input/TextInput";
 import MarkdownEditor from "@/app/shared/ui/MarkDownEditor";
 import { useAsync } from "@/app/shared/utils/hooks";
 import type { CategoryWithCount } from "@/app/shared/utils/types/categories";
@@ -16,8 +18,6 @@ export default function AddProductForm({
   onSubmit,
   categories,
 }: ProductFormProps) {
-  const { execute, isLoading } = useAsync();
-
   // Состояние формы
   const [productData, setProductData] = useState<AddProductFormData>({
     name: "",
@@ -26,18 +26,8 @@ export default function AddProductForm({
     description: "",
     image: null,
   });
-  // Превью картинки
-  const [preview, setPreview] = useState("");
 
-  const isFormValid = useMemo(() => {
-    return (
-      productData.name.trim() !== "" &&
-      productData.price > 0 &&
-      productData.description.trim() !== "" &&
-      productData.image !== null &&
-      productData.category.trim() !== ""
-    );
-  }, [productData]);
+  const { isLoading, errors, execute, clearFieldError } = useAsync();
 
   const handleChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -47,6 +37,7 @@ export default function AddProductForm({
       ...prev,
       [name]: value,
     }));
+    clearFieldError(name);
   };
 
   const handleImageChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,13 +47,12 @@ export default function AddProductForm({
         ...prev,
         image: file,
       }));
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
     }
+  };
+
+  const handlePriceChange = (value: number | "") => {
+    setProductData((prev) => ({ ...prev, price: Number(value) }));
+    clearFieldError("price");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -82,141 +72,82 @@ export default function AddProductForm({
     await execute(onSubmit, formData);
   };
 
+  const isFormValid = useMemo(() => {
+    return (
+      productData.name.trim() !== "" &&
+      productData.price > 0 &&
+      productData.description.trim() !== "" &&
+      productData.image !== null &&
+      productData.category.trim() !== ""
+    );
+  }, [productData]);
+
+  console.log(!!errors);
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <div>
-        <label
-          htmlFor="category"
-          className="block text-sm font-medium text-light-text mb-2"
-        >
-          Категория
-        </label>
-        <input
-          className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-border focus:border-transparent outline-none transition"
-          placeholder="Выбери или введи новую категорию"
-          onChange={handleChange}
-          autoComplete="off"
-          name="category"
-          list="categoryList"
-          value={productData.category}
-          id="category"
-          type="text"
-        />
-        <datalist id="categoryList">
-          {categories?.map((cat) => (
-            <option key={cat.id} value={cat.name}></option>
-          ))}
-        </datalist>
-      </div>
+      <TextInput
+        label="Название категории"
+        placeholder="Введите название категории"
+        description="От 3 до 16 символов"
+        name="category"
+        errors={errors?.category || undefined}
+        onChange={handleChange}
+        value={productData.category}
+        dataList={categories?.map((cat) => {
+          return { id: cat.id, value: cat.name };
+        })}
+        required
+        disabled={isLoading}
+      />
 
-      <div>
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-light-text mb-2"
-        >
-          Название
-        </label>
-        <input
-          required
-          id="name"
-          type="text"
-          name="name"
-          value={productData.name}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-border focus:border-transparent outline-none transition"
-          placeholder="Введите название продукта"
-        />
-      </div>
+      <TextInput
+        label="Название продукта"
+        placeholder="Введите название"
+        description="От 3 до 16 символов"
+        name="name"
+        required
+        errors={errors?.name || undefined}
+        onChange={handleChange}
+        value={productData.name}
+        disabled={isLoading}
+      />
 
-      <div>
-        <label
-          htmlFor="price"
-          className="block text-sm font-medium text-light-text mb-2"
-        >
-          Цена
-        </label>
-        <div className="relative flex items-center">
-          <input
-            required
-            min={0}
-            max={10000}
-            id="price"
-            type="number"
-            name="price"
-            value={productData.price}
-            onChange={handleChange}
-            className="w-full px-4 py-2 pr-24 border border-border rounded-lg focus:ring-2 focus:ring-border focus:border-transparent outline-none transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            placeholder="0.00"
-            step="10"
-          />
-          <div className="absolute right-1 flex gap-1">
-            <button
-              type="button"
-              onClick={() => {
-                const newValue = Math.max(0, Number(productData.price) - 10);
-                setProductData((prev) => ({ ...prev, price: newValue }));
-              }}
-              className="w-9 h-9 flex items-center justify-center bg-primary cursor-pointer rounded-md transition font-bold text-light-text"
-            >
-              −
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                const newValue = Math.min(
-                  10000,
-                  Number(productData.price) + 10,
-                );
-                setProductData((prev) => ({ ...prev, price: newValue }));
-              }}
-              className="w-9 h-9 flex items-center justify-center bg-primary cursor-pointer rounded-md transition font-bold text-light-text"
-            >
-              +
-            </button>
-          </div>
-        </div>
-      </div>
+      <NumberInput
+        name="price"
+        label="Цена"
+        description="Допустимые значения от 50 до 10000"
+        placeholder="Введите цену"
+        value={String(productData.price)}
+        onChange={(value) => handlePriceChange(value)}
+        errors={errors.price}
+        min={50}
+        max={10000}
+        step={10}
+        required
+        disabled={isLoading}
+      />
 
-      <div>
-        <label
-          htmlFor="image"
-          className="block text-sm font-medium text-light-text mb-2"
-        >
-          Изображение
-        </label>
-        <input
-          required
-          id="image"
-          name="image"
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-border focus:border-transparent outline-none transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-light-text file:cursor-pointer file:w-40"
-        />
-        {preview && (
-          <div className="mt-4">
-            <p className="text-sm font-semibold mb-2 text-light-text">
-              Предварительный просмотр:
-            </p>
-            <ImageWithFallback
-              width={200}
-              height={200}
-              src={preview}
-              alt="Preview"
-              className="w-48 h-48 object-cover rounded-lg border border-border"
-            />
-          </div>
-        )}
-      </div>
+      <FileInput
+        label="Изображение"
+        description="Принимаемые форматы: JPEG, PNG, WebP"
+        name="image"
+        accept=".png,.jpg,.webp"
+        onChange={handleImageChange}
+        onReset={() => setProductData((prev) => ({ ...prev, image: null }))}
+        errors={errors.image}
+        required
+        disabled={isLoading}
+      />
 
       <MarkdownEditor onChange={handleChange} value={productData.description} />
 
       <button
-        disabled={!isFormValid || isLoading}
+        disabled={!isFormValid || isLoading || !!errors}
         type="submit"
         className="w-full bg-primary disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-primary transition duration-200 shadow-md hover:shadow-lg"
       >
-        Добавить продукт
+        {isLoading ? "Добавление..." : "Добавить продукт"}
       </button>
     </form>
   );
