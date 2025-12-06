@@ -4,8 +4,7 @@ export const hasWindow = () => {
 
 export const checkRes = async (response: Response) => {
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || error.message || "Unexpected error");
+    await response.json().then((error) => Promise.reject(error));
   }
 
   return response.json();

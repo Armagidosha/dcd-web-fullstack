@@ -1,4 +1,6 @@
-export function BurgerIcon(props: React.SVGProps<SVGSVGElement>) {
+type IconProps = React.SVGProps<SVGSVGElement> & { title?: string };
+
+export function BurgerIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +14,7 @@ export function BurgerIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <title>Меню</title>
+      <title>{props.title || "Меню"}</title>
       <path d="M3 5h18" />
       <path d="M3 12h18" />
       <path d="M3 19h18" />
@@ -20,7 +22,9 @@ export function BurgerIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function CrossIcon(props: React.SVGProps<SVGSVGElement>) {
+export function CrossIcon(
+  props: React.SVGProps<SVGSVGElement> & { title?: string },
+) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -34,14 +38,14 @@ export function CrossIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <title>Закрыть</title>
+      <title>{props.title || "Закрыть"}</title>
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
     </svg>
   );
 }
 
-export function CartIcon(props: React.SVGProps<SVGSVGElement>) {
+export function CartIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -51,14 +55,14 @@ export function CartIcon(props: React.SVGProps<SVGSVGElement>) {
       fill="currentColor"
       {...props}
     >
-      <title>Донат</title>
+      <title>{props.title || "Донат"}</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M6 2a1 1 0 0 1 .993 .883l.007 .117v1.068l13.071 .935a1 1 0 0 1 .929 1.024l-.01 .114l-1 7a1 1 0 0 1 -.877 .853l-.113 .006h-12v2h10a3 3 0 1 1 -2.995 3.176l-.005 -.176l.005 -.176c.017 -.288 .074 -.564 .166 -.824h-5.342a3 3 0 1 1 -5.824 1.176l-.005 -.176l.005 -.176a3.002 3.002 0 0 1 1.995 -2.654v-12.17h-1a1 1 0 0 1 -.993 -.883l-.007 -.117a1 1 0 0 1 .883 -.993l.117 -.007h2zm0 16a1 1 0 1 0 0 2a1 1 0 0 0 0 -2zm11 0a1 1 0 1 0 0 2a1 1 0 0 0 0 -2z" />
     </svg>
   );
 }
 
-export function RulesIcon(props: React.SVGProps<SVGSVGElement>) {
+export function RulesIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -68,14 +72,14 @@ export function RulesIcon(props: React.SVGProps<SVGSVGElement>) {
       fill="currentColor"
       {...props}
     >
-      <title>Правила</title>
+      <title>{props.title || "Правила"}</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M17.997 4.17a3 3 0 0 1 2.003 2.83v12a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 2.003 -2.83a4 4 0 0 0 3.997 3.83h4a4 4 0 0 0 3.98 -3.597zm-8.987 10.83h-.01a1 1 0 0 0 -.117 1.993l.127 .007a1 1 0 0 0 0 -2m5.99 0h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 0 -2m-5.99 -4h-.01a1 1 0 0 0 -.117 1.993l.127 .007a1 1 0 0 0 0 -2m5.99 0h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 0 -2m-1 -9a2 2 0 1 1 0 4h-4a2 2 0 1 1 0 -4z" />
     </svg>
   );
 }
 
-export function HomeIcon(props: React.SVGProps<SVGSVGElement>) {
+export function HomeIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -85,14 +89,14 @@ export function HomeIcon(props: React.SVGProps<SVGSVGElement>) {
       fill="currentColor"
       {...props}
     >
-      <title>Домой</title>
+      <title>{props.title || "Домой"}</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12.707 2.293l9 9c.63 .63 .184 1.707 -.707 1.707h-1v6a3 3 0 0 1 -3 3h-1v-7a3 3 0 0 0 -2.824 -2.995l-.176 -.005h-2a3 3 0 0 0 -3 3v7h-1a3 3 0 0 1 -3 -3v-6h-1c-.89 0 -1.337 -1.077 -.707 -1.707l9 -9a1 1 0 0 1 1.414 0m.293 11.707a1 1 0 0 1 1 1v7h-4v-7a1 1 0 0 1 .883 -.993l.117 -.007z" />
     </svg>
   );
 }
 
-export function ChevronIcon(props: React.SVGProps<SVGSVGElement>) {
+export function ChevronIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -106,13 +110,13 @@ export function ChevronIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <title>Шеврон</title>
+      <title>{props.title || "Шеврон"}</title>
       <path d="m6 9 6 6 6-6" />
     </svg>
   );
 }
 
-export function ChartIcon(props: React.SVGProps<SVGSVGElement>) {
+export function ChartIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +130,7 @@ export function ChartIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <title>Прогрессия</title>
+      <title>{props.title || "Прогрессия"}</title>
       <path d="M5 21v-6" />
       <path d="M12 21V9" />
       <path d="M19 21V3" />
@@ -134,7 +138,7 @@ export function ChartIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function BrushIcon(props: React.SVGProps<SVGSVGElement>) {
+export function BrushIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +152,7 @@ export function BrushIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <title>Кастомизация</title>
+      <title>{props.title || "Кастомизация"}</title>
       <path d="M10 2v2" />
       <path d="M14 2v4" />
       <path d="M17 2a1 1 0 0 1 1 1v9H6V3a1 1 0 0 1 1-1z" />
@@ -156,7 +160,7 @@ export function BrushIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-export function ScaleIcon(props: React.SVGProps<SVGSVGElement>) {
+export function ScaleIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +174,7 @@ export function ScaleIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <title>Баланс</title>
+      <title>{props.title || "Баланс"}</title>
       <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
       <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
       <path d="M7 21h10" />
@@ -179,7 +183,7 @@ export function ScaleIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-export function PaletteIcon(props: React.SVGProps<SVGSVGElement>) {
+export function PaletteIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +197,7 @@ export function PaletteIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <title>Оформление</title>
+      <title>{props.title || "Оформление"}</title>
       <path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z" />
       <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
       <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
@@ -203,7 +207,7 @@ export function PaletteIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
+export function TrashIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -213,7 +217,7 @@ export function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
       fill="currentColor"
       {...props}
     >
-      <title>Удалить</title>
+      <title>{props.title || "Удалить"}</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16z" />
       <path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" />
@@ -221,7 +225,7 @@ export function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function EditIcon(props: React.SVGProps<SVGSVGElement>) {
+export function EditIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -235,7 +239,7 @@ export function EditIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <title>Изменить</title>
+      <title>{props.title || "Изменить"}</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
       <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
@@ -244,7 +248,7 @@ export function EditIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
+export function PlusIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -254,7 +258,7 @@ export function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
       fill="currentColor"
       {...props}
     >
-      <title>Добавить</title>
+      <title>{props.title || "Добавить"}</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M18.333 2a3.667 3.667 0 0 1 3.667 3.667v8.666a3.667 3.667 0 0 1 -3.667 3.667h-8.666a3.667 3.667 0 0 1 -3.667 -3.667v-8.666a3.667 3.667 0 0 1 3.667 -3.667zm-4.333 4a1 1 0 0 0 -1 1v2h-2a1 1 0 0 0 0 2h2v2a1 1 0 0 0 2 0v-2h2a1 1 0 0 0 0 -2h-2v-2a1 1 0 0 0 -1 -1" />
       <path d="M3.517 6.391a1 1 0 0 1 .99 1.738c-.313 .178 -.506 .51 -.507 .868v10c0 .548 .452 1 1 1h10c.284 0 .405 -.088 .626 -.486a1 1 0 0 1 1.748 .972c-.546 .98 -1.28 1.514 -2.374 1.514h-10c-1.652 0 -3 -1.348 -3 -3v-10.002a3 3 0 0 1 1.517 -2.605" />
@@ -262,7 +266,7 @@ export function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function LogoutIcon(props: React.SVGProps<SVGSVGElement>) {
+export function PaperClipIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -276,7 +280,28 @@ export function LogoutIcon(props: React.SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <title>Выход</title>
+      <title>{props.title || "Выбрать файл"}</title>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
+    </svg>
+  );
+}
+
+export function LogoutIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <title>{props.title || "Выход"}</title>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
       <path d="M9 12h12l-3 -3" />
@@ -285,7 +310,7 @@ export function LogoutIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function LogoIconWithText(props: React.SVGProps<SVGSVGElement>) {
+export function LogoIconWithText(props: IconProps) {
   return (
     <svg
       width="196px"
@@ -297,7 +322,7 @@ export function LogoIconWithText(props: React.SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>Логотип DraimCiDo</title>
+      <title>{props.title || "Логотип DraimCiDo"}</title>
       <image
         width="45"
         height="45"
@@ -320,7 +345,7 @@ export function LogoIconWithText(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function LogoWithoutText(props: React.SVGProps<SVGSVGElement>) {
+export function LogoWithoutText(props: IconProps) {
   return (
     <svg
       width="45"
@@ -330,7 +355,7 @@ export function LogoWithoutText(props: React.SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>Логотип DraimCiDo</title>
+      <title>{props.title || "Логотип DraimCiDo"}</title>
       <image
         width="6.233849"
         height="5.9326224"

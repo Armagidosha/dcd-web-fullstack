@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { checkRights, deleteImage, saveImage } from "@/app/lib/actions/utils";
+import { productSchema } from "@/app/lib/api/schemas";
 import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
 import prisma from "@/lib/prisma";
 
@@ -14,22 +15,14 @@ export async function PATCH(
     const { id: productId } = await params;
     const formData = await request.formData();
 
-    const schema = z
-      .object({
-        description: z.string().min(3),
-        image: z.instanceof(File),
-        name: z.string().min(3).max(16),
-        price: z.coerce.number().min(0).max(10000),
-        category: z.string().min(3).max(16),
-      })
-      .partial();
+    const partialSchema = productSchema.partial();
 
     const data: Record<string, unknown> = {};
     for (const [key, value] of formData.entries()) {
       data[key] = value;
     }
 
-    const parsed = schema.parse(data);
+    const parsed = partialSchema.parse(data);
 
     const existing = await prisma.product.findUnique({
       where: { id: productId },
@@ -76,10 +69,12 @@ export async function PATCH(
     return NextResponse.json(updated);
   } catch (error) {
     console.error("Error updating product:", error);
-
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: "Validation error", details: error.message },
+        {
+          error: "Validation error",
+          details: z.flattenError(error).fieldErrors,
+        },
         { status: 400 },
       );
     }
@@ -89,7 +84,7 @@ export async function PATCH(
     }
 
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: (error as Error)?.message || "Internal server error" },
       { status: 500 },
     );
   }

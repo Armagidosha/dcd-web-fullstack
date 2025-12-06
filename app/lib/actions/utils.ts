@@ -26,18 +26,6 @@ export const checkRights = async () => {
 };
 
 export const saveImage = async (file: File): Promise<string> => {
-  // Проверка размера (5MB максимум)
-  const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-  if (file.size > MAX_SIZE) {
-    throw new Error("Файл слишком большой. Максимум 5MB");
-  }
-
-  // Проверка типа файла
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-  if (!allowedTypes.includes(file.type)) {
-    throw new Error("Недопустимый тип файла. Разрешены: JPEG, PNG, WebP");
-  }
-
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 

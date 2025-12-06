@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { checkRights } from "@/app/lib/actions/utils";
+import { categorySchema } from "@/app/lib/api/schemas";
 import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
@@ -15,11 +16,7 @@ export async function PATCH(
     const { id: categoryId } = await params;
     const { name } = await request.json();
 
-    const schema = z.object({
-      name: z.string().min(3).max(16),
-    });
-
-    const validatedData = schema.parse({ name });
+    const validatedData = categorySchema.parse({ name });
 
     const updated = await prisma.category.update({
       where: { id: categoryId },
@@ -33,13 +30,16 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json({ updated });
+    return NextResponse.json(updated);
   } catch (error) {
     console.error("Error updating category:", error);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: "Validation error", details: error.message },
+        {
+          error: "Validation error",
+          details: z.flattenError(error).fieldErrors,
+        },
         { status: 400 },
       );
     }
