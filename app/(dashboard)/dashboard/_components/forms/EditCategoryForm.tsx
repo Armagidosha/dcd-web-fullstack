@@ -25,7 +25,7 @@ export default function EditCategoryForm({
     setValue(value);
     clearFieldError(name);
   };
-  console.log(value);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     execute(onSubmit, value);
@@ -55,7 +55,7 @@ export default function EditCategoryForm({
             w-full bg-primary px-6 py-3 rounded-xl font-semibold cursor-pointer hover:opacity-90 
             transition-opacity disabled:opacity-50 disabled:cursor-not-allowed
           `}
-          disabled={isLoading || !!errors}
+          disabled={isLoading || Object.keys(errors).length > 0}
         >
           {isLoading ? "Сохранение..." : "Сохранить"}
         </button>

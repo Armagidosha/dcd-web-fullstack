@@ -82,8 +82,6 @@ export default function AddProductForm({
     );
   }, [productData]);
 
-  console.log(!!errors);
-
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <TextInput
@@ -143,7 +141,7 @@ export default function AddProductForm({
       <MarkdownEditor onChange={handleChange} value={productData.description} />
 
       <button
-        disabled={!isFormValid || isLoading || !!errors}
+        disabled={!isFormValid || Object.keys(errors).length > 0}
         type="submit"
         className="w-full bg-primary disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-primary transition duration-200 shadow-md hover:shadow-lg"
       >

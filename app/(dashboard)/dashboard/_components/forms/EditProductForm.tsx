@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import FileInput from "@/app/shared/ui/Input/FileInput";
 import NumberInput from "@/app/shared/ui/Input/NumberInput";
 import TextInput from "@/app/shared/ui/Input/TextInput";
@@ -160,14 +160,6 @@ export default function EditProductForm({
     }
   };
 
-  // Проверка валидности формы
-
-  const isFormValid = useMemo(() => {
-    return imageFile !== null || field === "price"
-      ? Number(value) > 0
-      : value.toString().trim() !== "";
-  }, [imageFile, value, field]);
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col flex-1 space-y-6">
       <p className="text-sm opacity-70">
@@ -180,7 +172,7 @@ export default function EditProductForm({
       <div className="mt-auto pb-4">
         <button
           type="submit"
-          disabled={isLoading || !isFormValid}
+          disabled={isLoading || Object.keys(errors).length > 0}
           className="w-full bg-primary px-6 py-3 rounded-xl font-semibold cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? "Сохранение..." : "Сохранить"}
