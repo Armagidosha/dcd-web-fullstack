@@ -38,7 +38,11 @@ export default function ProductsTable({
             >
               <td className="py-4 px-4">
                 <button
-                  className="w-20 h-20 bg-surface-variant rounded-lg flex items-center justify-center text-2xl cursor-pointer hover:opacity-80 transition-opacity duration-300"
+                  className={clsx(
+                    `w-20 h-20 rounded-lg flex items-center justify-center text-2xl 
+                    cursor-pointer hover:opacity-80 transition-opacity duration-300`,
+                    idx % 2 === 0 ? "bg-surface" : "bg-surface-variant",
+                  )}
                   onClick={() => onEditClick(product, "image")}
                   type="button"
                 >
