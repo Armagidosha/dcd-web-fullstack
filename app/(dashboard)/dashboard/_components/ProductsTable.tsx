@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { TrashIcon } from "@/app/shared/icons/icons";
 import ImageWithFallback from "@/app/shared/ui/ImageWithFallback/ImageWithFallback";
 import type { ProductsWithCategory } from "@/app/shared/utils/types/categories";
@@ -16,7 +17,7 @@ export default function ProductsTable({
   return (
     <div className="overflow-x-auto h-150 overscroll-y-contain">
       <table className="w-full">
-        <thead>
+        <thead className="sticky top-0 bg-surface z-10">
           <tr className="border-b border-border">
             <th className="text-left py-4 px-4 font-semibold">Изображение</th>
             <th className="text-left py-4 px-4 font-semibold">Название</th>
@@ -27,8 +28,14 @@ export default function ProductsTable({
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id} className="border-b border-border">
+          {products.map((product, idx) => (
+            <tr
+              key={product.id}
+              className={clsx(
+                "border-b border-border",
+                idx % 2 === 0 && "bg-surface-variant",
+              )}
+            >
               <td className="py-4 px-4">
                 <button
                   className="w-20 h-20 bg-surface-variant rounded-lg flex items-center justify-center text-2xl cursor-pointer hover:opacity-80 transition-opacity duration-300"

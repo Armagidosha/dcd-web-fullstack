@@ -121,7 +121,7 @@ export default function AddProductForm({
         errors={errors.price}
         min={50}
         max={10000}
-        step={10}
+        step={1}
         required
         disabled={isLoading}
       />
@@ -138,7 +138,11 @@ export default function AddProductForm({
         disabled={isLoading}
       />
 
-      <MarkdownEditor onChange={handleChange} value={productData.description} />
+      <MarkdownEditor
+        onChange={handleChange}
+        value={productData.description}
+        errors={errors?.description}
+      />
 
       <button
         disabled={!isFormValid || Object.keys(errors).length > 0}

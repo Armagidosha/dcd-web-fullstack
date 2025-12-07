@@ -83,7 +83,7 @@ export default function FileInput({
             `flex justify-between px-4 py-3 rounded-lg border border-border text-sm bg-surface-variant 
                     focus:outline-none focus:ring-2 transition-colors duration-300
                     disabled:bg-surface-variant/80 disabled:cursor-not-allowed`,
-            errors ? "ring ring-primary" : "",
+            errors && errors.length > 0 ? "ring-2 ring-primary" : "",
           )}
         >
           <span className={fileName ? "text-light-text" : "text-light-text/50"}>

@@ -98,7 +98,7 @@ export default function NumberInput({
           disabled:bg-surface-variant/80 disabled:cursor-not-allowed
           [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none
           [&::-webkit-inner-spin-button]:appearance-none`,
-            errors ? "ring-primary" : "",
+            errors && errors.length > 0 ? "ring-2 ring-primary" : "",
           )}
         />
 

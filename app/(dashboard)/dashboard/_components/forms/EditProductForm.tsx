@@ -89,7 +89,7 @@ export default function EditProductForm({
             description="От 3 до 16 символов"
             name="name"
             required
-            errors={errors?.name || undefined}
+            errors={errors?.name}
             onChange={handleChange}
             value={value}
             disabled={isLoading}
@@ -101,6 +101,7 @@ export default function EditProductForm({
           <MarkdownEditor
             onChange={(e) => setValue(e.target.value)}
             value={value.toString()}
+            errors={errors?.description}
           />
         );
 
@@ -116,7 +117,7 @@ export default function EditProductForm({
             errors={errors.price}
             min={50}
             max={10000}
-            step={10}
+            step={1}
             required
             disabled={isLoading}
           />
@@ -144,7 +145,7 @@ export default function EditProductForm({
             placeholder="Введите название"
             description="От 3 до 16 символов"
             name="category"
-            errors={errors?.category || undefined}
+            errors={errors?.category}
             onChange={handleChange}
             value={value}
             dataList={categories?.map((cat) => {

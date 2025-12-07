@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { TrashIcon } from "@/app/shared/icons/icons";
 import type { CategoryWithCount } from "@/app/shared/utils/types/categories";
 
@@ -15,7 +16,7 @@ export default function CategoriesTable({
   return (
     <div className="overflow-x-auto h-150 overscroll-y-contain">
       <table className="w-full">
-        <thead>
+        <thead className="sticky top-0 bg-surface z-10">
           <tr className="border-b border-border">
             <th className="text-left py-4 px-4 font-semibold w-full">
               Название
@@ -25,10 +26,13 @@ export default function CategoriesTable({
           </tr>
         </thead>
         <tbody>
-          {categories.map((category) => (
+          {categories.map((category, idx) => (
             <tr
               key={category.id}
-              className="border-b border-border transition-colors group"
+              className={clsx(
+                "border-b border-border group",
+                idx % 2 === 0 && "bg-surface-variant",
+              )}
             >
               <td className="py-4 px-4 max-w-xs">
                 <button
