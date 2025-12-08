@@ -3,16 +3,22 @@ import Logo from "@/app/shared/ui/Logo/Logo";
 
 const Footer = () => {
   return (
-    <footer className="gradient-bg max-w-330 mx-auto w-full backdrop-blur-sm ring-1 ring-border mt-24 py-4 px-4 z-40 rounded-t-lg">
+    <footer
+      className="gradient-bg max-w-330 mx-auto w-full backdrop-blur-sm 
+        border border-border mt-24 py-4 px-4 z-40 rounded-t-lg"
+    >
       <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8">
         {/* Юр инфо */}
         <div>
-          <Logo width={150} withText />
+          <Logo withText />
           <address className="grid gap-1 mt-2 pl-1 not-italic">
             <p>ИНН: 772879961873</p>
             <p>
               Почта:{" "}
-              <a className="text-primary" href="mailto:draimcido@gmail.com">
+              <a
+                className="text-primary hover:underline"
+                href="mailto:draimcido@gmail.com"
+              >
                 draimcido@gmail.com
               </a>
             </p>
@@ -24,10 +30,20 @@ const Footer = () => {
           <h3 className="font-semibold">Документы</h3>
           <ul className="grid gap-1 mt-2">
             <li>
-              <Link href={"/"}>Политика конфиденциальности</Link>
+              <Link
+                className="hover:opacity-70 transition-opacity duration-300"
+                href={"/privacy"}
+              >
+                Политика конфиденциальности
+              </Link>
             </li>
             <li>
-              <Link href={"/"}>Пользовательское соглашение</Link>
+              <Link
+                className="hover:opacity-70 transition-opacity duration-300"
+                href={"/terms"}
+              >
+                Пользовательское соглашение
+              </Link>
             </li>
           </ul>
         </div>
@@ -37,10 +53,22 @@ const Footer = () => {
           <h3 className="font-semibold">Связь с нами</h3>
           <ul className="grid gap-1 mt-2">
             <li>
-              <Link href={"/"}>Discord</Link>
+              <Link
+                className="hover:opacity-70 transition-opacity duration-300"
+                // TODO: Добавить ссылку на ДС
+                href={"/"}
+              >
+                Discord
+              </Link>
             </li>
             <li>
-              <Link href={"/"}>Telegram</Link>
+              <Link
+                className="hover:opacity-70 transition-opacity duration-300"
+                // TODO: Добавить ссылку на ТГ
+                href={"/"}
+              >
+                Telegram
+              </Link>
             </li>
           </ul>
         </div>
@@ -50,13 +78,28 @@ const Footer = () => {
           <h3 className="font-semibold">Навигация</h3>
           <ul className="grid gap-1 mt-2">
             <li>
-              <Link href={"/"}>Главная</Link>
+              <Link
+                className="hover:opacity-70 transition-opacity duration-300"
+                href={"/"}
+              >
+                Главная
+              </Link>
             </li>
             <li>
-              <Link href={"/"}>Донат-услуги</Link>
+              <Link
+                className="hover:opacity-70 transition-opacity duration-300"
+                href={"/store"}
+              >
+                Донат-услуги
+              </Link>
             </li>
             <li>
-              <Link href={"/"}>Правила</Link>
+              <Link
+                className="hover:opacity-70 transition-opacity duration-300"
+                href={"/rules"}
+              >
+                Правила
+              </Link>
             </li>
           </ul>
         </nav>

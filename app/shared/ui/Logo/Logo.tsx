@@ -1,21 +1,24 @@
 import Link from "next/link";
-import { LogoIconWithText, LogoWithoutText } from "../../icons/icons";
+import {
+  type IconProps,
+  LogoIconWithText,
+  LogoWithoutText,
+} from "../../icons/icons";
 
-interface LogoProps {
+interface LogoProps extends IconProps {
   withText?: boolean;
-  SVGProps?: React.SVGProps<SVGSVGElement>;
 }
 
-const Logo = ({ withText, SVGProps }: LogoProps) => {
+const Logo = ({ withText, ...props }: LogoProps) => {
   return (
     <Link
       href="/"
       className="inline-block transition duration-300 hover:opacity-90 hover:drop-shadow-[0_2.5px_2.5px_rgba(0,0,0,0.25)] hover:drop-shadow-primary"
     >
       {withText ? (
-        <LogoIconWithText {...SVGProps} />
+        <LogoIconWithText {...props} />
       ) : (
-        <LogoWithoutText {...SVGProps} />
+        <LogoWithoutText {...props} />
       )}
     </Link>
   );

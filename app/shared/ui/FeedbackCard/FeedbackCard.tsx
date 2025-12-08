@@ -13,7 +13,8 @@ export default function FeedbackCard({ card }: { card: FeedbackCardProps }) {
   return (
     <div
       key={card.title}
-      className="place-items-center w-full grid p-4 gradient-bg ring-1 ring-zinc-600 rounded-lg transition-transform duration-300 hover:ring-2 hover:scale-102"
+      className="place-items-center w-full grid p-4 gradient-bg border border-border 
+        rounded-lg transition-transform duration-300 hover:border-2 hover:scale-102"
     >
       <Image width={200} height={200} src={card.imagePath} alt={card.title} />
       <div className="text-center max-w-3xs">

@@ -62,7 +62,7 @@ export default function News({ news }: NewsProps) {
       )}
 
       {!news.length && (
-        <div className="grid items-center bg-surface ring-1 ring-zinc-700 h-56 rounded-lg">
+        <div className="grid items-center bg-surface border border-border h-56 rounded-lg">
           <p className="text-center opacity-15 text-4xl select-none">
             Новостей пока нет...
           </p>

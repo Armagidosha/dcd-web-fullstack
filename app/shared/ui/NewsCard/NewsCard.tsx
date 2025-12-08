@@ -21,7 +21,9 @@ export default function NewsCard(props: NewsCardProps) {
   return (
     <button
       type="button"
-      className="flex flex-col text-left gap-2 h-100 w-full gradient-bg rounded-lg p-4 border border-border/40 transition-all duration-300 bg-surface/90 hover:border-border/80 hover:bg-surface hover:scale-103 cursor-pointer"
+      className="flex flex-col text-left gap-2 h-100 w-full gradient-bg rounded-lg 
+        p-4 border border-border/40 transition-all duration-300 bg-surface/90 
+        hover:border-border/80 hover:bg-surface hover:scale-103 cursor-pointer"
       onClick={() => onClick({ image, author, title, content, formattedDate })}
     >
       {image && (
