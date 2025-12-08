@@ -23,7 +23,7 @@ export default async function DashboardHeader() {
   return (
     <header className="w-full pt-4">
       <div
-        className="rounded-3xl max-w-7xl mx-auto lg:rounded-full py-3 px-4 
+        className="rounded-3xl max-w-330 mx-auto lg:rounded-[1.75rem] py-2 px-3 
           backdrop-blur-sm bg-surface border border-border"
       >
         <div className="flex items-center justify-between">
