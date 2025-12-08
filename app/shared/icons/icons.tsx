@@ -1,4 +1,4 @@
-type IconProps = React.SVGProps<SVGSVGElement> & { title?: string };
+export type IconProps = React.SVGProps<SVGSVGElement> & { title?: string };
 
 export function BurgerIcon(props: IconProps) {
   return (
@@ -306,6 +306,81 @@ export function LogoutIcon(props: IconProps) {
       <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
       <path d="M9 12h12l-3 -3" />
       <path d="M18 15l3 -3" />
+    </svg>
+  );
+}
+
+export function PackageIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <title>{props.title || "Продукты"}</title>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+      <path d="M12 12l8 -4.5" />
+      <path d="M12 12l0 9" />
+      <path d="M12 12l-8 -4.5" />
+      <path d="M16 5.25l-8 4.5" />
+    </svg>
+  );
+}
+
+export function FileTextIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <title>{props.title || "Правила"}</title>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M13 3v4a.997 .997 0 0 0 1 1h4" />
+      <path d="M11 21h-5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v3.5" />
+      <path d="M8 9h1" />
+      <path d="M8 12.994l3 0" />
+      <path d="M8 16.997l2 0" />
+      <path d="M21 15.994c0 4 -2.5 6 -3.5 6s-3.5 -2 -3.5 -6c1 0 2.5 -.5 3.5 -1.5c1 1 2.5 1.5 3.5 1.5" />
+    </svg>
+  );
+}
+
+export function NewsIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <title>{props.title || "Новости"}</title>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11" />
+      <path d="M8 8l4 0" />
+      <path d="M8 12l4 0" />
+      <path d="M8 16l4 0" />
     </svg>
   );
 }
