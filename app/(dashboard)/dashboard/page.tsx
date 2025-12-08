@@ -1,14 +1,9 @@
-import Link from "next/link";
-import { logout } from "@/app/lib/actions/auth";
 import { getProductsSecure } from "@/app/lib/actions/product";
-import { auth } from "@/app/lib/auth";
-import { HomeIcon, LogoutIcon } from "@/app/shared/icons/icons";
-import ImageWithFallback from "@/app/shared/ui/ImageWithFallback/ImageWithFallback";
 import Chart from "./_components/Chart";
 import StatsCard from "./_components/Stats";
 import Tabs from "./_components/Tabs";
 
-// Моковые данные
+// TODO: Убрать моковые данные
 const mockStats = [
   { name: "Продуктов", value: 12 },
   { name: "Категорий", value: 12 },
@@ -28,8 +23,6 @@ const mockChartData = [
 
 export default async function AdminProductsPage() {
   const { products, categories } = await getProductsSecure();
-  const session = await auth();
-  const user = session?.user;
 
   return (
     <div className="min-h-screen py-6">
@@ -42,41 +35,9 @@ export default async function AdminProductsPage() {
             </h1>
             <p className="text-primary">Управление продуктами и категориями</p>
           </div>
-
-          {/* Карточка пользователя */}
-          <div className="flex items-center w-100 bg-surface/90 p-2 pr-2 rounded-xl border border-border">
-            {user && (
-              <ImageWithFallback
-                className="rounded-full"
-                width={50}
-                height={50}
-                src={user.image ?? "none"}
-                alt={`Аватар ${user.name}`}
-              />
-            )}
-            <span className="ml-4 text-lg font-semibold">
-              {user?.name ?? "Нет данных"}
-            </span>
-            <div className="flex items-center gap-2 ml-auto">
-              <Link
-                className="hover:bg-primary transition-colors duration-300 p-2 rounded-xl"
-                href={"/"}
-              >
-                <HomeIcon />
-              </Link>
-              <button
-                className="hover:bg-primary transition-colors duration-300 p-2 rounded-xl cursor-pointer"
-                type="button"
-                onClick={logout}
-              >
-                <LogoutIcon />
-              </button>
-            </div>
-          </div>
         </div>
 
-        {/* Stats Cards */}
-
+        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {mockStats.map((stat) => (
             <StatsCard key={stat.name} card={stat} />
