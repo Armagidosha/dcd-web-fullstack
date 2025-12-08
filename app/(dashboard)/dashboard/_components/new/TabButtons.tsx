@@ -12,7 +12,7 @@ const TabButtons = ({ activeTab, onTabChange }: TabButtonsProps) => {
           onClick={() => onTabChange("products")}
           className={`py-2 px-8 rounded-full font-semibold transition-colors duration-300 ${
             activeTab === "products"
-              ? "bg-primary"
+              ? "bg-secondary"
               : "bg-surface cursor-pointer"
           }`}
         >
@@ -23,7 +23,7 @@ const TabButtons = ({ activeTab, onTabChange }: TabButtonsProps) => {
           onClick={() => onTabChange("categories")}
           className={`py-2 px-8 rounded-full font-semibold transition-colors duration-300 ${
             activeTab === "categories"
-              ? "bg-primary"
+              ? "bg-secondary"
               : "bg-surface cursor-pointer"
           }`}
         >

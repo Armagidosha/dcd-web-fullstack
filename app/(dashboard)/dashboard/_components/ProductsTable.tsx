@@ -57,7 +57,8 @@ export default function ProductsTable({
               </td>
               <td>
                 <button
-                  className="py-4 px-4 font-medium cursor-pointer hover:text-primary transition-colors duration-300"
+                  className="py-4 px-4 font-medium cursor-pointer 
+                  hover:text-secondary transition-colors duration-300"
                   onClick={() => onEditClick(product, "name")}
                   type="button"
                 >
@@ -66,7 +67,8 @@ export default function ProductsTable({
               </td>
               <td>
                 <button
-                  className="py-4 px-4 max-w-xs truncate cursor-pointer hover:text-primary transition-colors duration-300"
+                  className="py-4 px-4 max-w-xs truncate cursor-pointer 
+                  hover:text-secondary transition-colors duration-300"
                   onClick={() => onEditClick(product, "description")}
                   type="button"
                 >
@@ -75,7 +77,8 @@ export default function ProductsTable({
               </td>
               <td>
                 <button
-                  className="py-4 px-4 font-semibold cursor-pointer hover:text-primary transition-colors duration-300"
+                  className="py-4 px-4 font-semibold cursor-pointer 
+                  hover:text-secondary transition-colors duration-300"
                   type="button"
                   onClick={() => onEditClick(product, "price")}
                 >
@@ -88,7 +91,10 @@ export default function ProductsTable({
                   onClick={() => onEditClick(product, "category")}
                   type="button"
                 >
-                  <span className="bg-primary px-3 py-1 rounded-full text-nowrap text-sm font-medium hover:opacity-80 transition-opacity duration-300">
+                  <span
+                    className="bg-secondary px-3 py-1 rounded-full text-nowrap text-sm 
+                    font-medium hover:opacity-80 transition-opacity duration-300"
+                  >
                     {product.category?.name || "Нет категории"}
                   </span>
                 </button>
