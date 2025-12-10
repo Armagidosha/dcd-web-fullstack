@@ -20,11 +20,10 @@ export const useCategoryStore = create<Store>((set) => ({
 
       set({ categories });
     } catch (error) {
-      console.error("Произошла ошибка при получении категорий: ", error);
+      console.error("Error fetching categories: ", error);
       throw error;
     }
   },
-
   // Category actions
   updateCategory: async (categoryId: string, name: string) => {
     try {
@@ -48,19 +47,19 @@ export const useCategoryStore = create<Store>((set) => ({
     }
   },
 
-  deleteCategory: async (categoryId: string, name: string) => {
-    if (!confirm(`Удалить категорию "${name}"?`)) return;
-
+  deleteCategory: async (categoryId: string) => {
     try {
-      await fetch(`/dashboard/api/category/${categoryId}`, {
+      const response = await fetch(`/dashboard/api/category/${categoryId}`, {
         method: "DELETE",
       });
+
+      await checkRes(response);
 
       set((state) => ({
         categories: state.categories.filter((cat) => cat.id !== categoryId),
       }));
     } catch (error) {
-      console.error("Ошибка при удалении категории:", error);
+      console.error("Error deleting category:", error);
       throw error;
     }
   },

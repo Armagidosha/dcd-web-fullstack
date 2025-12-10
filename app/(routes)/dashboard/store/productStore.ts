@@ -9,7 +9,7 @@ interface Store {
   getProducts: () => Promise<void>;
   createProduct: (formData: FormData) => Promise<void>;
   updateProduct: (formData: FormData, productId: string) => Promise<void>;
-  deleteProduct: (product: ProductsWithCategory) => Promise<void>;
+  deleteProduct: (productId: string) => Promise<void>;
 }
 
 export const useProductsStore = create<Store>((set) => ({
@@ -48,7 +48,7 @@ export const useProductsStore = create<Store>((set) => ({
         };
       });
     } catch (error) {
-      console.error("Ошибка при добавлении продукта:", error);
+      console.error("Error creating product:", error);
       throw error;
     }
   },
@@ -63,34 +63,33 @@ export const useProductsStore = create<Store>((set) => ({
       const updated: ProductsWithCategory = await checkRes(response);
 
       set((state) => {
-        const updatedProducts = state.products.map((prod) =>
-          prod.id === updated.id ? updated : prod,
-        );
+        const updatedProducts = state.products
+          .map((prod) => (prod.id === updated.id ? updated : prod))
+          .sort((a, b) => a.price - b.price);
 
         return {
           products: updatedProducts,
         };
       });
     } catch (error) {
-      console.error("Произошла ошибка при обновлении продукта: ", error);
+      console.error("Error updating product: ", error);
       throw error;
     }
   },
 
-  deleteProduct: async (product: ProductsWithCategory) => {
-    if (!confirm(`Удалить продукт "${product.name}"?`)) return;
+  deleteProduct: async (productId: string) => {
     try {
-      const response = await fetch(`/dashboard/api/product/${product.id}`, {
+      const response = await fetch(`/dashboard/api/product/${productId}`, {
         method: "DELETE",
       });
 
       await checkRes(response);
 
       set((state) => ({
-        products: state.products.filter((prod) => prod.id !== product.id),
+        products: state.products.filter((prod) => prod.id !== productId),
       }));
     } catch (error) {
-      console.error("Произошла ошибка при удолении продукта: ", error);
+      console.error("Error deleting product: ", error);
       throw error;
     }
   },

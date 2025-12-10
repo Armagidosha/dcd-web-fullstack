@@ -21,12 +21,18 @@ export default function CategoriesTable() {
   }, [getCategories]);
 
   const categories = useCategoriesSelector();
-  console.log(categories);
+
   const updateCategory = useUpdateCategoryAction();
   const deleteCategory = useDeleteCategoryAction();
 
   const handleUpdate = async (categoryId: string, name: string) => {
     await updateCategory(categoryId, name).then(() => setEditing(null));
+  };
+
+  const handleDelete = (category: CategoryWithCount) => {
+    if (window.confirm(`Удалить категорию "${category.name}"?`)) {
+      deleteCategory(category.id, category.name);
+    }
   };
 
   return (
@@ -46,6 +52,10 @@ export default function CategoriesTable() {
           />
         )}
       </Modal>
+
+      <div className="flex justify-between items-center h-12 mb-6">
+        <h2 className="text-2xl font-bold">Управление категориями</h2>
+      </div>
 
       <div className="overflow-x-auto h-150 overscroll-y-contain">
         <table className="w-full">
@@ -83,7 +93,7 @@ export default function CategoriesTable() {
                 <td className="py-4 px-4">
                   <button
                     type="button"
-                    onClick={() => deleteCategory(category.id, category.name)}
+                    onClick={() => handleDelete(category)}
                     className="p-2 text-primary cursor-pointer group/button rounded-lg"
                   >
                     <TrashIcon

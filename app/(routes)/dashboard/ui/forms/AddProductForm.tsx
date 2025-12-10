@@ -75,7 +75,7 @@ export default function AddProductForm({
   const isFormValid = useMemo(() => {
     return (
       productData.name.trim() !== "" &&
-      productData.price > 0 &&
+      productData.price >= 50 &&
       productData.description.trim() !== "" &&
       productData.image !== null &&
       productData.category.trim() !== ""
@@ -105,7 +105,7 @@ export default function AddProductForm({
         description="От 3 до 16 символов"
         name="name"
         required
-        errors={errors?.name || undefined}
+        errors={errors?.name}
         onChange={handleChange}
         value={productData.name}
         disabled={isLoading}
@@ -118,7 +118,7 @@ export default function AddProductForm({
         placeholder="Введите цену"
         value={String(productData.price)}
         onChange={(value) => handlePriceChange(value)}
-        errors={errors.price}
+        errors={errors?.price}
         min={50}
         max={10000}
         step={1}
@@ -133,7 +133,7 @@ export default function AddProductForm({
         accept=".png,.jpg,.webp"
         onChange={handleImageChange}
         onReset={() => setProductData((prev) => ({ ...prev, image: null }))}
-        errors={errors.image}
+        errors={errors?.image}
         required
         disabled={isLoading}
       />

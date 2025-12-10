@@ -44,6 +44,11 @@ export default function ProductsTable() {
     await createProduct(formData).then(() => setIsOpen(false));
   };
 
+  const handleDeleteProduct = (product: ProductsWithCategory) => {
+    if (!confirm(`Удалить продукт "${product.name}"?`)) return;
+    deleteProduct(product.id);
+  };
+
   return (
     <>
       <Modal
@@ -180,7 +185,7 @@ export default function ProductsTable() {
                 <td className="py-4 px-4">
                   <button
                     type="button"
-                    onClick={() => deleteProduct(product)}
+                    onClick={() => handleDeleteProduct(product)}
                     className="p-2 cursor-pointer rounded-lg group"
                   >
                     <TrashIcon className="text-primary group-hover:scale-125 duration-300" />

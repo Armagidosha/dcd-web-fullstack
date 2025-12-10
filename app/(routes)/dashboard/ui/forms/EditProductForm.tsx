@@ -112,7 +112,7 @@ export default function EditProductForm({
             placeholder="Введите цену"
             value={String(value)}
             onChange={(value) => handlePriceChange(value)}
-            errors={errors.price}
+            errors={errors?.price}
             min={50}
             max={10000}
             step={1}
@@ -130,7 +130,7 @@ export default function EditProductForm({
             accept=".png,.jpg,.webp"
             onChange={handleImageChange}
             onReset={() => setImageFile(null)}
-            errors={errors.image}
+            errors={errors?.image}
             required
             disabled={isLoading}
           />
