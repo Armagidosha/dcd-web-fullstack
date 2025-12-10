@@ -1,7 +1,7 @@
+import { metaConfig } from "@shared/utils/constants";
 import Link from "next/link";
-import { metadata as metadataConfig } from "@/app/shared/utils/constants";
 
-export const metadata = metadataConfig.notFound;
+export const metadata = metaConfig.notFound;
 
 const NotFound = () => {
   return (

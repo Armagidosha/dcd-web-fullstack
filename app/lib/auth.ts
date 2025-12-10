@@ -16,7 +16,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "database" },
   providers: [Discord],
-  pages: { signIn: "/signin" },
+  pages: {
+    signIn: "/",
+    error: "/",
+    signOut: "/",
+  },
   callbacks: {
     async session({ session, user }) {
       if (session.user) {

@@ -1,11 +1,11 @@
 "use client";
 
+import Logo from "@shared/ui/Logo";
 import clsx from "clsx";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import IpCopy from "@/app/shared/ui/IpCopy/IpCopy";
-import Logo from "@/app/shared/ui/Logo/Logo";
 import { BurgerIcon, CrossIcon } from "../../icons/icons";
+import IpCopy from "./IpCopy";
 
 interface ILink {
   title: string;

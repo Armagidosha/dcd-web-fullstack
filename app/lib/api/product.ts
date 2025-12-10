@@ -1,7 +1,7 @@
-import { checkRes } from "@/app/shared/utils/functions";
+import { checkRes } from "@shared/utils/functions";
 
 export const postProduct = async (formData: FormData) => {
-  const response = await fetch("/api/product", {
+  const response = await fetch("/dashboard/api/product", {
     method: "POST",
     body: formData,
   });
@@ -10,7 +10,7 @@ export const postProduct = async (formData: FormData) => {
 };
 
 export const updateProduct = async (productId: string, formData: FormData) => {
-  const response = await fetch(`/api/product/${productId}`, {
+  const response = await fetch(`/dashboard/api/product/${productId}`, {
     method: "PATCH",
     body: formData,
   });
@@ -19,7 +19,7 @@ export const updateProduct = async (productId: string, formData: FormData) => {
 };
 
 export const deleteProduct = async (productId: string) => {
-  const response = await fetch(`/api/product/${productId}`, {
+  const response = await fetch(`/dashboard/api/product/${productId}`, {
     method: "DELETE",
   });
 

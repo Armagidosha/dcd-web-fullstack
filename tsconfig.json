@@ -20,8 +20,9 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@/styles/*": ["./app/styles/*"],
-      "@/constants": ["./app/shared/utils/constants.ts"]
+      "@styles/*": ["./app/styles/*"],
+      "@constants": ["./app/shared/utils/constants.ts"],
+      "@shared/*": ["./app/shared/*"]
     }
   },
   "include": [

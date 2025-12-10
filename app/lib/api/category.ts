@@ -1,4 +1,4 @@
-import { checkRes } from "@/app/shared/utils/functions";
+import { checkRes } from "@shared/utils/functions";
 
 export const updateCategory = async (
   categoryId: string,
@@ -6,7 +6,7 @@ export const updateCategory = async (
 ) => {
   const body = JSON.stringify({ name: categoryName });
 
-  const response = await fetch(`/api/category/${categoryId}`, {
+  const response = await fetch(`/dashboard/api/category/${categoryId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body,
@@ -16,7 +16,7 @@ export const updateCategory = async (
 };
 
 export const deleteCategory = async (categoryId: string) => {
-  const response = await fetch(`/api/category/${categoryId}`, {
+  const response = await fetch(`/dashboard/api/category/${categoryId}`, {
     method: "DELETE",
   });
 

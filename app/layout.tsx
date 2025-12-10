@@ -1,8 +1,8 @@
+import { metaConfig } from "@shared/utils/constants";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import { metadata as metadataConfig } from "@/app/shared/utils/constants";
 
-import "@/styles/globals.css";
+import "@styles/globals.css";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -10,7 +10,7 @@ const montserrat = Montserrat({
   preload: false,
 });
 
-export const metadata: Metadata = metadataConfig.homePage;
+export const metadata: Metadata = metaConfig.home;
 
 export default function RootLayout({
   children,
