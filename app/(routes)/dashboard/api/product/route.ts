@@ -5,6 +5,17 @@ import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
 import prisma from "@/lib/prisma";
 import { productSchema } from "../schema";
 
+export async function GET() {
+  await checkRights();
+
+  const products = await prisma.product.findMany({
+    orderBy: { price: "asc" },
+    include: { category: true },
+  });
+
+  return NextResponse.json(products);
+}
+
 export async function POST(request: NextRequest) {
   try {
     await checkRights();

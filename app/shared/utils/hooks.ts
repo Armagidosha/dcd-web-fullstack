@@ -36,7 +36,7 @@ export function useAsync<T = any>(): UseAsyncResult<T> {
           error &&
           typeof error === "object" &&
           "error" in error &&
-          (error as { error: string }).error === "Validation error"
+          "details" in error
         ) {
           setErrors(
             (error as unknown as { details: Record<string, string[]> }).details,

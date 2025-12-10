@@ -8,7 +8,7 @@ import { type FormEvent, useState } from "react";
 interface EditCategoryForm {
   category: CategoryWithCount;
   categories: CategoryWithCount[];
-  onSubmit: (data: string) => Promise<void>;
+  onSubmit: (categoryId: string, name: string) => Promise<void>;
 }
 
 export default function EditCategoryForm({
@@ -28,7 +28,7 @@ export default function EditCategoryForm({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    execute(onSubmit, value);
+    execute(onSubmit, category.id, value);
   };
 
   return (

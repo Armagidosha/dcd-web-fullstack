@@ -1,5 +1,4 @@
 import { metaConfig } from "@shared/utils/constants";
-import { getProductsSecure } from "./actions/product";
 import Chart from "./ui/Chart";
 import StatsCard from "./ui/Stats";
 import Tabs from "./widgets/Tabs";
@@ -25,8 +24,6 @@ const mockChartData = [
 export const metadata = metaConfig.dashboard;
 
 export default async function AdminProductsPage() {
-  const { products, categories } = await getProductsSecure();
-
   return (
     <div className="min-h-screen py-6">
       <div className="max-w-7xl mx-auto">
@@ -50,7 +47,7 @@ export default async function AdminProductsPage() {
         <Chart data={mockChartData} />
 
         {/* Tabs */}
-        <Tabs products={products} categories={categories} />
+        <Tabs />
       </div>
     </div>
   );

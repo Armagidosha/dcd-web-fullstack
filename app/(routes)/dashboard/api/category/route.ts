@@ -1,13 +1,9 @@
+import { NextResponse } from "next/server";
 import { checkRights } from "@/app/lib/actions/utils";
 import prisma from "@/lib/prisma";
 
-export const getProductsSecure = async () => {
+export async function GET() {
   await checkRights();
-
-  const products = await prisma.product.findMany({
-    orderBy: { price: "asc" },
-    include: { category: true },
-  });
 
   const categories = await prisma.category.findMany({
     orderBy: { products: { _count: "desc" } },
@@ -20,5 +16,5 @@ export const getProductsSecure = async () => {
     },
   });
 
-  return { products, categories };
-};
+  return NextResponse.json(categories);
+}

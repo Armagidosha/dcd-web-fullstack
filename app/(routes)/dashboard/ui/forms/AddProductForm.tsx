@@ -5,13 +5,13 @@ import NumberInput from "@shared/ui/Input/NumberInput";
 import TextInput from "@shared/ui/Input/TextInput";
 import MarkdownEditor from "@shared/ui/MarkDownEditor";
 import { useAsync } from "@shared/utils/hooks";
-import type { CategoryWithCount } from "@shared/utils/types/categories";
 import type { AddProductFormData } from "@shared/utils/types/products";
 import { useMemo, useState } from "react";
+import type { CategoryWithCount } from "@/app/shared/utils/types/categories";
 
 interface ProductFormProps {
+  categories: CategoryWithCount[];
   onSubmit: (formData: FormData) => Promise<void>;
-  categories?: CategoryWithCount[];
 }
 
 export default function AddProductForm({

@@ -5,24 +5,22 @@ import NumberInput from "@shared/ui/Input/NumberInput";
 import TextInput from "@shared/ui/Input/TextInput";
 import MarkdownEditor from "@shared/ui/MarkDownEditor";
 import { useAsync } from "@shared/utils/hooks";
-import type {
-  CategoryWithCount,
-  ProductsWithCategory,
-} from "@shared/utils/types/categories";
+import type { ProductsWithCategory } from "@shared/utils/types/categories";
 import { useState } from "react";
+import type { Category } from "@/lib/generated/prisma/client";
 
 interface EditProductFormProps {
   product: ProductsWithCategory;
+  categories: Category[];
   field: string;
-  categories?: CategoryWithCount[];
   onSubmit: (data: FormData) => Promise<void>;
   isLoading?: boolean;
 }
 
 export default function EditProductForm({
   product,
+  categories,
   field,
-  categories = [],
   onSubmit,
 }: EditProductFormProps) {
   const [value, setValue] = useState(getInitialValue());

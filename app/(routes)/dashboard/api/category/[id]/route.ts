@@ -51,6 +51,16 @@ export async function PATCH(
           { status: 404 },
         );
       }
+
+      if (error.code === "P2002") {
+        return NextResponse.json(
+          {
+            error: "Conflict",
+            details: { name: ["Категория уже существует"] },
+          },
+          { status: 409 },
+        );
+      }
     }
 
     if (error instanceof UnauthorizedError) {
