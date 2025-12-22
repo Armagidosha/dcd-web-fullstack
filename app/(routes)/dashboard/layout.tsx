@@ -8,7 +8,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <>
       <DashboardHeader />
-      {children}
+      <div className="min-h-screen py-6">
+        <div className="max-w-7xl mx-auto">{children}</div>
+      </div>
     </>
   );
 }

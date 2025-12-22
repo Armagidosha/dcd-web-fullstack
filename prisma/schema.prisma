@@ -70,6 +70,8 @@ model Product {
   updatedAt   DateTime @updatedAt
 
   category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([price])
 }
 
 model Category {
@@ -88,14 +90,19 @@ model News {
   author    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
 }
 
 model Rule {
   id        String   @id @default(cuid())
   title     String
   content   String
+  order     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([order])
 }
 
 model Latest {
@@ -105,4 +112,6 @@ model Latest {
   image       String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([createdAt])
 }

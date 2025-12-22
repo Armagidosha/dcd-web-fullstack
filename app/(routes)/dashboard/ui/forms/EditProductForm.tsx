@@ -97,6 +97,7 @@ export default function EditProductForm({
       case "description":
         return (
           <MarkdownEditor
+            name="description"
             onChange={(e) => setValue(e.target.value)}
             value={value.toString()}
             errors={errors?.description}

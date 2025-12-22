@@ -5,8 +5,8 @@ interface TabButtonsProps {
 
 const TabButtons = ({ activeTab, onTabChange }: TabButtonsProps) => {
   return (
-    <div className="border-b border-border">
-      <div className="p-4 flex gap-4 items-center">
+    <div className="border-b p-4 border-border">
+      <div className="flex overflow-x-scroll gap-4 items-center">
         <button
           type="button"
           onClick={() => onTabChange("products")}

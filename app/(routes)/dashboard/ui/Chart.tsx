@@ -21,7 +21,9 @@ interface ChartProps {
 export default function Chart({ data }: ChartProps) {
   return (
     <div className="bg-surface/90 rounded-2xl shadow-lg p-6 mb-8 border border-border">
-      <h2 className="text-xl font-semibold text-primary">Статистика продаж</h2>
+      <h2 className="text-xl font-semibold text-light-text">
+        Статистика продаж
+      </h2>
       <ResponsiveContainer className={"mt-4"} width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="5 5" stroke="var(--color-dim-text)" />

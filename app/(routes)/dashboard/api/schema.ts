@@ -37,3 +37,13 @@ export const categorySchema = z.object({
     .min(3, { error: "Минимальная длина 3 символа" })
     .max(16, { error: "Максимальная длина 16 символов" }),
 });
+
+export const ruleSchema = z.object({
+  title: z
+    .string({ error: "Значение должно быть строкой" })
+    .min(3, { error: "Минимальная длина 3 символа" })
+    .max(24, { error: "Максимальная длина 24 символа" }),
+  content: z
+    .string({ error: "Значение должно быть строкой" })
+    .min(3, { error: "Минимальная длина 3 символа" }),
+});

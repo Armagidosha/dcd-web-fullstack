@@ -81,8 +81,10 @@ export default function ProductsTable() {
         />
       </Modal>
 
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Управление продуктами</h2>
+      <div className="flex flex-col gap-4 md:flex-row justify-between items-center mb-6">
+        <h2 className="text-center text-2xl font-bold">
+          Управление продуктами
+        </h2>
         <button
           type="button"
           onClick={() => setIsOpen(true)}
@@ -99,7 +101,7 @@ export default function ProductsTable() {
       <div className="overflow-x-auto h-150 overscroll-y-contain">
         <table className="w-full">
           <thead className="sticky top-0 bg-surface z-10">
-            <tr className="border-b border-border">
+            <tr className="text-primary border-b border-border">
               <th className="text-left py-4 px-4 font-semibold">Изображение</th>
               <th className="text-left py-4 px-4 font-semibold">Название</th>
               <th className="text-left py-4 px-4 font-semibold">Описание</th>

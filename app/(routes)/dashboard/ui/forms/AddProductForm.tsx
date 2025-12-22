@@ -139,6 +139,7 @@ export default function AddProductForm({
       />
 
       <MarkdownEditor
+        name="description"
         onChange={handleChange}
         value={productData.description}
         errors={errors?.description}

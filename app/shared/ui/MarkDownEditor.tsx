@@ -7,12 +7,18 @@ import MarkdownRenderer from "./MarkDownRenderer";
 interface MarkdownEditorProps {
   onChange: (evt: React.ChangeEvent<HTMLTextAreaElement>) => void;
   value: string;
-  errors: string[];
+  name: string;
+  description?: string;
+  label?: string;
+  errors?: string[];
 }
 
 export default function MarkdownEditor({
   value,
+  name,
   errors,
+  description,
+  label,
   onChange,
 }: MarkdownEditorProps) {
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
@@ -20,12 +26,12 @@ export default function MarkdownEditor({
   return (
     <div className="w-full">
       {/* Панель инструментов */}
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4 flex-wrap">
         <button
           type="button"
           onClick={() => setActiveTab("edit")}
-          className={`py-2 px-8 rounded-full font-semibold transition-colors duration-300 ${
-            activeTab === "edit" ? "bg-primary" : "bg-surface cursor-pointer"
+          className={`flex-1 py-2 px-8 rounded-full font-semibold transition-colors duration-300 ${
+            activeTab === "edit" ? "bg-secondary" : "bg-surface cursor-pointer"
           }`}
         >
           Редактировать
@@ -33,8 +39,10 @@ export default function MarkdownEditor({
         <button
           type="button"
           onClick={() => setActiveTab("preview")}
-          className={`py-2 px-8 rounded-full font-semibold transition-colors duration-300 ${
-            activeTab === "preview" ? "bg-primary" : "bg-surface cursor-pointer"
+          className={`flex-1 py-2 px-8 rounded-full font-semibold transition-colors duration-300 ${
+            activeTab === "preview"
+              ? "bg-secondary"
+              : "bg-surface cursor-pointer"
           }`}
         >
           Предпросмотр
@@ -44,16 +52,16 @@ export default function MarkdownEditor({
       {/* Контент */}
       {activeTab === "edit" ? (
         <Textarea
-          label="Описание продукта"
-          description="От 3 символов"
-          name="description"
+          label={label || ""}
+          description={description || ""}
+          name={name}
           value={value}
           onChange={onChange}
-          errors={errors}
+          errors={errors || []}
           required
         />
       ) : (
-        <div className="w-full min-h-50 px-4 py-2 border border-border rounded-lg ">
+        <div className="w-full min-h-50 px-4 py-2 mt-15 mb-10 border border-border rounded-lg ">
           <MarkdownRenderer content={value} />
         </div>
       )}

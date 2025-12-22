@@ -11,9 +11,9 @@ import LogoutButton from "../ui/LogoutButton";
 
 const NAV_ITEMS = [
   { icon: HomeIcon, label: "Домой", href: "/" },
-  { icon: PackageIcon, label: "Продукты", href: "dashboard/products" },
-  { icon: FileTextIcon, label: "Правила", href: "dashboard/rules" },
-  { icon: NewsIcon, label: "Новости", href: "dashboard/news" },
+  { icon: PackageIcon, label: "Продукты", href: "/dashboard" },
+  { icon: FileTextIcon, label: "Правила", href: "/dashboard/rules" },
+  { icon: NewsIcon, label: "Новости", href: "/dashboard/news" },
 ];
 
 export default async function DashboardHeader() {

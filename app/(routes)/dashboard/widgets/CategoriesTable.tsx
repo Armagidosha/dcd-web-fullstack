@@ -60,7 +60,7 @@ export default function CategoriesTable() {
       <div className="overflow-x-auto h-150 overscroll-y-contain">
         <table className="w-full">
           <thead className="sticky top-0 bg-surface z-10">
-            <tr className="border-b border-border">
+            <tr className="text-primary border-b border-border">
               <th className="text-left py-4 px-4 font-semibold w-full">
                 Название
               </th>
