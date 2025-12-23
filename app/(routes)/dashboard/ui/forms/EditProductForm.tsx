@@ -65,9 +65,12 @@ export default function EditProductForm({
     await execute(onSubmit, formData);
   };
 
-  const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = evt.target;
     setValue(value);
+    console.log(name, value);
     clearFieldError(name);
   };
 
@@ -98,7 +101,7 @@ export default function EditProductForm({
         return (
           <MarkdownEditor
             name="description"
-            onChange={(e) => setValue(e.target.value)}
+            onChange={handleChange}
             value={value.toString()}
             errors={errors?.description}
           />
