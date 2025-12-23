@@ -19,7 +19,9 @@
 }
 
 body {
-  @apply flex flex-col min-h-screen text-white px-4 m-0 bg-bg;
+  @apply flex flex-col min-h-screen text-white px-4 m-0;
+  background: var(--color-bg) url(/images/bg-pattern.png) 0 / 300px 300px repeat;
+  background-blend-mode: overlay;
 }
 
 main {
