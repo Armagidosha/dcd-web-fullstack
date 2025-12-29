@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { checkRights } from "@/app/lib/actions/utils";
+import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
 import { ruleSchema } from "../../schema";
@@ -26,7 +27,7 @@ export async function PATCH(
   } catch (error) {
     console.error("Error updating rule:", error);
 
-    if (error instanceof Error && error.message.includes("Unauthorized")) {
+    if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -78,7 +79,7 @@ export async function DELETE(
   } catch (error) {
     console.error("Error deleting rule", error);
 
-    if (error instanceof Error && error.message.includes("Unauthorized")) {
+    if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

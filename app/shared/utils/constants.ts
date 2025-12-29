@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 
+export const POLICY_TYPES = {
+  TERMS: "terms",
+  PRIVACY: "privacy",
+} as const;
+
 export const metaConfig = {
   home: {
     title: { template: "%s - DraimCiDo", default: "Главная - DraimCiDo" },
@@ -22,6 +27,16 @@ export const metaConfig = {
       index: false,
       follow: false,
     },
+  },
+  privacy: {
+    title: "Политика конфиденциальности",
+    description:
+      "Узнайте, какие данные мы собираем и как их обрабатываем на сервере DraimCiDo.",
+  },
+  terms: {
+    title: "Пользовательское соглашение",
+    description:
+      "Ознакомьтесь с правилами использования сервера DraimCiDo и условиями предоставления услуг.",
   },
   dashboard: {
     title: "Панель управления",

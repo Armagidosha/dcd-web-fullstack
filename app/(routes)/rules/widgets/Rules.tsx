@@ -2,8 +2,9 @@
 
 import MarkdownRenderer from "@shared/ui/MarkDownRenderer";
 import { useState } from "react";
+import { RulesIcon } from "@/app/shared/icons/icons";
+import AsideNavigation from "@/app/shared/ui/Aside";
 import type { Rule } from "@/lib/generated/prisma/client";
-import RulesNavigation from "../ui/RulesNavigation";
 
 interface RulesProps {
   rules: Rule[];
@@ -21,14 +22,17 @@ export default function Rules({ rules }: RulesProps) {
     <section className="section pt-25!">
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4">
         {/* Навигация слева */}
-        <RulesNavigation
-          activeRule={activeRule}
-          rules={rules}
-          onSectionChange={handleChange}
+
+        <AsideNavigation
+          title="Разделы"
+          icon={<RulesIcon className="text-primary" />}
+          elements={rules}
+          activeElement={activeRule}
+          onElementChange={handleChange}
         />
 
         {/* Контент справа */}
-        <div className="relative gradient-bg backdrop-blur-sm rounded-2xl overflow-hidden ring-1 ring-border/40">
+        <div className="relative gradient-bg backdrop-blur-sm rounded-2xl overflow-hidden border border-border/40">
           {/* Декоративный градиент */}
           <div className="absolute top-0 left-0 right-0 h-32 bg-linear-to-b from-primary/5 to-transparent pointer-events-none" />
 

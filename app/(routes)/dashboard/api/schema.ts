@@ -47,3 +47,9 @@ export const ruleSchema = z.object({
     .string({ error: "Значение должно быть строкой" })
     .min(3, { error: "Минимальная длина 3 символа" }),
 });
+
+export const policySchema = z.object({
+  content: z
+    .string({ error: "Значение должно быть строкой" })
+    .min(200, { error: "Минимальная длина 200 символов" }),
+});

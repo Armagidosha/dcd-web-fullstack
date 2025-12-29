@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
+    <html className="scroll-smooth" lang="ru">
       <body className={montserrat.className}>{children}</body>
     </html>
   );

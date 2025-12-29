@@ -11,11 +11,11 @@ import {
   useRulesSelector,
   useUpdateRuleAction,
   useUpdateRuleOrderActions,
-} from "../../../store/ruleStore";
-import RuleForm from "../ui/Forms/RuleForm";
-import RuleAside from "../ui/RuleAside";
+} from "../store/ruleStore";
+import AsideControls from "../ui/AsideControls";
+import RuleForm from "../ui/forms/RuleForm";
 
-export default function Rules() {
+export default function RulesManager() {
   const getRules = useGetRulesAction();
   const postRule = useCreateRuleAction();
   const patchRule = useUpdateRuleAction();
@@ -46,6 +46,12 @@ export default function Rules() {
   const handleDelete = async (id: string) => {
     if (!window.confirm("Удалить раздел?")) return;
     await deleteRule(id);
+
+    if (activeRule?.id === id) {
+      setActiveRule(null);
+      setEditData(null);
+      setStep("select");
+    }
   };
 
   const handleMove = async (id: string, order: -1 | 1) => {
@@ -53,6 +59,13 @@ export default function Rules() {
   };
 
   const selectRule = (rule: Rule) => {
+    if (activeRule && rule.id === activeRule.id) {
+      setStep("select");
+      setEditData(null);
+      setActiveRule(null);
+      return;
+    }
+
     setActiveRule(rule);
     setEditData(null);
     setStep("view");
@@ -76,11 +89,11 @@ export default function Rules() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4">
-      <RuleAside
-        rules={rules}
-        activeRule={activeRule?.id || ""}
-        setActiveRule={selectRule}
+    <div className="relative grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4">
+      <AsideControls<Rule>
+        elements={rules}
+        activeElement={activeRule?.id || ""}
+        setActiveElement={selectRule}
         startAdd={startAdd}
         startEdit={startEdit}
         onDelete={handleDelete}

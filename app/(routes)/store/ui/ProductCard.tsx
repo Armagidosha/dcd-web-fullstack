@@ -13,7 +13,7 @@ export default function ProductCard({ card, onClick }: DonateCardProps) {
     // biome-ignore lint/a11y/noStaticElementInteractions: <Есть доп. кнопка>
     // biome-ignore lint/a11y/useKeyWithClickEvents: <Есть доп. кнопка>
     <div
-      className="relative gradient-bg backdrop-blur-sm rounded-2xl overflow-hidden ring-1 ring-border/40 transition-all duration-300 hover:ring-border/80 hover:-translate-y-1 group cursor-pointer w-full text-left"
+      className="relative gradient-bg backdrop-blur-sm rounded-2xl overflow-hidden border border-border/40 transition-all duration-300 hover:border-border/80 hover:-translate-y-1 group cursor-pointer w-full text-left"
       onClick={() => onClick(card)}
     >
       {/* Декоративный градиент сверху */}
@@ -21,7 +21,7 @@ export default function ProductCard({ card, onClick }: DonateCardProps) {
 
       {/* Контейнер изображения */}
       <div className="relative p-4">
-        <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-surface-variant/30 ring-1 ring-border/20 group-hover:ring-primary/30 transition-all duration-300">
+        <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-surface-variant/30 border border-border/20 group-hover:border-primary/30 transition-all duration-300">
           {/* Фоновое свечение */}
           <div className="absolute inset-0 bg-linear-to-br from-transparent via-transparent to-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 

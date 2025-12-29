@@ -81,9 +81,9 @@ export default function FileInput({
         <div
           className={clsx(
             `flex justify-between px-4 py-3 rounded-lg border border-border text-sm bg-surface-variant 
-                    focus:outline-none focus:ring-2 transition-colors duration-300
+                    focus:outline-none focus:border-2 transition-colors duration-300
                     disabled:bg-surface-variant/80 disabled:cursor-not-allowed`,
-            errors && errors.length > 0 ? "ring-2 ring-primary" : "",
+            errors && errors.length > 0 ? "border-2 border-primary" : "",
           )}
         >
           <span className={fileName ? "text-light-text" : "text-light-text/50"}>

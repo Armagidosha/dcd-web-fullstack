@@ -85,9 +85,9 @@ model Category {
 model News {
   id        String   @id @default(cuid())
   image     String?
-  title     String
   content   String
   author    String
+  postLink  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -103,6 +103,15 @@ model Rule {
   updatedAt DateTime @updatedAt
 
   @@index([order])
+}
+
+model Policy {
+  id        String   @id @default(cuid())
+  type      String   @unique
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Latest {

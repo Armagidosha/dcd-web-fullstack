@@ -1,3 +1,5 @@
+import clsx from "clsx";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
@@ -5,16 +7,19 @@ import remarkGfm from "remark-gfm";
 
 interface MarkdownRendererProps {
   content: string;
+  className?: string;
 }
 
-export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
+export default function MarkdownRenderer({
+  content,
+  className,
+}: MarkdownRendererProps) {
   return (
-    <div className="prose max-w-none dark:prose-invert">
+    <div className={clsx("prose prose-invert max-w-none", className)}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw, rehypeSanitize]}
         components={{
-          // Кастомизация элементов
           h1: ({ node, ...props }) => (
             <h1 className="text-4xl font-semibold mb-4 mt-6" {...props} />
           ),
@@ -39,7 +44,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           li: ({ node, ...props }) => <li className="ml-4" {...props} />,
           blockquote: ({ node, ...props }) => (
             <blockquote
-              className="border-l-4 border-gray-300 pl-4 italic my-4 text-gray-700 dark:text-gray-300"
+              className="border-l-4 border-border pl-4 italic my-4 text-light-text"
               {...props}
             />
           ),
@@ -47,23 +52,27 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           code: ({ node, inline, ...props }: any) =>
             inline ? (
               <code
-                className="bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5 text-sm font-mono"
+                className="bg-surface-variant rounded px-1.5 py-0.5 text-sm font-mono"
                 {...props}
               />
             ) : (
               <code
-                className="block bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm font-mono overflow-x-auto"
+                className="block bg-surface-variant rounded p-4 text-sm font-mono overflow-x-auto"
                 {...props}
               />
             ),
           pre: ({ node, ...props }) => (
             <pre className="mb-4 overflow-x-auto" {...props} />
           ),
-          a: ({ node, href, ...props }) => (
-            <a
+          a: ({ href, ...props }) => (
+            <Link
+              target="_blank"
+              href={href || "#"}
               className="text-secondary hover:text-secondary/90 underline"
               {...props}
-            />
+            >
+              тык
+            </Link>
           ),
         }}
       >

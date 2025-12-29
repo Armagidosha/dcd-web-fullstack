@@ -1,5 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { checkRights } from "@/app/lib/actions/utils";
+import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
+import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
 
 export async function PATCH(
@@ -56,6 +58,17 @@ export async function PATCH(
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error updating order:", error);
+
+    if (error instanceof UnauthorizedError) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return NextResponse.json({ error: "Rule not found" }, { status: 404 });
+      }
+    }
+
     return NextResponse.json(
       {
         error:

@@ -18,13 +18,13 @@ export default function LatestCard({
     ? format(createdAt, "H:mm d MMM", { locale: ru })
     : "Дата неизвестна";
   return (
-    <div className="relative gradient-bg backdrop-blur-sm rounded-2xl overflow-hidden ring-1 ring-border/40 transition-all duration-300 hover:ring-border/80 group">
+    <div className="relative gradient-bg backdrop-blur-sm rounded-2xl overflow-hidden border border-border/40 transition-all duration-300 hover:border-border/80 group">
       {/* Декоративный градиент */}
       <div className="absolute top-0 left-0 right-0 h-20 bg-linear-to-b from-primary/5 to-transparent pointer-events-none" />
 
       <div className="relative flex items-center gap-4 p-4">
         {/* Изображение товара */}
-        <div className="relative shrink-0 w-16 h-16 rounded-xl overflow-hidden bg-surface-variant/30 ring-1 ring-border/20 group-hover:ring-primary/30 transition-all duration-300">
+        <div className="relative shrink-0 w-16 h-16 rounded-xl overflow-hidden bg-surface-variant/30 border border-border/20 group-hover:border-primary/30 transition-all duration-300">
           {/* Фоновое свечение */}
           <div className="absolute inset-0 bg-linear-to-br from-transparent to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 

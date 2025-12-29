@@ -89,7 +89,7 @@ export async function DELETE(
   } catch (error) {
     console.error("Error deleting category", error);
 
-    if (error instanceof Error && error.message.includes("Unauthorized")) {
+    if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

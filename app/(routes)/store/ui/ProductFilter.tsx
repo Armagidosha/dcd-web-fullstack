@@ -27,7 +27,7 @@ export default function ProductFilter({
   };
 
   return (
-    <div className="relative gradient-bg backdrop-blur-sm rounded-2xl overflow-hidden ring-1 ring-border/40 p-4">
+    <div className="relative gradient-bg backdrop-blur-sm rounded-2xl overflow-hidden border border-border/40 p-4">
       {/* Декоративный градиент сверху */}
       <div className="absolute top-0 left-0 right-0 h-20 bg-linear-to-b from-primary/5 to-transparent pointer-events-none" />
 
@@ -43,10 +43,10 @@ export default function ProductFilter({
           <button
             className={clsx(
               "group relative flex items-center gap-2 overflow-hidden rounded-xl transition-all duration-300",
-              "ring-1",
+              "border",
               active === el.id
-                ? "bg-primary ring-primary/50 shadow-lg shadow-primary/30 scale-105"
-                : "bg-surface-variant/80 ring-border/30 hover:ring-border/60 hover:bg-surface-variant hover:-translate-y-0.5 cursor-pointer",
+                ? "bg-primary border-primary/50 shadow-lg shadow-primary/30 scale-105"
+                : "bg-surface-variant/80 border-border/30 hover:border-border/60 hover:bg-surface-variant hover:-translate-y-0.5 cursor-pointer",
             )}
             key={el.id}
             type="button"

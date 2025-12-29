@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer
       className="gradient-bg max-w-330 mx-auto w-full backdrop-blur-sm 
-        border border-border mt-24 py-4 px-4 z-40 rounded-t-lg"
+        border-t border-l border-r border-border mt-24 py-4 px-4 z-40 rounded-t-lg"
     >
       <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8">
         {/* Юр инфо */}

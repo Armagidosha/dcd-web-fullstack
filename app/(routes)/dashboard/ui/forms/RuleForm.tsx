@@ -74,7 +74,7 @@ export default function RuleForm({
           className="flex-2"
           type="submit"
           icon={action === "add" ? <PlusIcon /> : undefined}
-          disabled={isLoading || Object.keys(errors).length > 0}
+          disabled={isLoading || (errors && Object.keys(errors).length > 0)}
         >
           {action === "add"
             ? isLoading

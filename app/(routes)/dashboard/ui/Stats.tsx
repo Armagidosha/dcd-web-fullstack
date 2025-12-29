@@ -1,19 +1,25 @@
+import clsx from "clsx";
 import Paper from "@/app/shared/ui/Paper";
 
 interface StatsCardProps {
-  card: {
-    name: string;
-    value: number;
-  };
+  name: string;
+  value: string;
 }
 
-export default function StatsCard({ card }: StatsCardProps) {
+export default function StatsCard({ name, value }: StatsCardProps) {
   return (
     <Paper className="p-4" withBorder>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-primary text-sm font-medium mb-1">{card.name}</p>
-          <p className="text-3xl font-bold text-light-text">{card.value}</p>
+          <p className="text-lg font-medium mb-1">{name}</p>
+          <p
+            className={clsx(
+              "text-primary font-bold",
+              value.length > 5 ? "text-md" : "text-lg",
+            )}
+          >
+            {value}
+          </p>
         </div>
       </div>
     </Paper>

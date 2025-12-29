@@ -34,11 +34,10 @@ export default function Modal({
 }: ModalProps) {
   useEffect(() => {
     if (!opened) return;
-    // Закрытие на ESC
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-    // Скрываем scroll у body, вешаем слушатель
+
     document.body.classList.add("overflow-y-hidden");
     document.addEventListener("keydown", onKey);
     return () => {
@@ -75,16 +74,13 @@ export default function Modal({
               animate={{ translateY: 0 }}
               exit={{ translateY: -20 }}
             >
-              {/* Хедер модалки */}
-              <div className="relative pr-8">
+              <div className="relative min-h-7 pr-8">
                 {title && (
-                  // Заголовок
                   <h2 id="modal-title" className="text-lg font-semibold">
                     {title}
                   </h2>
                 )}
 
-                {/* Кнопка закрытия модалки */}
                 <button
                   className="absolute -right-2 top-2/4 -translate-y-2/4 rounded-lg p-2 transition-colors duration-300 hover:bg-primary focus-visible:outline-1 cursor-pointer"
                   type="button"
@@ -95,7 +91,6 @@ export default function Modal({
                 </button>
               </div>
 
-              {/* Контент модалки */}
               <div
                 className={clsx(
                   "flex flex-col flex-1 mt-4 pr-2 gap-4 overflow-y-auto overflow-x-hidden",

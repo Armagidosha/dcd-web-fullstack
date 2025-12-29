@@ -17,7 +17,7 @@ export default function Paper({
   return (
     <div
       className={clsx(
-        "rounded-2xl bg-surface overflow-hidden",
+        "rounded-2xl bg-surface",
         { "border border-border": withBorder },
         className,
       )}

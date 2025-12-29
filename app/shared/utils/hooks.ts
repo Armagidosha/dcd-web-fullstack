@@ -42,7 +42,6 @@ export function useAsync<T = any>(): UseAsyncResult<T> {
             (error as unknown as { details: Record<string, string[]> }).details,
           );
         }
-
         return null;
       } finally {
         setIsLoading(false);

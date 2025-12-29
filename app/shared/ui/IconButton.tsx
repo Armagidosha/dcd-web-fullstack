@@ -1,11 +1,12 @@
 import clsx from "clsx";
+import React from "react";
 
 interface ButtonProps
   extends React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  icon: React.ReactElement;
+  icon: React.ReactElement | React.ElementType;
 }
 
 export default function IconButton({
@@ -29,7 +30,7 @@ export default function IconButton({
       disabled={disabled}
       {...props}
     >
-      {icon}
+      {React.isValidElement(icon) ? icon : React.createElement(icon)}
     </button>
   );
 }

@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { checkRights } from "@/app/lib/actions/utils";
+import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
 import prisma from "@/lib/prisma";
 import { ruleSchema } from "../schema";
 
@@ -20,9 +21,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  await checkRights();
-
   try {
+    await checkRights();
+
     const { title, content } = await request.json();
 
     const validatedData = ruleSchema.parse({ title, content });
@@ -40,7 +41,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error posting rule:", error);
 
-    if (error instanceof Error && error.message.includes("Unauthorized")) {
+    if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

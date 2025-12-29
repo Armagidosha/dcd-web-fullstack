@@ -1,7 +1,5 @@
-export type ActiveCard = {
-  image: string | null;
-  author: string;
-  title: string;
-  content: string;
+import type { News } from "@/lib/generated/prisma/client";
+
+export type ActiveCard = Omit<News, "id" | "createdAt" | "updatedAt"> & {
   formattedDate: string;
 };

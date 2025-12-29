@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { checkRights, deleteImage, saveImage } from "@/app/lib/actions/utils";
 import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
+import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
 import { productSchema } from "../../schema";
 
@@ -79,7 +80,7 @@ export async function PATCH(
       );
     }
 
-    if (error instanceof Error && error.message.includes("Unauthorized")) {
+    if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -117,8 +118,18 @@ export async function DELETE(
     return NextResponse.json({ message: "success" });
   } catch (error) {
     console.error("Error deleting product:", error);
+
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return NextResponse.json(
+          { error: "Product not found" },
+          { status: 404 },
+        );
+      }
     }
 
     return NextResponse.json(
