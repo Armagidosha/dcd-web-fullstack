@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { PlusIcon, RulesIcon } from "@/app/shared/icons/icons";
+import { PlusIcon } from "@/app/shared/icons/icons";
 import Button from "@/app/shared/ui/Button";
 import { useAsync } from "@/app/shared/utils/hooks";
 import AsideItem from "./AsideItem";
@@ -17,9 +17,11 @@ interface AsideControlsProps<T> {
   startEdit?: (element: T) => void;
   onDelete?: (id: string) => Promise<void>;
   onMove?: (id: string, order: -1 | 1) => Promise<void>;
+  icon?: React.ElementType;
 }
 
 export default function AsideControls<T extends BaseElement>({
+  icon: Icon,
   elements,
   activeElement,
   setActiveElement,
@@ -54,7 +56,7 @@ export default function AsideControls<T extends BaseElement>({
         <nav className="bg-surface rounded-2xl overflow-hidden border border-border p-4">
           <div className="relative mb-4">
             <h2 className="text-xl font-bold flex items-center gap-2">
-              <RulesIcon className="text-secondary" />
+              {Icon && <Icon className="text-secondary" />}
               Разделы
             </h2>
           </div>
@@ -77,7 +79,7 @@ export default function AsideControls<T extends BaseElement>({
       >
         <div className="relative mb-4">
           <h2 className="text-xl font-bold flex items-center gap-2">
-            <RulesIcon className="text-secondary" />
+            {Icon && <Icon className="text-secondary" />}
             Разделы
           </h2>
         </div>

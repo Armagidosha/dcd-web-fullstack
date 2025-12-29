@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FileTextIcon } from "@/app/shared/icons/icons";
 import MarkdownRenderer from "@/app/shared/ui/MarkDownRenderer";
 import Paper from "@/app/shared/ui/Paper";
 import { checkRes } from "@/app/shared/utils/functions";
@@ -70,6 +71,7 @@ export default function PolicyManager({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4">
       <AsideControls<Policy>
+        icon={FileTextIcon}
         elements={policies}
         activeElement={activePolicy?.id || ""}
         setActiveElement={selectPolicy}

@@ -109,7 +109,7 @@ export default async function AdminProductsPage() {
             <StatsCard
               key={stat.id}
               name={stat.title}
-              value={`Последнее обновление: ${format(stat.updatedAt, "HH:mm dd.MM.yy", { locale: ru })}`}
+              value={`Последнее обновление: ${format(stat.updatedAt, "dd.MM.yy HH:mm", { locale: ru })}`}
             />
           ))}
         </div>

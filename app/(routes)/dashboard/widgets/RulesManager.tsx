@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { RulesIcon } from "@/app/shared/icons/icons";
 import MarkdownRenderer from "@/app/shared/ui/MarkDownRenderer";
 import Paper from "@/app/shared/ui/Paper";
 import type { Rule } from "@/lib/generated/prisma/client";
@@ -91,6 +92,7 @@ export default function RulesManager() {
   return (
     <div className="relative grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4">
       <AsideControls<Rule>
+        icon={RulesIcon}
         elements={rules}
         activeElement={activeRule?.id || ""}
         setActiveElement={selectRule}
