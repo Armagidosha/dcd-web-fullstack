@@ -3,7 +3,8 @@ import prisma from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   try {
-    const { author, content, link, attachments } = await request.json();
+    const { author, content, link, attachment } = await request.json();
+
     if (!author || !content) {
       return NextResponse.json(
         { error: "Author and content are required" },
@@ -16,7 +17,7 @@ export async function POST(request: NextRequest) {
         author,
         content,
         postLink: link,
-        ...(attachments.length > 0 ? { image: attachments[0].url } : {}),
+        ...(attachment.length > 0 ? { image: attachment } : {}),
       },
     });
 
