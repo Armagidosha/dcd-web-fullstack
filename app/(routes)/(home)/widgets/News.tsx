@@ -32,7 +32,7 @@ export default function News({ news }: NewsProps) {
               />
             )}
             <MarkdownRenderer content={active.content} />
-            <div className="flex text-sm justify-between mt-auto text-dimmed">
+            <div className="flex text-sm justify-between mt-auto text-dim-text">
               <div className="space-x-5">
                 <span>{active.author}</span>
                 <span className="hidden md:inline">{active.formattedDate}</span>

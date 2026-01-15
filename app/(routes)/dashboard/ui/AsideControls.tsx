@@ -60,7 +60,7 @@ export default function AsideControls<T extends BaseElement>({
               Разделы
             </h2>
           </div>
-          <p className="text-sm text-dimmed mb-4">Нет разделов</p>
+          <p className="text-sm text-dim-text mb-4">Нет разделов</p>
           {startAdd && (
             <Button variant="secondary" onClick={startAdd} icon={<PlusIcon />}>
               Добавить раздел
