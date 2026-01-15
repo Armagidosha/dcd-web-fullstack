@@ -1,13 +1,11 @@
 "use client";
 
 import Modal from "@shared/ui/Modal";
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
-import MarkdownRenderer from "@/app/shared/ui/MarkDownRenderer";
 import Paper from "@/app/shared/ui/Paper";
 import type { News as TNews } from "@/lib/generated/prisma/client";
 import type { ActiveCard } from "../types/news";
+import NewsModal from "../ui/modals/NewsModal";
 import NewsCard from "../ui/NewsCard";
 
 interface NewsProps {
@@ -20,31 +18,7 @@ export default function News({ news }: NewsProps) {
   return (
     <section className="section">
       <Modal opened={!!active} onClose={() => setActive(null)}>
-        {active && (
-          <>
-            {active.image && (
-              <Image
-                className="mx-auto max-h-96 w-auto"
-                height={100}
-                width={500}
-                src={active.image}
-                alt="Картинка поста"
-              />
-            )}
-            <MarkdownRenderer content={active.content} />
-            <div className="flex text-sm justify-between mt-auto text-dim-text">
-              <div className="space-x-5">
-                <span>{active.author}</span>
-                <span className="hidden md:inline">{active.formattedDate}</span>
-              </div>
-              {active.postLink && (
-                <Link target="_blank" href={active.postLink}>
-                  К посту
-                </Link>
-              )}
-            </div>
-          </>
-        )}
+        {active && <NewsModal newsItem={active} />}
       </Modal>
       <h2 className="section-heading">Новости проекта</h2>
 
