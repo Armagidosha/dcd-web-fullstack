@@ -231,7 +231,7 @@ export default function ProductPurchaseForm({
             <span className="text-lg font-bold">{product.price} ₽</span>
           </div>
           {order.discount > 0 && (
-            <div className="flex justify-between items-center text-green-400">
+            <div className="flex justify-between items-center text-success">
               <span className="flex items-center gap-1">
                 <span>🎉</span>
                 Скидка:

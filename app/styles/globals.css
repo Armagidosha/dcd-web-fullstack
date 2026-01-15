@@ -16,6 +16,7 @@
   --color-border: var(--color-zinc-600);
   --color-dim-text: oklch(60% 0.015 280);
   --color-light-text: oklch(90% 0.01 280);
+  --color-success: var(--color-green-400)
 }
 
 * {
