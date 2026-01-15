@@ -42,11 +42,13 @@ export default function EditPolicyForm({
         value={data || ""}
         errors={errors?.content}
         onChange={handleChange}
+        required
       />
 
       <div className="flex flex-col md:flex-row gap-4">
         <Button
           className="flex-2"
+          variant="secondary"
           type="submit"
           disabled={isLoading || Object.keys(errors).length > 0}
         >
@@ -55,7 +57,7 @@ export default function EditPolicyForm({
 
         {onCancel && (
           <Button
-            className="bg-primary! flex-1"
+            className="flex-1"
             type="button"
             onClick={() => onCancel()}
             disabled={isLoading || Object.keys(errors).length > 0}

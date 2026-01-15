@@ -1,0 +1,294 @@
+"use client";
+
+import clsx from "clsx";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { checkPlayerPrivilege } from "@/app/lib/actions/checkNickname";
+import { calculateFinalPrice } from "@/app/lib/actions/promo";
+import { PackageIcon } from "@/app/shared/icons/icons";
+import Button from "@/app/shared/ui/Button";
+import Dot from "@/app/shared/ui/Dot";
+import CheckBox from "@/app/shared/ui/Input/CheckBox";
+import TextInput from "@/app/shared/ui/Input/TextInput";
+import { debounce } from "@/app/shared/utils/functions";
+import { useAsync } from "@/app/shared/utils/hooks";
+import { useForm } from "@/app/shared/utils/hooks/useForm";
+import type { Product } from "@/lib/generated/prisma/client";
+import { createPayment } from "../../actions/create-payment";
+
+interface ProductPurchaseFormProps {
+  product: Pick<Product, "price" | "id">;
+  className?: string;
+}
+
+type Form = {
+  promo: string;
+  nick: string;
+  email: string;
+  terms: boolean;
+};
+
+type PaymentMethod = "sbp" | "sber" | "yoomoney";
+
+const paymentMethods = [
+  { id: "sbp" as PaymentMethod, name: "СБП", icon: "🏦" },
+  { id: "sber" as PaymentMethod, name: "Сбербанк", icon: "💳" },
+  { id: "yoomoney" as PaymentMethod, name: "ЮMoney", icon: "💰" },
+];
+
+type Promo = {
+  finalPrice: number;
+  discount: number;
+};
+
+export default function ProductPurchaseForm({
+  product,
+  className,
+}: ProductPurchaseFormProps) {
+  const router = useRouter();
+  const { errors, isLoading, clearFieldError, setFieldError, execute } =
+    useAsync();
+  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>("sbp");
+  const [order, setOrder] = useState<Promo>({
+    finalPrice: product.price,
+    discount: 0,
+  });
+
+  const { inputs, handleChange } = useForm({
+    initialValues: {
+      promo: "",
+      nick: "",
+      email: "",
+      terms: false,
+    },
+    onChangeWrapper: (name) => {
+      clearFieldError(name);
+    },
+  });
+
+  const debouncedCheckPromo = useMemo(
+    () =>
+      debounce(async (price: number, promo: string) => {
+        const result = await calculateFinalPrice(price, promo);
+        if (!result.success) {
+          setFieldError(result.details);
+          setOrder({ finalPrice: product.price, discount: 0 });
+        } else {
+          const discount = product.price - Number(result.finalPrice);
+          setOrder({
+            finalPrice: Number(result.finalPrice),
+            discount: discount,
+          });
+        }
+      }, 1500),
+    [setFieldError, product.price],
+  );
+
+  const debouncedCheckNickname = useMemo(
+    () =>
+      debounce(async (nickname: string, donate: string) => {
+        const result = await checkPlayerPrivilege(nickname, donate);
+        if (!result.success) {
+          setFieldError(result.details);
+        }
+      }, 1500),
+    [setFieldError],
+  );
+
+  const handleSubmit = async (evt: React.FormEvent) => {
+    evt.preventDefault();
+    const paymentData = {
+      productId: product.id,
+      promoCode: inputs.promo,
+      playerNick: inputs.nick,
+      playerEmail: inputs.email,
+      paymentMethod: selectedPayment,
+    };
+    const payment = await execute(() => createPayment(paymentData));
+
+    if (payment?.confirmationUrl) {
+      router.push(payment.confirmationUrl);
+    }
+  };
+
+  const handlePromoChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    handleChange(event);
+    const promo = event.target.value;
+
+    if (!promo.length) {
+      setOrder({ finalPrice: product.price, discount: 0 });
+      return;
+    }
+
+    debouncedCheckPromo(product.price, promo);
+  };
+
+  const handleNicknameChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    handleChange(event);
+    const nick = event.target.value;
+
+    if (!nick.length) return;
+
+    debouncedCheckNickname(nick, product.id);
+  };
+
+  const canSubmit = (inputs: Form): boolean => {
+    const min3 = (v: string) => v.trim().length >= 3;
+    return min3(inputs.nick) && min3(inputs.email) && inputs.terms;
+  };
+
+  const isDisabled = isLoading || !canSubmit(inputs);
+
+  return (
+    <form
+      className={clsx("flex flex-col gap-6", className)}
+      onSubmit={handleSubmit}
+      autoComplete="off"
+    >
+      {/* Данные игрока */}
+      <h3 className="text-xl font-bold text-primary flex items-center gap-2">
+        Данные игрока
+      </h3>
+      <div>
+        <TextInput
+          label="Почта"
+          name="email"
+          type="email"
+          placeholder="player@example.com"
+          onChange={handleChange}
+          errors={errors.email}
+          minLength={3}
+          disabled={isLoading}
+          required
+        />
+        <TextInput
+          label="Игровой никнейм"
+          name="nick"
+          type="text"
+          errors={errors.nick}
+          placeholder="Steve"
+          onChange={handleNicknameChange}
+          minLength={3}
+          maxLength={16}
+          disabled={isLoading}
+          required
+        />
+        <TextInput
+          label="Промокод (необязательно)"
+          name="promo"
+          type="text"
+          errors={errors.promo}
+          placeholder="SALE"
+          onChange={handlePromoChange}
+          disabled={isLoading}
+        />
+      </div>
+      <div className="space-y-4">
+        <h3 className="text-xl font-bold text-primary flex items-center gap-2">
+          Способ оплаты
+        </h3>
+        <div className="grid grid-cols-3 gap-3">
+          {paymentMethods.map((method) => (
+            <button
+              key={method.id}
+              type="button"
+              onClick={() => setSelectedPayment(method.id)}
+              disabled={isLoading}
+              className={`
+                relative p-4 rounded-xl border-2 transition-all duration-200
+                flex flex-col items-center justify-center gap-2
+                ${
+                  selectedPayment === method.id
+                    ? "border-primary bg-primary/10 shadow-lg shadow-primary/20"
+                    : "border-border/50 bg-surface hover:border-primary/50 hover:bg-surface-variant"
+                }
+                ${isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+              `}
+            >
+              {/* TODO: Изменить иконки на реальные */}
+              <span className="text-3xl">{method.icon}</span>
+              <span className="text-sm font-semibold">{method.name}</span>
+              {selectedPayment === method.id && (
+                <Dot posX="left-2" posY="top-2" />
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="space-y-4">
+        <h3 className="text-xl font-bold text-primary flex items-center gap-2">
+          <PackageIcon />
+          Информация по заказу
+        </h3>
+        <div className="bg-surface rounded-xl p-4 space-y-3 border border-border/50">
+          <div className="flex justify-between items-center">
+            <span className="text-white/70">Цена:</span>
+            <span className="text-lg font-bold">{product.price} ₽</span>
+          </div>
+          {order.discount > 0 && (
+            <div className="flex justify-between items-center text-green-400">
+              <span className="flex items-center gap-1">
+                <span>🎉</span>
+                Скидка:
+              </span>
+              <span className="text-lg font-bold">-{order.discount} ₽</span>
+            </div>
+          )}
+          <div className="border-t border-white/10 pt-3 flex justify-between items-center">
+            <span className="text-lg font-semibold">Итого:</span>
+            <span className="text-2xl font-bold text-primary">
+              {order.finalPrice} ₽
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="flex items-start gap-3 p-4 bg-surface rounded-xl border border-border/50">
+        <CheckBox
+          name="terms"
+          onChange={handleChange}
+          disabled={isLoading}
+          required
+        />
+        <label
+          className="select-none cursor-pointer text-sm text-white/80"
+          htmlFor="terms"
+        >
+          Я ознакомился и принимаю{" "}
+          <Link
+            className="text-primary underline hover:text-primary/80 transition-colors"
+            href="/privacy"
+            target="_blank"
+          >
+            Политику конфиденциальности
+          </Link>{" "}
+          и{" "}
+          <Link
+            className="text-primary underline hover:text-primary/80 transition-colors"
+            href="/terms"
+            target="_blank"
+          >
+            Пользовательское соглашение
+          </Link>
+        </label>
+      </div>
+      <Button type="submit" disabled={isDisabled}>
+        {isLoading ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="animate-spin">⏳</span>
+            Оформление...
+          </span>
+        ) : (
+          <span className="flex items-center justify-center gap-2">
+            <span>🚀</span>
+            Купить за {order.finalPrice} ₽
+          </span>
+        )}
+      </Button>
+    </form>
+  );
+}

@@ -11,7 +11,6 @@ export default function LogoutButton() {
       onClick={() => logout()}
     >
       <LogoutIcon width={18} height={18} />
-      <span className="hidden sm:inline text-sm font-medium">Выход</span>
     </button>
   );
 }

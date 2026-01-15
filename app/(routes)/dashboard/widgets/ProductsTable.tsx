@@ -2,7 +2,9 @@ import { PlusIcon, TrashIcon } from "@shared/icons/icons";
 import ImageWithFallback from "@shared/ui/ImageWithFallback";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import Button from "@/app/shared/ui/Button";
 import Modal from "@/app/shared/ui/Modal";
+import Paper from "@/app/shared/ui/Paper";
 import type { ProductsWithCategory } from "@/app/shared/utils/types/categories";
 import {
   useCategoriesSelector,
@@ -53,49 +55,49 @@ export default function ProductsTable() {
     <>
       <Modal
         title="Редактирование"
-        className="px-4"
         size="lg"
         opened={!!editing}
         onClose={() => setEditing(null)}
       >
         {editing && (
-          <EditProductForm
-            categories={categories}
-            product={editing.product}
-            field={editing.field}
-            onSubmit={handleSubmitProduct}
-          />
+          <Paper className="p-4" variant="secondary">
+            <EditProductForm
+              categories={categories}
+              product={editing.product}
+              field={editing.field}
+              onSubmit={handleSubmitProduct}
+            />
+          </Paper>
         )}
       </Modal>
 
       <Modal
         title="Добавить продукт"
-        className="px-4"
         size="xl"
         opened={isOpen}
         onClose={() => setIsOpen(false)}
       >
-        <AddProductForm
-          categories={categories}
-          onSubmit={handleCreateProduct}
-        />
+        <Paper className="p-4" variant="secondary">
+          <AddProductForm
+            categories={categories}
+            onSubmit={handleCreateProduct}
+          />
+        </Paper>
       </Modal>
 
       <div className="flex flex-col gap-4 md:flex-row justify-between items-center mb-6">
         <h2 className="text-center text-2xl font-bold">
           Управление продуктами
         </h2>
-        <button
-          type="button"
+
+        <Button
+          className="max-w-fit px-12"
+          variant="secondary"
+          icon={<PlusIcon />}
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 bg-secondary hover:opacity-80 hover:scale-103 
-                  transition-[transform, opacity] duration-300 
-                  px-6 py-3 rounded-xl font-semibold cursor-pointer group 
-                  disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <PlusIcon />
           Добавить продукт
-        </button>
+        </Button>
       </div>
 
       <div className="overflow-x-auto h-150 overscroll-y-contain">
@@ -104,6 +106,7 @@ export default function ProductsTable() {
             <tr className="text-primary border-b border-border">
               <th className="text-left py-4 px-4 font-semibold">Изображение</th>
               <th className="text-left py-4 px-4 font-semibold">Название</th>
+              <th className="text-left py-4 px-4 font-semibold">Ключ</th>
               <th className="text-left py-4 px-4 font-semibold">Описание</th>
               <th className="text-left py-4 px-4 font-semibold">Цена</th>
               <th className="text-left py-4 px-4 font-semibold">Категория</th>
@@ -150,6 +153,16 @@ export default function ProductsTable() {
                 </td>
                 <td>
                   <button
+                    className="py-4 px-4 max-w-50 truncate cursor-pointer 
+                  hover:text-secondary transition-colors duration-300"
+                    onClick={() => setEditing({ product, field: "key" })}
+                    type="button"
+                  >
+                    {product.key}
+                  </button>
+                </td>
+                <td>
+                  <button
                     className="py-4 px-4 max-w-xs truncate cursor-pointer 
                   hover:text-secondary transition-colors duration-300"
                     onClick={() =>
@@ -167,7 +180,7 @@ export default function ProductsTable() {
                     type="button"
                     onClick={() => setEditing({ product, field: "price" })}
                   >
-                    ${product.price}
+                    {product.price}&#x20BD;
                   </button>
                 </td>
                 <td>

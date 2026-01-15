@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <> */
 
 import { useCallback, useState } from "react";
+import { isErrorResponse } from "./functions";
 
 interface UseAsyncResult<T> {
   isLoading: boolean;
@@ -11,6 +12,7 @@ interface UseAsyncResult<T> {
     ...args: unknown[]
   ) => Promise<T | null>;
   reset: () => void;
+  setFieldError: (errors: Record<string, string[]>) => void;
   clearFieldError: (field: string) => void;
   clearErrors: () => void;
 }
@@ -25,23 +27,24 @@ export function useAsync<T = any>(): UseAsyncResult<T> {
       ...args: any[]
     ): Promise<T | null> => {
       setIsLoading(true);
+      setErrors({});
 
       try {
-        const result = await asyncFn(...args);
+        const response = await asyncFn(...args);
 
-        setData(result);
-        return result;
-      } catch (error) {
-        if (
-          error &&
-          typeof error === "object" &&
-          "error" in error &&
-          "details" in error
-        ) {
-          setErrors(
-            (error as unknown as { details: Record<string, string[]> }).details,
-          );
+        if (isErrorResponse(response)) {
+          setErrors(response.details);
+          setData(null);
+          return null;
         }
+
+        setData(response);
+        return response;
+      } catch (error) {
+        if (isErrorResponse(error)) {
+          setErrors(error.details);
+        }
+        setData(null);
         return null;
       } finally {
         setIsLoading(false);
@@ -49,6 +52,13 @@ export function useAsync<T = any>(): UseAsyncResult<T> {
     },
     [],
   );
+
+  const setFieldError = useCallback((errors: Record<string, string[]>) => {
+    setErrors((prev) => ({
+      ...prev,
+      ...errors,
+    }));
+  }, []);
 
   const reset = useCallback(() => {
     setIsLoading(false);
@@ -62,6 +72,7 @@ export function useAsync<T = any>(): UseAsyncResult<T> {
 
   const clearFieldError = useCallback((field: string) => {
     setErrors((prev) => {
+      if (!(field in prev)) return prev;
       const next = { ...prev };
       delete next[field];
       return next;
@@ -74,6 +85,7 @@ export function useAsync<T = any>(): UseAsyncResult<T> {
     data,
     execute,
     reset,
+    setFieldError,
     clearFieldError,
     clearErrors,
   };

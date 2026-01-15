@@ -115,8 +115,6 @@ export async function createPayment({
       // idempotencyKey,
     );
 
-    console.log(payment);
-
     return {
       confirmationUrl: payment.confirmation.confirmation_url,
       paymentId: payment.id,

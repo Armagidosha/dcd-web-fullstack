@@ -105,7 +105,7 @@ const Footer = () => {
         </nav>
       </div>
 
-      <p className="mt-4 text-zinc-500">
+      <p className="mt-4 text-dimmed">
         &copy; DraimCiDo {new Date().getFullYear()}{" "}
         Все&nbsp;права&nbsp;защищены.
       </p>

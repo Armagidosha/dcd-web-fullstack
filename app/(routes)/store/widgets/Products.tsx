@@ -52,8 +52,11 @@ export default function Products({ products, categories }: ProductsProps) {
       >
         {active && (
           <ProductCardModal
-            description={active.description}
-            price={active.price}
+            product={{
+              id: active.id,
+              description: active.description,
+              price: active.price,
+            }}
           />
         )}
       </Modal>

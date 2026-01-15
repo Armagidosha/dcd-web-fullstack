@@ -1,4 +1,4 @@
-import { checkRights } from "@/app/lib/actions/utils";
+import { checkRights } from "@/app/lib/actions/auth";
 import { CartIcon, HomeIcon, RulesIcon, ShieldIcon } from "../../icons/icons";
 import ClientHeader from "./ClientHeader";
 

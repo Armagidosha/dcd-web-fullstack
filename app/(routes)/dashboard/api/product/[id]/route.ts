@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { checkRights, deleteImage, saveImage } from "@/app/lib/actions/utils";
+import { checkRights } from "@/app/lib/actions/auth";
+import { deleteImage, saveImage } from "@/app/lib/actions/image";
 import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
@@ -42,12 +43,15 @@ export async function PATCH(
       if (existingImageName) await deleteImage(existingImageName);
     }
 
-    const updatePayload: Record<string, unknown> = {};
-    if (parsed.name !== undefined) updatePayload.name = parsed.name;
-    if (parsed.description !== undefined)
-      updatePayload.description = parsed.description;
-    if (parsed.price !== undefined) updatePayload.price = Number(parsed.price);
-    if (imageName) updatePayload.image = imageName;
+    const updatePayload: Record<string, unknown> = {
+      ...(parsed.name !== undefined && { name: parsed.name }),
+      ...(parsed.key !== undefined && { key: parsed.key }),
+      ...(parsed.description !== undefined && {
+        description: parsed.description,
+      }),
+      ...(parsed.price !== undefined && { price: Number(parsed.price) }),
+      ...(imageName && { image: imageName }),
+    };
 
     const categoryData = parsed.category
       ? {

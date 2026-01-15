@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { yooCheckout } from "@/app/lib/YooKassa";
 import { checkRes } from "@/app/shared/utils/functions";
 import prisma from "@/lib/prisma";
-import { yooCheckout } from "@/lib/YooKassa";
 
 async function grantMinecraftPrivilege(nick: string, donate: string) {
   try {

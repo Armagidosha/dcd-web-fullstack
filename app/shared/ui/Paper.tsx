@@ -5,10 +5,19 @@ interface PaperProps
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   > {
+  variant?: keyof typeof variants;
   withBorder?: boolean;
+  withGradient?: boolean;
 }
 
+const variants = {
+  primary: "bg-surface",
+  secondary: "bg-surface-variant",
+} as const;
+
 export default function Paper({
+  withGradient = false,
+  variant = "primary",
   withBorder,
   className,
   children,
@@ -17,8 +26,9 @@ export default function Paper({
   return (
     <div
       className={clsx(
-        "rounded-2xl bg-surface",
-        { "border border-border": withBorder },
+        "rounded-2xl",
+        { "border border-border/80": withBorder },
+        withGradient ? "gradient-bg" : variants[variant],
         className,
       )}
       {...props}

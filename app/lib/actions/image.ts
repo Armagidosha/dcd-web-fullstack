@@ -1,41 +1,18 @@
 "use server";
 
-import { existsSync, unlinkSync } from "node:fs";
-import { mkdir, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { auth } from "../auth";
-import { UnauthorizedError } from "../errors/UnauthorizedError";
-
-// TODO: Реализовать таблицу с правами
-const allowedUsers = [
-  "339134373796380694",
-  "388646660051304448",
-  "1056257180577312798",
-];
-
-export const checkRights = async () => {
-  const session = await auth();
-  if (
-    !session?.user?.discordId ||
-    !allowedUsers.includes(session.user.discordId)
-  ) {
-    throw new UnauthorizedError();
-  }
-
-  return true;
-};
 
 export const saveImage = async (file: File): Promise<string> => {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  // Создаём уникальное имя файла
   const fileExtension = file.type.split("/")[1] || "png";
   const fileName = `${Date.now()}-${crypto.randomUUID()}.${fileExtension}`;
 
   const uploadDir = path.join(process.cwd(), "public", "media");
 
-  // Создаём папку
   if (!existsSync(uploadDir)) {
     await mkdir(uploadDir, { recursive: true });
   }
@@ -53,8 +30,13 @@ export const saveImage = async (file: File): Promise<string> => {
 };
 
 export const deleteImage = async (imageName: string) => {
-  const imageDir = path.join(process.cwd(), "public");
-  const imagePath = path.join(imageDir, imageName);
+  const baseDir = path.join(process.cwd(), "public", "media");
+  const imagePath = path.resolve(baseDir, path.basename(imageName));
+
+  if (!imagePath.startsWith(baseDir)) {
+    throw new Error("Invalid image path");
+  }
+
   if (!existsSync(imagePath)) return;
-  unlinkSync(imagePath);
+  await unlink(imagePath);
 };

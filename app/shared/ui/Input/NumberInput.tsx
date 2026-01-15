@@ -93,7 +93,7 @@ export default function NumberInput({
           max={max}
           step={step}
           className={clsx(
-            `w-full px-4 py-3 rounded-lg border border-border text-sm bg-surface-variant
+            `w-full px-4 py-3 rounded-lg border border-border text-sm bg-surface
           focus:outline-none focus:border-2 transition-colors duration-300
           disabled:bg-surface-variant/80 disabled:cursor-not-allowed
           [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none

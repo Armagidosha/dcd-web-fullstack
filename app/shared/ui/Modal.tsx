@@ -65,7 +65,7 @@ export default function Modal({
               onClick={onClose}
             />
             <motion.div
-              className={`relative flex flex-col z-10 w-[95%] min-h-[60vh] max-h-[90vh] mx-4 rounded-2xl bg-surface/90 backdrop-blur-xs p-6 shadow-xl ${modalSize[size]}`}
+              className={`relative flex flex-col z-10 w-[95%] max-h-[90vh] mx-4 rounded-2xl bg-surface/90 backdrop-blur-xs p-6 shadow-xl ${modalSize[size]}`}
               role="dialog"
               aria-modal="true"
               aria-labelledby={title ? "modal-title" : undefined}

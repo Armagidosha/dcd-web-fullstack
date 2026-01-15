@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
-import { checkRights, saveImage } from "@/app/lib/actions/utils";
+import { checkRights } from "@/app/lib/actions/auth";
+import { saveImage } from "@/app/lib/actions/image";
 import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
 import prisma from "@/lib/prisma";
 import { productSchema } from "../schema";
@@ -21,9 +22,9 @@ export async function POST(request: NextRequest) {
     await checkRights();
 
     const formData = await request.formData();
-
     const validatedData = productSchema.parse({
       name: formData.get("name"),
+      key: formData.get("key"),
       price: formData.get("price"),
       image: formData.get("image"),
       description: formData.get("description"),
@@ -36,6 +37,7 @@ export async function POST(request: NextRequest) {
       include: { category: true },
       data: {
         name: validatedData.name,
+        key: validatedData.key,
         description: validatedData.description,
         price: Number(validatedData.price),
         image: imagePath,

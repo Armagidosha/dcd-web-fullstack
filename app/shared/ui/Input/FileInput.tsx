@@ -80,7 +80,7 @@ export default function FileInput({
 
         <div
           className={clsx(
-            `flex justify-between px-4 py-3 rounded-lg border border-border text-sm bg-surface-variant 
+            `flex justify-between px-4 py-3 rounded-lg border border-border text-sm bg-surface 
                     focus:outline-none focus:border-2 transition-colors duration-300
                     disabled:bg-surface-variant/80 disabled:cursor-not-allowed`,
             errors && errors.length > 0 ? "border-2 border-primary" : "",

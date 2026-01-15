@@ -42,7 +42,7 @@ export default function Textarea({
         onChange={onChange}
         required={required}
         className={clsx(
-          `px-4 py-3 min-h-50 rounded-lg ring ring-border text-sm bg-surface-variant 
+          `px-4 py-3 min-h-50 rounded-lg ring ring-border text-sm bg-surface
                   focus:outline-none focus:ring-2 transition-colors duration-300
                   disabled:bg-surface-variant/80 disabled:cursor-not-allowed`,
           errors && errors.length > 0 ? "ring-2 ring-primary" : "",

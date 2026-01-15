@@ -79,10 +79,12 @@ export default function ClientHeader({ links }: ClientHeaderProps) {
               >
                 <span>{link.icon}</span>
                 <span>{link.title}</span>
-                <span
-                  className="absolute inset-x-0 bottom-0 h-1 bg-primary scale-x-0 
-                  group-hover:scale-x-100 transition-transform duration-300 rounded-full"
-                />
+                {isDesktop && (
+                  <span
+                    className="absolute inset-x-0 bottom-0 h-1 bg-primary scale-x-0 
+                group-hover:scale-x-100 transition-transform duration-300 rounded-full"
+                  />
+                )}
               </Link>
             ))}
           </nav>

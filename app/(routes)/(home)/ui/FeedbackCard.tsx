@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Paper from "@/app/shared/ui/Paper";
 
 interface FeedbackCardProps {
   title: string;
@@ -11,10 +12,12 @@ interface FeedbackCardProps {
 
 export default function FeedbackCard({ card }: { card: FeedbackCardProps }) {
   return (
-    <div
+    <Paper
       key={card.title}
-      className="place-items-center w-full grid p-4 gradient-bg border border-border 
-        rounded-lg transition-transform duration-300 hover:border-2 hover:scale-102"
+      className="place-items-center w-full grid p-4 
+        transition-transform duration-300 hover:scale-102"
+      withBorder
+      withGradient
     >
       <Image width={200} height={200} src={card.imagePath} alt={card.title} />
       <div className="text-center max-w-3xs">
@@ -27,6 +30,6 @@ export default function FeedbackCard({ card }: { card: FeedbackCardProps }) {
           .
         </p>
       </div>
-    </div>
+    </Paper>
   );
 }

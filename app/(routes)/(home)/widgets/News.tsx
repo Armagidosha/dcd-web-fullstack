@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import MarkdownRenderer from "@/app/shared/ui/MarkDownRenderer";
+import Paper from "@/app/shared/ui/Paper";
 import type { News as TNews } from "@/lib/generated/prisma/client";
 import type { ActiveCard } from "../types/news";
 import NewsCard from "../ui/NewsCard";
@@ -31,7 +32,7 @@ export default function News({ news }: NewsProps) {
               />
             )}
             <MarkdownRenderer content={active.content} />
-            <div className="flex text-sm justify-between mt-auto text-zinc-500">
+            <div className="flex text-sm justify-between mt-auto text-dimmed">
               <div className="space-x-5">
                 <span>{active.author}</span>
                 <span className="hidden md:inline">{active.formattedDate}</span>
@@ -61,11 +62,11 @@ export default function News({ news }: NewsProps) {
       )}
 
       {!news.length && (
-        <div className="grid items-center bg-surface border border-border h-56 rounded-lg">
-          <p className="text-center opacity-15 text-4xl select-none">
+        <Paper className="grid items-center h-56" withBorder withGradient>
+          <p className="text-center opacity-15 text-2xl select-none">
             Новостей пока нет...
           </p>
-        </div>
+        </Paper>
       )}
     </section>
   );

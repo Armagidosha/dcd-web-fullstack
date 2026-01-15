@@ -60,9 +60,9 @@ export default function AsideControls<T extends BaseElement>({
               Разделы
             </h2>
           </div>
-          <p className="text-sm text-gray-500 mb-4">Нет разделов</p>
+          <p className="text-sm text-dimmed mb-4">Нет разделов</p>
           {startAdd && (
-            <Button onClick={startAdd} icon={<PlusIcon />}>
+            <Button variant="secondary" onClick={startAdd} icon={<PlusIcon />}>
               Добавить раздел
             </Button>
           )}
@@ -103,7 +103,12 @@ export default function AsideControls<T extends BaseElement>({
         </ul>
 
         {startAdd && (
-          <Button className="mt-4" onClick={startAdd} icon={<PlusIcon />}>
+          <Button
+            variant="secondary"
+            className="mt-4"
+            onClick={startAdd}
+            icon={<PlusIcon />}
+          >
             Добавить раздел
           </Button>
         )}

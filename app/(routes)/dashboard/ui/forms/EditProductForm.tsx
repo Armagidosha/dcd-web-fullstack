@@ -7,6 +7,7 @@ import MarkdownEditor from "@shared/ui/MarkDownEditor";
 import { useAsync } from "@shared/utils/hooks";
 import type { ProductsWithCategory } from "@shared/utils/types/categories";
 import { useState } from "react";
+import Button from "@/app/shared/ui/Button";
 import type { Category } from "@/lib/generated/prisma/client";
 
 interface EditProductFormProps {
@@ -32,6 +33,8 @@ export default function EditProductForm({
     switch (field) {
       case "name":
         return product.name;
+      case "key":
+        return product.key;
       case "description":
         return product.description || "";
       case "price":
@@ -70,7 +73,6 @@ export default function EditProductForm({
   ) => {
     const { name, value } = evt.target;
     setValue(value);
-    console.log(name, value);
     clearFieldError(name);
   };
 
@@ -97,6 +99,21 @@ export default function EditProductForm({
           />
         );
 
+      case "key":
+        return (
+          <TextInput
+            label="Ключ продукта"
+            placeholder="Введите ключ"
+            description="Пример: privilege:warden"
+            name="key"
+            errors={errors?.key}
+            onChange={handleChange}
+            value={value}
+            disabled={isLoading}
+            required
+          />
+        );
+
       case "description":
         return (
           <MarkdownEditor
@@ -104,6 +121,7 @@ export default function EditProductForm({
             onChange={handleChange}
             value={value.toString()}
             errors={errors?.description}
+            required
           />
         );
 
@@ -120,8 +138,8 @@ export default function EditProductForm({
             min={50}
             max={10000}
             step={1}
-            required
             disabled={isLoading}
+            required
           />
         );
 
@@ -135,8 +153,8 @@ export default function EditProductForm({
             onChange={handleImageChange}
             onReset={() => setImageFile(null)}
             errors={errors?.image}
-            required
             disabled={isLoading}
+            required
           />
         );
 
@@ -153,8 +171,8 @@ export default function EditProductForm({
             dataList={categories?.map((cat) => {
               return { id: cat.id, value: cat.name };
             })}
-            required
             disabled={isLoading}
+            required
           />
         );
 
@@ -164,23 +182,19 @@ export default function EditProductForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col flex-1 space-y-6">
+    <form className="flex flex-col space-y-6" onSubmit={handleSubmit}>
       <p className="text-sm opacity-70">
         Продукт: <span className="font-semibold">{product.name}</span>
       </p>
 
       <div>{renderField()}</div>
 
-      {/* Кнопки */}
-      <div className="mt-auto pb-4">
-        <button
-          type="submit"
-          disabled={isLoading || Object.keys(errors).length > 0}
-          className="w-full bg-primary px-6 py-3 rounded-xl font-semibold cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isLoading ? "Сохранение..." : "Сохранить"}
-        </button>
-      </div>
+      <Button
+        disabled={isLoading || Object.keys(errors ?? {}).length > 0}
+        type="submit"
+      >
+        {isLoading ? "Сохранение..." : "Сохранить"}
+      </Button>
     </form>
   );
 }

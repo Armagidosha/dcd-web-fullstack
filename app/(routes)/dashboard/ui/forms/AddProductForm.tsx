@@ -7,6 +7,7 @@ import MarkdownEditor from "@shared/ui/MarkDownEditor";
 import { useAsync } from "@shared/utils/hooks";
 import type { AddProductFormData } from "@shared/utils/types/products";
 import { useMemo, useState } from "react";
+import Button from "@/app/shared/ui/Button";
 import type { CategoryWithCount } from "@/app/shared/utils/types/categories";
 
 interface ProductFormProps {
@@ -21,6 +22,7 @@ export default function AddProductForm({
   // Состояние формы
   const [productData, setProductData] = useState<AddProductFormData>({
     name: "",
+    key: "",
     price: 0,
     category: "",
     description: "",
@@ -62,6 +64,7 @@ export default function AddProductForm({
     const formData = new FormData();
 
     formData.append("name", productData.name);
+    formData.append("key", productData.key);
     formData.append("price", productData.price.toString());
     formData.append("description", productData.description);
     formData.append("category", productData.category);
@@ -111,6 +114,18 @@ export default function AddProductForm({
         disabled={isLoading}
       />
 
+      <TextInput
+        label="Ключ продукта"
+        placeholder="Введите ключ"
+        description="Пример: privilege:warden"
+        name="key"
+        required
+        errors={errors?.key}
+        onChange={handleChange}
+        value={productData.key}
+        disabled={isLoading}
+      />
+
       <NumberInput
         name="price"
         label="Цена"
@@ -140,18 +155,20 @@ export default function AddProductForm({
 
       <MarkdownEditor
         name="description"
+        label="Описание"
+        description="От 3 символов"
+        required
         onChange={handleChange}
         value={productData.description}
         errors={errors?.description}
       />
 
-      <button
-        disabled={!isFormValid || Object.keys(errors).length > 0}
+      <Button
         type="submit"
-        className="w-full bg-primary disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-primary transition duration-200 shadow-md hover:shadow-lg"
+        disabled={!isFormValid || Object.keys(errors ?? {}).length > 0}
       >
         {isLoading ? "Добавление..." : "Добавить продукт"}
-      </button>
+      </Button>
     </form>
   );
 }

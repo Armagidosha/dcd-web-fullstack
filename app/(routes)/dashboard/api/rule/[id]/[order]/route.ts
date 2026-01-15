@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { checkRights } from "@/app/lib/actions/utils";
+import { checkRights } from "@/app/lib/actions/auth";
 import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";

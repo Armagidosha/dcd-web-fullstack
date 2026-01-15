@@ -15,7 +15,12 @@ export default function MarkdownRenderer({
   className,
 }: MarkdownRendererProps) {
   return (
-    <div className={clsx("prose prose-invert max-w-none", className)}>
+    <div
+      className={clsx(
+        "prose prose-invert max-w-none wrap-break-word",
+        className,
+      )}
+    >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw, rehypeSanitize]}

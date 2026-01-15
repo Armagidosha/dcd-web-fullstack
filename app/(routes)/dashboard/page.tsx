@@ -69,7 +69,7 @@ export default async function AdminProductsPage() {
       <Aside anchors={ANCHOR_LINKS} />
 
       {/* Stats */}
-      <Paper id="products" className="p-4">
+      <Paper id="products" className="p-4" variant="secondary">
         <TitleInfo
           title="Продукты"
           description="Управление продуктами и категориями"
@@ -87,7 +87,7 @@ export default async function AdminProductsPage() {
         <Tabs />
       </Paper>
 
-      <Paper id="rules" className="p-4 mt-4">
+      <Paper id="rules" className="p-4 mt-4" variant="secondary">
         <TitleInfo
           title="Правила"
           description="Создавайте и редактируйте разделы правил"
@@ -101,7 +101,7 @@ export default async function AdminProductsPage() {
         <RulesManager />
       </Paper>
 
-      <Paper id="policy" className="p-4 mt-4">
+      <Paper id="policy" className="p-4 mt-4" variant="secondary">
         <TitleInfo title="Политика" description="Редактируйте политику сайта" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">

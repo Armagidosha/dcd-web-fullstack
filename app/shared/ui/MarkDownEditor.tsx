@@ -11,9 +11,11 @@ interface MarkdownEditorProps {
   description?: string;
   label?: string;
   errors?: string[];
+  required?: boolean;
 }
 
 export default function MarkdownEditor({
+  required = false,
   value,
   name,
   errors,
@@ -58,7 +60,7 @@ export default function MarkdownEditor({
           value={value}
           onChange={onChange}
           errors={errors || []}
-          required
+          required={required}
         />
       ) : (
         <div className="w-full min-h-50 px-4 py-2 mt-15 mb-10 border border-border rounded-lg ">

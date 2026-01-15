@@ -67,11 +67,13 @@ export default function RuleForm({
         value={ruleData?.content || ""}
         errors={errors?.content}
         onChange={handleInputChange}
+        required
       />
 
       <div className="flex flex-col md:flex-row gap-4">
         <Button
           className="flex-2"
+          variant="secondary"
           type="submit"
           icon={action === "add" ? <PlusIcon /> : undefined}
           disabled={isLoading || (errors && Object.keys(errors).length > 0)}

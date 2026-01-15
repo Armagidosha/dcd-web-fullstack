@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { checkRights } from "./app/lib/actions/utils";
+import { checkRights } from "./app/lib/actions/auth";
 
 const protectedRoutes = ["/dashboard"];
 
