@@ -10,7 +10,12 @@ interface NewsModalProps {
 
 export default function NewsModal({ newsItem }: NewsModalProps) {
   return (
-    <Paper className="p-4 min-h-100 flex flex-col" variant="secondary">
+    <Paper
+      className="p-4 min-h-100 flex flex-col"
+      variant="secondary"
+      withBorder
+      withGradient
+    >
       {newsItem.image && (
         <Image
           className="mx-auto max-h-96 w-auto"
