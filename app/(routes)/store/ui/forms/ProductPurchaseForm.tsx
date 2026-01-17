@@ -147,7 +147,8 @@ export default function ProductPurchaseForm({
     return min3(inputs.nick) && min3(inputs.email) && inputs.terms;
   };
 
-  const isDisabled = isLoading || !canSubmit(inputs);
+  const isDisabled =
+    isLoading || !canSubmit(inputs) || Object.keys(errors).length > 0;
 
   return (
     <form
