@@ -31,12 +31,10 @@ export async function createPayment({
       where: { id: productId },
     });
 
-    if (product.key.startsWith("privilege:")) {
-      const checked = await checkPlayerPrivilege(playerNick, productId);
+    const checked = await checkPlayerPrivilege(playerNick, productId);
 
-      if (!checked.success) {
-        return checked;
-      }
+    if (!checked.success) {
+      return checked;
     }
 
     const checkedPromo = await calculateFinalPrice(product.price, promoCode);
@@ -53,7 +51,6 @@ export async function createPayment({
     });
 
     const newOrder = await prisma.$transaction(async (tx) => {
-      console.log(process.env.NEXT_PUBLIC_BASE_URL);
       if (promoCode) {
         const promo = await tx.promoCode.findUnique({
           where: { code: promoCode.toUpperCase() },
@@ -74,13 +71,13 @@ export async function createPayment({
       }
 
       const orderData = {
-        customerEmail: playerEmail,
-        customerNick: playerNick,
+        customerEmail: playerEmail.toLowerCase(),
+        customerNick: playerNick.toLowerCase(),
         originalPrice: parseFloat(checkedPromo.originalPrice),
         totalPrice: parseFloat(checkedPromo.finalPrice),
         discount: checkedPromo.discount,
         idempotencyKey,
-        promoCode,
+        promoCode: promoCode,
         status: "pending",
       };
 
@@ -128,7 +125,7 @@ export async function createPayment({
     if (error instanceof PromoCodeInvalidError) {
       return {
         success: false,
-        error: "Ошибка применения промокода",
+        error: "PROMO_INVALID",
         details: { promo: ["Промокод недействителен."] },
       };
     }
@@ -136,7 +133,7 @@ export async function createPayment({
     if (error instanceof PromoCodeLimitError) {
       return {
         success: false,
-        error: "Ошибка применения промокода",
+        error: "PROMO_LIMIT_EXCEEDED",
         details: { promo: ["Достигнут лимит использований промокода."] },
       };
     }
@@ -144,13 +141,13 @@ export async function createPayment({
     if (error instanceof PromoCodeExpiredError) {
       return {
         success: false,
-        error: "Ошибка применения промокода",
+        error: "PROMO_EXPIRED",
         details: { promo: ["Срок действия промокода истек."] },
       };
     }
 
     return {
-      error: "Payment creation failed",
+      error: "PAYMENT_FAILED",
       details: { form: "Не удалось создать платеж. Попробуйте позже." },
     };
   }
