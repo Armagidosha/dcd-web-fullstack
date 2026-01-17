@@ -19,7 +19,7 @@ export async function checkPlayerPrivilege(
     const product = await prisma.product.findUniqueOrThrow({ where: { id } });
 
     const response = await fetch(
-      `${process.env.DCD_HOST}/api/check?nick=${encodeURIComponent(nickname)}&donate=${encodeURIComponent(product.key)}`,
+      `${process.env.DCD_HOST}/api/check?nick=${encodeURIComponent(nickname.trim())}&donate=${encodeURIComponent(product.key)}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.DCD_SECRET}`,

@@ -1,5 +1,6 @@
 "use server";
 
+import { success } from "zod";
 import { checkPlayerPrivilege } from "@/app/lib/actions/checkNickname";
 import { generateIdempotencyKey } from "@/app/lib/actions/idempotency";
 import { calculateFinalPrice } from "@/app/lib/actions/promo";
@@ -115,6 +116,16 @@ export async function createPayment({
       idempotencyKey,
     );
 
+    if (payment?.status === "succeeded") {
+      return {
+        success: false,
+        error: "ALREADY_PAID",
+        details: {
+          nick: ["Игрок уже имеет привилегию этого уровня или выше."],
+        },
+      };
+    }
+
     return {
       confirmationUrl: payment.confirmation.confirmation_url,
       paymentId: payment.id,
@@ -147,6 +158,7 @@ export async function createPayment({
     }
 
     return {
+      success: false,
       error: "PAYMENT_FAILED",
       details: { form: "Не удалось создать платеж. Попробуйте позже." },
     };
