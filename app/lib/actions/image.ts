@@ -1,10 +1,10 @@
-"use server";
+import "server-only";
 
 import { existsSync } from "node:fs";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-export const saveImage = async (file: File): Promise<string> => {
+export async function saveImage(file: File): Promise<string> {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
@@ -27,9 +27,9 @@ export const saveImage = async (file: File): Promise<string> => {
   }
 
   return `/media/${fileName}`;
-};
+}
 
-export const deleteImage = async (imageName: string) => {
+export async function deleteImage(imageName: string) {
   const baseDir = path.join(process.cwd(), "public", "media");
   const imagePath = path.resolve(baseDir, path.basename(imageName));
 
@@ -39,4 +39,4 @@ export const deleteImage = async (imageName: string) => {
 
   if (!existsSync(imagePath)) return;
   await unlink(imagePath);
-};
+}

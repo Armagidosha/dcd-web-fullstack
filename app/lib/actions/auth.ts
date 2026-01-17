@@ -3,18 +3,18 @@
 import { auth, signIn, signOut } from "../auth";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
 
-export const login = async () => {
+export async function login() {
   await signIn("discord", { redirectTo: "/dashboard" });
-};
+}
 
-export const logout = async () => {
+export async function logout() {
   await signOut({ redirectTo: "/" });
-};
+}
 
 // TODO: Реализовать таблицу с правами
 const allowedUsers = ["339134373796380694", "388646660051304448"];
 
-export const checkRights = async () => {
+export async function checkRights() {
   const session = await auth();
   if (
     !session?.user?.discordId ||
@@ -24,4 +24,4 @@ export const checkRights = async () => {
   }
 
   return true;
-};
+}

@@ -5,6 +5,7 @@ const protectedRoutes = ["/dashboard"];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
   const isProtected = protectedRoutes.some((route) =>
     pathname.startsWith(route),
   );
