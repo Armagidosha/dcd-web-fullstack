@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { checkPlayerPrivilege } from "@/app/lib/actions/checkNickname";
 import { calculateFinalPrice } from "@/app/lib/actions/promo";
-import { PackageIcon } from "@/app/shared/icons/icons";
+import { PackageIcon, YooKassaLogo } from "@/app/shared/icons/icons";
 import Button from "@/app/shared/ui/Button";
 import Dot from "@/app/shared/ui/Dot";
 import CheckBox from "@/app/shared/ui/Input/CheckBox";
@@ -14,6 +14,7 @@ import TextInput from "@/app/shared/ui/Input/TextInput";
 import { debounce } from "@/app/shared/utils/functions";
 import { useAsync } from "@/app/shared/utils/hooks";
 import { useForm } from "@/app/shared/utils/hooks/useForm";
+import type { PaymentMethods } from "@/app/shared/utils/types/payment";
 import type { Product } from "@/lib/generated/prisma/client";
 import { createPayment } from "../../actions/create-payment";
 
@@ -29,12 +30,14 @@ type Form = {
   terms: boolean;
 };
 
-type PaymentMethod = "sbp" | "sber" | "yoomoney";
+type PaymentCards = {
+  id: PaymentMethods;
+  name: string;
+  icon: React.ReactNode;
+};
 
-const paymentMethods = [
-  { id: "sbp" as PaymentMethod, name: "СБП", icon: "🏦" },
-  { id: "sber" as PaymentMethod, name: "Сбербанк", icon: "💳" },
-  { id: "yoomoney" as PaymentMethod, name: "ЮMoney", icon: "💰" },
+const paymentMethods: PaymentCards[] = [
+  { id: "YooKassa", name: "", icon: <YooKassaLogo /> },
 ];
 
 type Promo = {
@@ -49,7 +52,9 @@ export default function ProductPurchaseForm({
   const router = useRouter();
   const { errors, isLoading, clearFieldError, setFieldError, execute } =
     useAsync();
-  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>("sbp");
+  const [selectedPayment, setSelectedPayment] = useState<PaymentMethods>(
+    paymentMethods[0].id,
+  );
   const [order, setOrder] = useState<Promo>({
     finalPrice: product.price,
     discount: 0,
@@ -212,7 +217,9 @@ export default function ProductPurchaseForm({
             >
               {/* TODO: Изменить иконки на реальные */}
               <span className="text-3xl">{method.icon}</span>
-              <span className="text-sm font-semibold">{method.name}</span>
+              {method.name.length > 0 && (
+                <span className="text-sm font-semibold">{method.name}</span>
+              )}
               {selectedPayment === method.id && (
                 <Dot posX="left-2" posY="top-2" />
               )}

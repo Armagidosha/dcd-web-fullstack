@@ -7,10 +7,12 @@ import { PromoCodeExpiredError } from "@/app/lib/errors/PromoCodeExpired";
 import { PromoCodeInvalidError } from "@/app/lib/errors/PromoCodeInvalid";
 import { PromoCodeLimitError } from "@/app/lib/errors/PromoCodeLimit";
 import { yooCheckout } from "@/app/lib/YooKassa";
+import type { PaymentMethods } from "@/app/shared/utils/types/payment";
 import prisma from "@/lib/prisma";
 
 interface PaymentProps {
   productId: string;
+  paymentMethod: PaymentMethods;
   playerNick: string;
   playerEmail: string;
   promoCode?: string;
@@ -21,6 +23,8 @@ export async function createPayment({
   playerNick,
   playerEmail,
   promoCode,
+  // TODO: Использовать после апрува в Юкассе
+  // paymentMethod,
 }: PaymentProps) {
   try {
     const product = await prisma.product.findUniqueOrThrow({
@@ -111,8 +115,7 @@ export async function createPayment({
           promo_code: newOrder.promoCode,
         },
       },
-      // ! Временно закомментировал, т.к. мешает тестированию кассы, ибо если платёж уже прошёл, будет возвращать объект, вместо ссылки на оплату
-      // idempotencyKey,
+      idempotencyKey,
     );
 
     return {
