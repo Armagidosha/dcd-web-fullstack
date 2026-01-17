@@ -1,8 +1,8 @@
-import type { Latest as TLatest } from "@/lib/generated/prisma/client";
+import type { LatestOrder } from "@/app/shared/utils/types/products";
 import LatestCard from "../ui/LatestCard";
 
 interface LatestProps {
-  latest: TLatest[];
+  latest: LatestOrder[];
 }
 
 export default function Latest({ latest }: LatestProps) {
@@ -11,12 +11,12 @@ export default function Latest({ latest }: LatestProps) {
       <h2 className="section-heading">Последние покупки</h2>
       <ul className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {latest.map((el) => (
-          <li key={el.id}>
+          <li key={`${el.purchasedAt}/${el.playerNick}`}>
             <LatestCard
-              createdAt={el.createdAt}
-              image={el.image}
-              nickname={el.nickname}
               productName={el.productName}
+              productImage={el.productImage}
+              playerNick={el.playerNick}
+              purchasedAt={el.purchasedAt}
             />
           </li>
         ))}

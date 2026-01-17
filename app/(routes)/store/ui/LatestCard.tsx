@@ -1,21 +1,18 @@
 import ImageWithFallback from "@shared/ui/ImageWithFallback";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import type { Latest } from "@/lib/generated/prisma/client";
+import type { LatestOrder } from "@/app/shared/utils/types/products";
 
-type LatestProps = Pick<
-  Latest,
-  "image" | "nickname" | "productName" | "createdAt"
->;
+interface LatestCardProps extends LatestOrder {}
 
 export default function LatestCard({
-  image,
   productName,
-  createdAt,
-  nickname,
-}: LatestProps) {
-  const formattedDate = createdAt
-    ? format(createdAt, "H:mm d MMM", { locale: ru })
+  productImage,
+  playerNick,
+  purchasedAt,
+}: LatestCardProps) {
+  const formattedDate = purchasedAt
+    ? format(purchasedAt, "H:mm d MMM", { locale: ru })
     : "Дата неизвестна";
   return (
     <div className="relative gradient-bg backdrop-blur-sm rounded-2xl overflow-hidden border border-border/40 transition-all duration-300 hover:border-border/80 group">
@@ -32,7 +29,7 @@ export default function LatestCard({
             className="relative z-10 transition-all duration-500 group-hover:scale-110 object-cover"
             width={64}
             height={64}
-            src={image}
+            src={productImage}
             alt={productName}
           />
         </div>
@@ -42,7 +39,7 @@ export default function LatestCard({
           {/* Никнейм покупателя */}
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold text-primary truncate">
-              {nickname}
+              {playerNick}
             </span>
             <span className="text-xs text-dim-text">купил(а)</span>
           </div>

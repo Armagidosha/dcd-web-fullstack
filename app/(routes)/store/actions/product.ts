@@ -1,5 +1,6 @@
 "use server";
 
+import type { LatestOrder } from "@/app/shared/utils/types/products";
 import prisma from "@/lib/prisma";
 
 export const getProducts = async () => {
@@ -8,10 +9,23 @@ export const getProducts = async () => {
     include: { category: true },
   });
 
-  const latest = await prisma.latest.findMany({
+  const completedOrders = await prisma.order.findMany({
+    where: { status: "completed" },
     orderBy: { createdAt: "desc" },
     take: 6,
+    select: {
+      customerNick: true,
+      updatedAt: true,
+      product: { select: { image: true, name: true } },
+    },
   });
+
+  const latest: LatestOrder[] = completedOrders.map((order) => ({
+    playerNick: order.customerNick,
+    productName: order.product.name,
+    productImage: order.product.image,
+    purchasedAt: order.updatedAt,
+  }));
 
   const categories = await prisma.category.findMany({
     orderBy: { name: "asc" },

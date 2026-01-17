@@ -6,3 +6,10 @@ export type AddProductFormData = {
   description: string;
   image: File | null;
 };
+
+export type LatestOrder = {
+  playerNick: string;
+  productName: string;
+  productImage: string;
+  purchasedAt: Date;
+};
