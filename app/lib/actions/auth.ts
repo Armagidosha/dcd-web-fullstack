@@ -1,7 +1,7 @@
 "use server";
 
+import { UnauthorizedError } from "../../shared/errors/UnauthorizedError";
 import { auth, signIn, signOut } from "../auth";
-import { UnauthorizedError } from "../errors/UnauthorizedError";
 
 export async function login() {
   await signIn("discord", { redirectTo: "/dashboard" });

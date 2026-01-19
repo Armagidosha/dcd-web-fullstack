@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { checkRights } from "@/app/lib/actions/auth";
-import { UnauthorizedError } from "@/app/lib/errors/UnauthorizedError";
+import { UnauthorizedError } from "@/app/shared/errors/UnauthorizedError";
 import prisma from "@/lib/prisma";
 
 export async function GET() {
