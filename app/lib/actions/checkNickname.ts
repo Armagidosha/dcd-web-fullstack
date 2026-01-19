@@ -1,6 +1,7 @@
 "use server";
 
-import { checkRes } from "@/app/shared/utils/functions";
+import { PLAYER_ERROR, SERVER_ERROR } from "@/app/shared/utils/constants";
+import { checkRes, createErrorResult } from "@/app/shared/utils/functions";
 import prisma from "@/lib/prisma";
 
 type CheckPlayerReturnType =
@@ -29,35 +30,30 @@ export async function checkPlayerPrivilege(
     const checked = await checkRes(response);
 
     if (checked.status === "not_found") {
-      return {
-        success: false,
-        error: "PLAYER_NOT_FOUND",
-        details: {
-          nick: ["Игрок не найден в базе проекта."],
-        },
-      };
+      return createErrorResult(PLAYER_ERROR.PLAYER_NOT_FOUND, {
+        playerNick: ["Игрок не найден в базе проекта."],
+      });
     }
 
     if (checked.status === "already") {
-      return {
-        success: false,
-        error: "PLAYER_ALREADY",
-        details: {
-          nick: ["Игрок уже имеет привилегию этого уровня или выше."],
-        },
-      };
+      return createErrorResult(PLAYER_ERROR.PLAYER_HAS_PRIVILEGE, {
+        playerNick: ["Игрок уже имеет привилегию этого уровня или выше."],
+      });
     }
 
     return { success: true };
   } catch (error) {
-    console.log("Error checking nickname", error);
+    console.error("Error checking nickname", error);
     if (error instanceof TypeError) {
-      if (error.message === "fetch failed") {
-        return {
-          success: false,
-          error: "SERVER_UNAVAILABLE",
-          details: { nick: ["Сервер недоступен. Попробуйте позже."] },
-        };
+      const cause = error.cause as { code?: string } | undefined;
+      if (
+        cause?.code === "ECONNREFUSED" ||
+        cause?.code === "ENOTFOUND" ||
+        error.message === "fetch failed"
+      ) {
+        return createErrorResult(SERVER_ERROR.SERVER_UNAVAILABLE, {
+          form: ["Сервер недоступен. Попробуйте позже."],
+        });
       }
     }
 

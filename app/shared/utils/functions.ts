@@ -36,3 +36,22 @@ export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
 
   return debounced;
 }
+
+export function createErrorResult(
+  error: string,
+  details: Record<string, string[]>,
+  originalError?: unknown,
+): { success: false; error: string; details: Record<string, string[]> } {
+  console.error("[Payment Error]", {
+    error,
+    details,
+    originalError,
+    timestamp: new Date().toISOString(),
+  });
+
+  return {
+    success: false,
+    error,
+    details,
+  };
+}

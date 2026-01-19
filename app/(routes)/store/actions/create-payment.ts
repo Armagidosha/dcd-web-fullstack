@@ -1,165 +1,272 @@
 "use server";
 
+import type { Payment } from "@a2seven/yoo-checkout";
+import z from "zod";
 import { checkPlayerPrivilege } from "@/app/lib/actions/checkNickname";
-import { generateIdempotencyKey } from "@/app/lib/actions/idempotency";
-import { calculateFinalPrice } from "@/app/lib/actions/promo";
-import { PromoCodeExpiredError } from "@/app/lib/errors/PromoCodeExpired";
-import { PromoCodeInvalidError } from "@/app/lib/errors/PromoCodeInvalid";
-import { PromoCodeLimitError } from "@/app/lib/errors/PromoCodeLimit";
 import { yooCheckout } from "@/app/lib/YooKassa";
-import type { PaymentMethods } from "@/app/shared/utils/types/payment";
+import { PAYMENT_ERROR, PAYMENT_METHODS } from "@/app/shared/utils/constants";
+import { createErrorResult } from "@/app/shared/utils/functions";
 import prisma from "@/lib/prisma";
 
-interface PaymentProps {
-  productId: string;
-  paymentMethod: PaymentMethods;
-  playerNick: string;
-  playerEmail: string;
-  promoCode?: string;
-}
+type PaymentSuccess = {
+  success: true;
+  confirmationUrl: string;
+  paymentId: string;
+};
 
-export async function createPayment({
-  productId,
-  playerNick,
-  playerEmail,
-  promoCode,
-  // TODO: Использовать после апрува в Юкассе
-  // paymentMethod,
-}: PaymentProps) {
+type PaymentError = {
+  success: false;
+  error: string;
+  details: Record<string, string[]>;
+};
+
+type PaymentReturnType = PaymentSuccess | PaymentError;
+
+const paymentInputSchema = z.object({
+  requestId: z.uuid("Некорректный request ID"),
+  productId: z.cuid({ error: "Некорректный ID продукта." }),
+  paymentMethod: z.enum(PAYMENT_METHODS, {
+    error: "Неподдерживаемый метод оплаты.",
+  }),
+  playerNick: z
+    .string({ error: "Никнейм должен быть строкой" })
+    .min(3, "Никнейм должен содержать минимум 3 символа")
+    .max(16, "Никнейм не может превышать 16 символов")
+    .toLowerCase(),
+  playerEmail: z.email("Некорректный email адрес").toLowerCase(),
+  promoCode: z
+    .string()
+    .max(20, "Промокод слишком длинный")
+    .toUpperCase()
+    .optional(),
+});
+
+type PaymentInput = z.infer<typeof paymentInputSchema>;
+
+export async function createPayment(
+  input: PaymentInput,
+): Promise<PaymentReturnType> {
   try {
-    const product = await prisma.product.findUniqueOrThrow({
-      where: { id: productId },
-    });
+    const validationResult = paymentInputSchema.safeParse(input);
 
-    const checked = await checkPlayerPrivilege(playerNick, productId);
+    if (!validationResult.success) {
+      const flattenError = z.flattenError(validationResult.error).fieldErrors;
 
-    if (!checked.success) {
-      return checked;
+      return createErrorResult(PAYMENT_ERROR.VALIDATION_ERROR, flattenError);
     }
 
-    const checkedPromo = await calculateFinalPrice(product.price, promoCode);
-
-    if (!checkedPromo.success) {
-      return checkedPromo;
-    }
-
-    const idempotencyKey = generateIdempotencyKey({
+    const {
+      requestId,
+      paymentMethod,
       playerEmail,
       playerNick,
       productId,
       promoCode,
+    } = validationResult.data;
+
+    const product = await prisma.product.findUniqueOrThrow({
+      where: { id: productId },
+      select: { price: true, key: true },
     });
 
-    const newOrder = await prisma.$transaction(async (tx) => {
-      if (promoCode) {
-        const promo = await tx.promoCode.findUnique({
-          where: { code: promoCode.toUpperCase() },
+    const privilegeCheck = await checkPlayerPrivilege(playerNick, productId);
+
+    if (!privilegeCheck.success) {
+      return privilegeCheck;
+    }
+
+    const idempotencyKey = requestId;
+
+    const order = await prisma.$transaction(
+      async (tx) => {
+        const existingOrder = await tx.order.findUnique({
+          where: { idempotencyKey },
+          select: {
+            id: true,
+            status: true,
+            totalPrice: true,
+            customerNick: true,
+            customerEmail: true,
+            promoCode: true,
+            productId: true,
+          },
         });
 
-        if (!promo || !promo.isActive) {
-          throw new PromoCodeInvalidError();
+        if (existingOrder) {
+          if (existingOrder.status === "succeeded") {
+            throw new Error(PAYMENT_ERROR.ALREADY_PAID);
+          }
+
+          if (existingOrder.status === "pending") {
+            return existingOrder;
+          }
         }
 
-        if (promo.usageLimit && promo.usedCount >= promo.usageLimit) {
-          throw new PromoCodeLimitError();
+        let finalPrice = product.price;
+        let discount = 0;
+
+        if (promoCode) {
+          const promo = await tx.promoCode.findUnique({
+            where: { code: promoCode },
+            select: {
+              id: true,
+              isActive: true,
+              discount: true,
+              usageLimit: true,
+              usedCount: true,
+              validFrom: true,
+              validTo: true,
+            },
+          });
+
+          if (!promo || !promo.isActive) {
+            throw new Error(PAYMENT_ERROR.PROMO_INVALID);
+          }
+
+          if (promo.usageLimit && promo.usedCount >= promo.usageLimit) {
+            throw new Error(PAYMENT_ERROR.PROMO_LIMIT_EXCEEDED);
+          }
+
+          const now = new Date();
+
+          if (promo.validFrom && now < promo.validFrom) {
+            throw new Error(PAYMENT_ERROR.PROMO_INVALID);
+          }
+
+          if (promo.validTo && now > promo.validTo) {
+            throw new Error(PAYMENT_ERROR.PROMO_EXPIRED);
+          }
+
+          const discountAmount = product.price * (promo.discount / 100);
+
+          finalPrice = Math.max(0, product.price - discountAmount);
+          discount = promo.discount;
         }
 
-        const now = new Date();
-        if (promo.validTo && now > promo.validTo) {
-          throw new PromoCodeExpiredError();
-        }
-      }
-
-      const orderData = {
-        customerEmail: playerEmail.toLowerCase(),
-        customerNick: playerNick.toLowerCase(),
-        originalPrice: parseFloat(checkedPromo.originalPrice),
-        totalPrice: parseFloat(checkedPromo.finalPrice),
-        discount: checkedPromo.discount,
-        idempotencyKey,
-        promoCode: promoCode,
-        status: "pending",
-      };
-
-      const newOrder = await tx.order.upsert({
-        where: { idempotencyKey },
-        update: {
-          status: "pending",
-          totalPrice: parseFloat(checkedPromo.finalPrice),
-          discount: checkedPromo.discount,
-        },
-        create: { ...orderData, product: { connect: { id: productId } } },
-      });
-
-      return newOrder;
-    });
-
-    const payment = await yooCheckout.createPayment(
-      {
-        amount: {
-          value: checkedPromo.finalPrice,
-          currency: "RUB",
-        },
-        confirmation: {
-          type: "redirect",
-          return_url: `${process.env.CALLBACK_URL}/payment/success`,
-        },
-        capture: true,
-        metadata: {
-          order_id: newOrder.id,
-          product_id: newOrder.productId,
-          player_nick: newOrder.customerNick,
-          promo_code: newOrder.promoCode,
-        },
+        return await tx.order.create({
+          data: {
+            customerEmail: playerEmail,
+            customerNick: playerNick,
+            originalPrice: product.price,
+            totalPrice: finalPrice,
+            discount,
+            idempotencyKey,
+            promoCode,
+            status: "pending",
+            product: { connect: { id: productId } },
+          },
+          select: {
+            id: true,
+            status: true,
+            totalPrice: true,
+            customerNick: true,
+            customerEmail: true,
+            promoCode: true,
+            productId: true,
+          },
+        });
       },
-      idempotencyKey,
+      { isolationLevel: "Serializable", maxWait: 5000, timeout: 10000 },
     );
 
-    if (payment?.status === "succeeded") {
-      return {
-        success: false,
-        error: "ALREADY_PAID",
-        details: {
-          nick: ["Игрок уже имеет привилегию этого уровня или выше."],
+    let payment: Payment;
+
+    try {
+      switch (paymentMethod) {
+        case "YooKassa":
+          payment = await yooCheckout.createPayment(
+            {
+              amount: {
+                value: order.totalPrice.toFixed(2),
+                currency: "RUB",
+              },
+              confirmation: {
+                type: "redirect",
+                return_url: `${process.env.CALLBACK_URL}/payment/success`,
+              },
+              capture: true,
+              metadata: {
+                order_id: order.id,
+                product_id: order.productId,
+                player_nick: order.customerNick,
+                promo_code: order.promoCode,
+              },
+            },
+            idempotencyKey,
+          );
+          break;
+        default:
+          throw new Error(PAYMENT_ERROR.UNSUPPORTED_METHOD);
+      }
+    } catch {
+      await prisma.order.update({
+        where: { id: order.id },
+        data: {
+          status: "failed",
         },
-      };
+      });
+
+      return createErrorResult(PAYMENT_ERROR.PAYMENT_CREATION_FAILED, {
+        form: ["Не удалось создать платеж. Пожалуйста, попробуй позже"],
+      });
+    }
+
+    if (!payment) {
+      return createErrorResult(PAYMENT_ERROR.PAYMENT_CREATION_FAILED, {
+        form: ["Не удалось создать платеж. Пожалуйста, попробуй позже"],
+      });
+    }
+
+    if (payment?.status === "succeeded") {
+      return createErrorResult(PAYMENT_ERROR.ALREADY_PAID, {
+        form: ["Этот платеж уже был успешно обработан"],
+      });
+    }
+
+    if (!payment.confirmation.confirmation_url) {
+      return createErrorResult(PAYMENT_ERROR.UNKNOWN_ERROR, {
+        form: ["Не удалось создать платеж. Пожалуйста, попробуй позже"],
+      });
     }
 
     return {
+      success: true,
       confirmationUrl: payment.confirmation.confirmation_url,
       paymentId: payment.id,
     };
   } catch (error) {
     console.error("Payment creation error:", error);
 
-    if (error instanceof PromoCodeInvalidError) {
-      return {
-        success: false,
-        error: "PROMO_INVALID",
-        details: { promo: ["Промокод недействителен."] },
-      };
+    if (error instanceof Error) {
+      switch (error.message) {
+        case PAYMENT_ERROR.ALREADY_PAID:
+          return createErrorResult(PAYMENT_ERROR.ALREADY_PAID, {
+            form: ["Платеж уже был успешно обработан"],
+          });
+
+        case PAYMENT_ERROR.PROMO_INVALID:
+          return createErrorResult(PAYMENT_ERROR.PROMO_INVALID, {
+            promo: ["Промокод недействителен или неактивен"],
+          });
+
+        case PAYMENT_ERROR.PROMO_EXPIRED:
+          return createErrorResult(PAYMENT_ERROR.PROMO_EXPIRED, {
+            promo: ["Срок действия промокода истек"],
+          });
+
+        case PAYMENT_ERROR.PROMO_LIMIT_EXCEEDED:
+          return createErrorResult(PAYMENT_ERROR.PROMO_LIMIT_EXCEEDED, {
+            promo: ["Достигнут лимит использований промокода"],
+          });
+        case PAYMENT_ERROR.UNSUPPORTED_METHOD:
+          return createErrorResult(PAYMENT_ERROR.UNSUPPORTED_METHOD, {
+            form: ["Неподдерживаемый метод оплаты."],
+          });
+      }
     }
 
-    if (error instanceof PromoCodeLimitError) {
-      return {
-        success: false,
-        error: "PROMO_LIMIT_EXCEEDED",
-        details: { promo: ["Достигнут лимит использований промокода."] },
-      };
-    }
-
-    if (error instanceof PromoCodeExpiredError) {
-      return {
-        success: false,
-        error: "PROMO_EXPIRED",
-        details: { promo: ["Срок действия промокода истек."] },
-      };
-    }
-
-    return {
-      success: false,
-      error: "PAYMENT_FAILED",
-      details: { form: "Не удалось создать платеж. Попробуйте позже." },
-    };
+    return createErrorResult(PAYMENT_ERROR.UNKNOWN_ERROR, {
+      form: ["Не удалось создать платеж. Попробуйте позже."],
+    });
   }
 }

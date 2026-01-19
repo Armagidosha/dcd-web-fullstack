@@ -4,9 +4,10 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { checkPlayerPrivilege } from "@/app/lib/actions/checkNickname";
-import { calculateFinalPrice } from "@/app/lib/actions/promo";
-import { PackageIcon, YooKassaLogo } from "@/app/shared/icons/icons";
+import { calculateFinalPrice } from "@/app/lib/actions/checkPromo";
+import { CardIcon, PackageIcon, YooKassaLogo } from "@/app/shared/icons/icons";
 import Button from "@/app/shared/ui/Button";
 import Dot from "@/app/shared/ui/Dot";
 import CheckBox from "@/app/shared/ui/Input/CheckBox";
@@ -23,10 +24,10 @@ interface ProductPurchaseFormProps {
   className?: string;
 }
 
-type Form = {
-  promo: string;
-  nick: string;
-  email: string;
+type PaymentForm = {
+  promoCode: string;
+  playerNick: string;
+  playerEmail: string;
   terms: boolean;
 };
 
@@ -50,8 +51,15 @@ export default function ProductPurchaseForm({
   className,
 }: ProductPurchaseFormProps) {
   const router = useRouter();
-  const { errors, isLoading, clearFieldError, setFieldError, execute } =
-    useAsync();
+  const {
+    errors,
+    isLoading,
+    clearFieldError,
+    clearErrors,
+    setFieldError,
+    execute,
+  } = useAsync();
+  const [requestId] = useState(() => uuidv4());
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethods>(
     paymentMethods[0].id,
   );
@@ -60,11 +68,11 @@ export default function ProductPurchaseForm({
     discount: 0,
   });
 
-  const { inputs, handleChange } = useForm({
+  const { inputs, handleChange } = useForm<PaymentForm>({
     initialValues: {
-      promo: "",
-      nick: "",
-      email: "",
+      promoCode: "",
+      playerNick: "",
+      playerEmail: "",
       terms: false,
     },
     onChangeWrapper: (name) => {
@@ -103,14 +111,18 @@ export default function ProductPurchaseForm({
 
   const handleSubmit = async (evt: React.FormEvent) => {
     evt.preventDefault();
-    const paymentData = {
-      productId: product.id,
-      promoCode: inputs.promo,
-      playerNick: inputs.nick,
-      playerEmail: inputs.email,
-      paymentMethod: selectedPayment,
-    };
-    const payment = await execute(() => createPayment(paymentData));
+    clearErrors();
+
+    const payment = await execute(() =>
+      createPayment({
+        requestId,
+        productId: product.id,
+        promoCode: inputs.promoCode,
+        playerNick: inputs.playerNick,
+        playerEmail: inputs.playerEmail,
+        paymentMethod: selectedPayment,
+      }),
+    );
 
     if (payment?.confirmationUrl) {
       router.push(payment.confirmationUrl);
@@ -142,13 +154,12 @@ export default function ProductPurchaseForm({
     debouncedCheckNickname(nick, product.id);
   };
 
-  const canSubmit = (inputs: Form): boolean => {
+  const canSubmit = (inputs: PaymentForm): boolean => {
     const min3 = (v: string) => v.trim().length >= 3;
-    return min3(inputs.nick) && min3(inputs.email) && inputs.terms;
+    return min3(inputs.playerNick) && min3(inputs.playerEmail) && inputs.terms;
   };
 
-  const isDisabled =
-    isLoading || !canSubmit(inputs) || Object.keys(errors).length > 0;
+  const isDisabled = isLoading || !canSubmit(inputs);
 
   return (
     <form
@@ -163,20 +174,20 @@ export default function ProductPurchaseForm({
       <div>
         <TextInput
           label="Почта"
-          name="email"
+          name="playerEmail"
           type="email"
           placeholder="player@example.com"
           onChange={handleChange}
-          errors={errors.email}
+          errors={errors.playerEmail}
           minLength={3}
           disabled={isLoading}
           required
         />
         <TextInput
           label="Игровой никнейм"
-          name="nick"
+          name="playerNick"
           type="text"
-          errors={errors.nick}
+          errors={errors.playerNick}
           placeholder="Steve"
           onChange={handleNicknameChange}
           minLength={3}
@@ -186,9 +197,9 @@ export default function ProductPurchaseForm({
         />
         <TextInput
           label="Промокод (необязательно)"
-          name="promo"
+          name="promoCode"
           type="text"
-          errors={errors.promo}
+          errors={errors.promoCode}
           placeholder="SALE"
           onChange={handlePromoChange}
           disabled={isLoading}
@@ -196,6 +207,7 @@ export default function ProductPurchaseForm({
       </div>
       <div className="space-y-4">
         <h3 className="text-xl font-bold text-primary flex items-center gap-2">
+          <CardIcon />
           Способ оплаты
         </h3>
         <div className="grid grid-cols-3 gap-3">
@@ -284,19 +296,26 @@ export default function ProductPurchaseForm({
           </Link>
         </label>
       </div>
-      <Button type="submit" disabled={isDisabled}>
-        {isLoading ? (
-          <span className="flex items-center justify-center gap-2">
-            <span className="animate-spin">⏳</span>
-            Оформление...
-          </span>
-        ) : (
-          <span className="flex items-center justify-center gap-2">
-            <span>🚀</span>
-            Купить за {order.finalPrice} ₽
-          </span>
-        )}
-      </Button>
+      <div className="space-y-2">
+        {errors?.form?.map((error) => (
+          <p key={error} className="ml-1 text-xs text-primary select-none">
+            {error}
+          </p>
+        ))}
+        <Button type="submit" disabled={isDisabled}>
+          {isLoading ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="animate-spin">⏳</span>
+              Оформление...
+            </span>
+          ) : (
+            <span className="flex items-center justify-center gap-2">
+              <span>🚀</span>
+              Купить за {order.finalPrice} ₽
+            </span>
+          )}
+        </Button>
+      </div>
     </form>
   );
 }
