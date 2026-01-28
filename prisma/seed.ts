@@ -35,7 +35,7 @@ const products: OmitDefault<
     description: "Описание #1",
     key: "coins:150",
     price: 150,
-    image: "images/fallback.png",
+    image: "/images/fallback.png",
     category: { name: "Квинты" },
   },
   {
@@ -43,7 +43,7 @@ const products: OmitDefault<
     description: "Описание #2",
     key: "coins:300",
     price: 300,
-    image: "images/fallback.png",
+    image: "/images/fallback.png",
     category: { name: "Квинты" },
   },
   {
@@ -51,7 +51,7 @@ const products: OmitDefault<
     description: "Описание #3",
     key: "coins:450",
     price: 450,
-    image: "images/fallback.ong",
+    image: "/images/fallback.ong",
     category: { name: "Квинты" },
   },
 ];
