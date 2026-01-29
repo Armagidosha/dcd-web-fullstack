@@ -1,4 +1,4 @@
-import { checkRights } from "@/app/lib/actions/auth";
+import { checkRights } from "@/app/lib/actions/checkRights";
 import { CartIcon, HomeIcon, RulesIcon, ShieldIcon } from "../../icons/icons";
 import ClientHeader from "./ClientHeader";
 
@@ -21,7 +21,7 @@ const LINKS = [
 ];
 
 export default async function Header() {
-  const haveRights = await checkRights().catch(() => false);
+  const { success: haveRights } = await checkRights();
 
   const links = haveRights
     ? [

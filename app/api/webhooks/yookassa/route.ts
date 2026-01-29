@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import { grantMinecraftPrivilege } from "@/app/lib/actions/grantPrivilege";
 import { yooCheckout } from "@/app/lib/YooKassa";
@@ -57,6 +58,8 @@ export async function POST(request: NextRequest) {
         data: { status: "canceled" },
       });
     }
+
+    revalidatePath(`/store/order/${orderId}`);
 
     return NextResponse.json({ ok: true });
   } catch (error) {

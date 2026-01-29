@@ -182,7 +182,7 @@ export async function createPayment(
               },
               confirmation: {
                 type: "redirect",
-                return_url: `${process.env.CALLBACK_URL}/payment/success`,
+                return_url: `${process.env.CALLBACK_URL}/store/order/${order.id}`,
               },
               capture: true,
               metadata: {
@@ -198,6 +198,13 @@ export async function createPayment(
         default:
           throw new Error(PAYMENT_ERROR.UNSUPPORTED_METHOD);
       }
+
+      await prisma.order.update({
+        where: { id: order.id },
+        data: {
+          paymentId: payment.id,
+        },
+      });
     } catch {
       await prisma.order.update({
         where: { id: order.id },
@@ -207,13 +214,13 @@ export async function createPayment(
       });
 
       return createErrorResult(PAYMENT_ERROR.PAYMENT_CREATION_FAILED, {
-        form: ["Не удалось создать платеж. Пожалуйста, попробуй позже"],
+        form: ["Не удалось создать платеж. Попробуйте позже"],
       });
     }
 
     if (!payment) {
       return createErrorResult(PAYMENT_ERROR.PAYMENT_CREATION_FAILED, {
-        form: ["Не удалось создать платеж. Пожалуйста, попробуй позже"],
+        form: ["Не удалось создать платеж. Попробуй позже"],
       });
     }
 
@@ -225,7 +232,7 @@ export async function createPayment(
 
     if (!payment.confirmation.confirmation_url) {
       return createErrorResult(PAYMENT_ERROR.UNKNOWN_ERROR, {
-        form: ["Не удалось создать платеж. Пожалуйста, попробуй позже"],
+        form: ["Не удалось создать платеж. Попробуй позже"],
       });
     }
 
