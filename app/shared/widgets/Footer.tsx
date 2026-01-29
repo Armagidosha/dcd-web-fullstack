@@ -55,8 +55,7 @@ const Footer = () => {
             <li>
               <Link
                 className="hover:opacity-70 transition-opacity duration-300"
-                // TODO: Добавить ссылку на ДС
-                href={"/"}
+                href={"https://discord.gg/TBeK3nE"}
               >
                 Discord
               </Link>
