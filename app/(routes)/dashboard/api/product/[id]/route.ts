@@ -1,8 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { checkRights } from "@/app/lib/actions/auth";
+import { checkRights } from "@/app/lib/actions/checkRights";
 import { deleteImage, saveImage } from "@/app/lib/actions/image";
-import { UnauthorizedError } from "@/app/shared/errors/UnauthorizedError";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
 import { productSchema } from "../../schema";
@@ -12,7 +11,11 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    await checkRights();
+    const { success } = await checkRights();
+
+    if (!success) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { id: productId } = await params;
     const formData = await request.formData();
@@ -84,10 +87,6 @@ export async function PATCH(
       );
     }
 
-    if (error instanceof UnauthorizedError) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     return NextResponse.json(
       { error: (error as Error)?.message || "Internal server error" },
       { status: 500 },
@@ -100,7 +99,11 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    await checkRights();
+    const { success } = await checkRights();
+
+    if (!success) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { id: productId } = await params;
     const existing = await prisma.product.findUnique({
@@ -122,10 +125,6 @@ export async function DELETE(
     return NextResponse.json({ message: "success" });
   } catch (error) {
     console.error("Error deleting product:", error);
-
-    if (error instanceof UnauthorizedError) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2025") {

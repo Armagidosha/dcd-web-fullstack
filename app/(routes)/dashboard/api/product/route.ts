@@ -1,13 +1,16 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
-import { checkRights } from "@/app/lib/actions/auth";
+import { checkRights } from "@/app/lib/actions/checkRights";
 import { saveImage } from "@/app/lib/actions/image";
-import { UnauthorizedError } from "@/app/shared/errors/UnauthorizedError";
 import prisma from "@/lib/prisma";
 import { productSchema } from "../schema";
 
 export async function GET() {
-  await checkRights();
+  const { success } = await checkRights();
+
+  if (!success) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const products = await prisma.product.findMany({
     orderBy: { price: "asc" },
@@ -62,10 +65,6 @@ export async function POST(request: NextRequest) {
         },
         { status: 400 },
       );
-    }
-
-    if (error instanceof UnauthorizedError) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     return NextResponse.json(

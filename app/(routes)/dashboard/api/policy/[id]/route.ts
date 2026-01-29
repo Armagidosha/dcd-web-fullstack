@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
-import { checkRights } from "@/app/lib/actions/auth";
-import { UnauthorizedError } from "@/app/shared/errors/UnauthorizedError";
+import { checkRights } from "@/app/lib/actions/checkRights";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
 import { policySchema } from "../../schema";
@@ -11,7 +10,12 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    await checkRights();
+    const { success } = await checkRights();
+
+    if (!success) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const requestData = await request.json();
     const { id } = await params;
 
@@ -24,10 +28,6 @@ export async function PATCH(
 
     return NextResponse.json(updated);
   } catch (error) {
-    if (error instanceof UnauthorizedError) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
         return NextResponse.json(

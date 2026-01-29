@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { checkRights } from "@/app/lib/actions/auth";
-import { UnauthorizedError } from "@/app/shared/errors/UnauthorizedError";
+import { checkRights } from "@/app/lib/actions/checkRights";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
 
@@ -9,7 +8,12 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string; order: string }> },
 ) {
   try {
-    await checkRights();
+    const { success } = await checkRights();
+
+    if (!success) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id: ruleId, order } = await params;
 
     await prisma.$transaction(async (tx) => {
@@ -58,10 +62,6 @@ export async function PATCH(
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error updating order:", error);
-
-    if (error instanceof UnauthorizedError) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2025") {

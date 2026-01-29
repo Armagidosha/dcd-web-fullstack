@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { checkRights } from "./app/lib/actions/auth";
+import { checkRights } from "./app/lib/actions/checkRights";
 
 const protectedRoutes = ["/dashboard"];
 
@@ -11,9 +11,8 @@ export async function proxy(request: NextRequest) {
   );
 
   if (isProtected) {
-    try {
-      await checkRights();
-    } catch {
+    const { success } = await checkRights();
+    if (!success) {
       return NextResponse.rewrite(new URL("/404", request.nextUrl));
     }
   }

@@ -1,28 +1,37 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
-import { checkRights } from "@/app/lib/actions/auth";
-import { UnauthorizedError } from "@/app/shared/errors/UnauthorizedError";
+import { checkRights } from "@/app/lib/actions/checkRights";
 import prisma from "@/lib/prisma";
 import { ruleSchema } from "../schema";
 
 export async function GET() {
   try {
-    await checkRights();
+    const { success } = await checkRights();
+
+    if (!success) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     return NextResponse.json(
       await prisma.rule.findMany({ orderBy: { order: "asc" } }),
     );
   } catch (error) {
     console.error("Error getting rules:", error);
 
-    if (error instanceof Error && error.message.includes("Unauthorized")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    await checkRights();
+    const { success } = await checkRights();
+
+    if (!success) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { title, content } = await request.json();
 
@@ -40,10 +49,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(newRule);
   } catch (error) {
     console.error("Error posting rule:", error);
-
-    if (error instanceof UnauthorizedError) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

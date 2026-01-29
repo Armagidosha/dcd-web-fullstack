@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
-import { checkRights } from "@/app/lib/actions/auth";
-import { UnauthorizedError } from "@/app/shared/errors/UnauthorizedError";
+import { checkRights } from "@/app/lib/actions/checkRights";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
 import { ruleSchema } from "../../schema";
@@ -11,7 +10,11 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    await checkRights();
+    const { success } = await checkRights();
+
+    if (!success) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { id: ruleId } = await params;
     const { title, content } = await request.json();
@@ -26,10 +29,6 @@ export async function PATCH(
     return NextResponse.json(updated);
   } catch (error) {
     console.error("Error updating rule:", error);
-
-    if (error instanceof UnauthorizedError) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -53,7 +52,11 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    await checkRights();
+    const { success } = await checkRights();
+
+    if (!success) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { id: ruleId } = await params;
 
@@ -78,10 +81,6 @@ export async function DELETE(
     return NextResponse.json({ message: "success" });
   } catch (error) {
     console.error("Error deleting rule", error);
-
-    if (error instanceof UnauthorizedError) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
