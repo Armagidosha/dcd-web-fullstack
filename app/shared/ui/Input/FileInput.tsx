@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { useState } from "react";
-import { CrossIcon, PaperClipIcon } from "../../icons/icons";
+import { CrossIcon, PaperClipIcon } from "../../../../ui/icons/ui.icons";
 
 interface FileInputProps
   extends React.DetailedHTMLProps<

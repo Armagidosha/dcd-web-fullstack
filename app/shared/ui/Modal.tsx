@@ -5,8 +5,8 @@ import { FocusTrap } from "focus-trap-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import { CrossIcon } from "../icons/icons";
 import { hasWindow } from "../utils/functions";
+import { CrossIcon } from "../../../ui/icons/ui.icons";
 
 interface ModalProps {
   opened: boolean;

@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { checkRights } from "@/app/lib/actions/checkRights";
+import { checkRights } from "@/lib/actions/check-rights";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
 

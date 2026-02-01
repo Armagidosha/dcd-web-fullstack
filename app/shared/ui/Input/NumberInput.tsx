@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ChevronIcon } from "../../icons/icons";
+import { ChevronIcon } from "../../../../ui/icons/ui.icons";
 
 interface NumberInputProps
   extends Omit<

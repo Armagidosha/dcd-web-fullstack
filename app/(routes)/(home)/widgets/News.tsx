@@ -1,10 +1,9 @@
 "use client";
 
 import Modal from "@shared/ui/Modal";
-import { useState } from "react";
 import Paper from "@/app/shared/ui/Paper";
-import type { News as TNews } from "@/lib/generated/prisma/client";
-import type { ActiveCard } from "../types/news";
+import type { TNews } from "@/lib/actions/news/get-news";
+import { useModal } from "@/lib/hooks/useModal";
 import NewsModal from "../ui/modals/NewsModal";
 import NewsCard from "../ui/NewsCard";
 
@@ -13,23 +12,20 @@ interface NewsProps {
 }
 
 export default function News({ news }: NewsProps) {
-  const [active, setActive] = useState<ActiveCard | null>(null);
+  const modal = useModal<TNews>();
 
   return (
     <section className="section">
-      <Modal opened={!!active} onClose={() => setActive(null)}>
-        {active && <NewsModal newsItem={active} />}
+      <Modal opened={modal.opened} onClose={modal.close}>
+        {modal.data && <NewsModal newsItem={modal.data} />}
       </Modal>
       <h2 className="section-heading">Новости проекта</h2>
 
       {!!news.length && (
         <ul className="grid justify-center grid-cols-[18rem] sm:grid-cols-[repeat(2,18rem)] lg:grid-cols-[repeat(3,18rem)] xl:grid-cols-[repeat(4,19rem)] gap-4">
-          {news?.map((el) => (
-            <li key={el.id}>
-              <NewsCard
-                data={el}
-                onClick={(card: ActiveCard) => setActive(card)}
-              />
+          {news?.map((n) => (
+            <li key={n.createdAt.toString()}>
+              <NewsCard newsItem={n} onClick={modal.open} />
             </li>
           ))}
         </ul>

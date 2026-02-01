@@ -2,9 +2,9 @@
 
 import MarkdownRenderer from "@shared/ui/MarkDownRenderer";
 import { useState } from "react";
-import { RulesIcon } from "@/app/shared/icons/icons";
 import AsideNavigation from "@/app/shared/ui/Aside";
 import type { Rule } from "@/lib/generated/prisma/client";
+import { RulesIcon } from "@/ui/icons/ui.icons";
 
 interface RulesProps {
   rules: Rule[];

@@ -5,9 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { checkPlayerPrivilege } from "@/app/lib/actions/checkNickname";
-import { calculateFinalPrice } from "@/app/lib/actions/checkPromo";
-import { CardIcon, PackageIcon, YooKassaLogo } from "@/app/shared/icons/icons";
+import { checkPlayerPrivilege } from "@/lib/actions/payment/check-nickname";
+import { calculateFinalPrice } from "@/lib/actions/payment/checkPromo";
 import Button from "@/app/shared/ui/Button";
 import Dot from "@/app/shared/ui/Dot";
 import CheckBox from "@/app/shared/ui/Input/CheckBox";
@@ -17,7 +16,9 @@ import { useAsync } from "@/app/shared/utils/hooks";
 import { useForm } from "@/app/shared/utils/hooks/useForm";
 import type { PaymentMethods } from "@/app/shared/utils/types/payment";
 import type { Product } from "@/lib/generated/prisma/client";
-import { createPayment } from "../../actions/create-payment";
+import { createPayment } from "../../../../../lib/actions/payment/create-payment";
+import { YooKassaLogo } from "@/ui/icons/media.icons";
+import { CardIcon, PackageIcon } from "@/ui/icons/ui.icons";
 
 interface ProductPurchaseFormProps {
   product: Pick<Product, "price" | "id">;

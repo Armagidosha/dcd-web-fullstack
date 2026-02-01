@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { FileTextIcon } from "@/app/shared/icons/icons";
 import MarkdownRenderer from "@/app/shared/ui/MarkDownRenderer";
 import Paper from "@/app/shared/ui/Paper";
 import { checkRes } from "@/app/shared/utils/functions";
 import type { Policy } from "@/lib/generated/prisma/client";
 import AsideControls from "../ui/AsideControls";
 import EditPolicyForm from "../ui/forms/EditPolicyForm";
+import { FileTextIcon } from "@/ui/icons/ui.icons";
 
 interface PolicyManagerProps {
   policies: Policy[];

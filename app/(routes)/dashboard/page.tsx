@@ -1,11 +1,6 @@
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import {
-  FileTextIcon,
-  HomeIcon,
-  PackageIcon,
-  RulesIcon,
-} from "@/app/shared/icons/icons";
+
 import Paper from "@/app/shared/ui/Paper";
 import prisma from "@/lib/prisma";
 import Aside from "./ui/Aside";
@@ -15,6 +10,7 @@ import TitleInfo from "./ui/TitleInfo";
 import PolicyManager from "./widgets/PolicyManager";
 import RulesManager from "./widgets/RulesManager";
 import Tabs from "./widgets/Tabs";
+import { FileTextIcon, HomeIcon, PackageIcon, RulesIcon } from "@/ui/icons/ui.icons";
 
 // TODO: Убрать моковые данные
 const mockStats = [

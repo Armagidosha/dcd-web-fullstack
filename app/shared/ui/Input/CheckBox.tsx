@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { CheckIcon } from "../../icons/icons";
+import { CheckIcon } from "../../../../ui/icons/ui.icons";
 
 interface CheckboxProps
   extends Omit<

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { checkRights } from "@/app/lib/actions/checkRights";
+import { checkRights } from "@/lib/actions/check-rights";
 import prisma from "@/lib/prisma";
 
 export async function GET() {

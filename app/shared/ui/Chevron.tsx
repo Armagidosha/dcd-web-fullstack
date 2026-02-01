@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { ChevronIcon } from "../icons/icons";
+import { ChevronIcon } from "../../../ui/icons/ui.icons";
 
 interface ChevronProps {
   className: string;

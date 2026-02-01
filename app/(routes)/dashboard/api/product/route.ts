@@ -1,9 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
-import { checkRights } from "@/app/lib/actions/checkRights";
-import { saveImage } from "@/app/lib/actions/image";
+import { checkRights } from "@/lib/actions/check-rights";
+import { saveImage } from "@/lib/actions/media/image";
 import prisma from "@/lib/prisma";
-import { productSchema } from "../schema";
+import { productSchema } from "@/lib/validation/product.schema";
 
 export async function GET() {
   const { success } = await checkRights();

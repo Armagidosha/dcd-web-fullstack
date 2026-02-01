@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { PlusIcon } from "@/app/shared/icons/icons";
 import Button from "@/app/shared/ui/Button";
 import { useAsync } from "@/app/shared/utils/hooks";
 import AsideItem from "./AsideItem";
+import { PlusIcon } from "@/ui/icons/ui.icons";
 
 interface BaseElement {
   id: string;

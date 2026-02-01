@@ -1,8 +1,8 @@
 import { revalidatePath } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
-import { grantMinecraftPrivilege } from "@/app/lib/actions/grantPrivilege";
-import { yooCheckout } from "@/app/lib/YooKassa";
+import { grantMinecraftPrivilege } from "@/lib/actions/grantPrivilege";
 import prisma from "@/lib/prisma";
+import { yooCheckout } from "@/lib/yoo-kassa";
 
 export async function POST(request: NextRequest) {
   try {

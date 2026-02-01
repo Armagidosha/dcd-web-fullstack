@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { PlusIcon } from "@/app/shared/icons/icons";
 import Button from "@/app/shared/ui/Button";
 import TextInput from "@/app/shared/ui/Input/TextInput";
 import MarkdownEditor from "@/app/shared/ui/MarkDownEditor";
 import { useAsync } from "@/app/shared/utils/hooks";
 import type { Rule } from "@/lib/generated/prisma/client";
+import { PlusIcon } from "@/ui/icons/ui.icons";
 
 interface AddRuleFormProps {
   title: string;

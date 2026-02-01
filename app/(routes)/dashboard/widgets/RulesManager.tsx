@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RulesIcon } from "@/app/shared/icons/icons";
 import MarkdownRenderer from "@/app/shared/ui/MarkDownRenderer";
 import Paper from "@/app/shared/ui/Paper";
 import type { Rule } from "@/lib/generated/prisma/client";
@@ -15,6 +14,7 @@ import {
 } from "../store/ruleStore";
 import AsideControls from "../ui/AsideControls";
 import RuleForm from "../ui/forms/RuleForm";
+import { RulesIcon } from "@/ui/icons/ui.icons";
 
 export default function RulesManager() {
   const getRules = useGetRulesAction();

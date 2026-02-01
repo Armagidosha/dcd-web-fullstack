@@ -1,4 +1,4 @@
-import { PlusIcon, TrashIcon } from "@shared/icons/icons";
+
 import ImageWithFallback from "@shared/ui/ImageWithFallback";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -13,6 +13,7 @@ import {
 import { useProductActions, useProductsSelector } from "../store/productStore";
 import AddProductForm from "../ui/forms/AddProductForm";
 import EditProductForm from "../ui/forms/EditProductForm";
+import { PlusIcon, TrashIcon } from "@/ui/icons/ui.icons";
 
 type EditingState = {
   product: ProductsWithCategory;

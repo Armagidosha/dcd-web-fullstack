@@ -4,8 +4,8 @@ import Logo from "@shared/ui/Logo";
 import clsx from "clsx";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BurgerIcon, CrossIcon } from "../../icons/icons";
 import IpCopy from "./IpCopy";
+import { BurgerIcon, CrossIcon } from "../../../../ui/icons/ui.icons";
 
 interface ILink {
   title: string;

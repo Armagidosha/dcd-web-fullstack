@@ -1,9 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
-import { checkRights } from "@/app/lib/actions/checkRights";
+import { checkRights } from "@/lib/actions/check-rights";
 import { Prisma } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
-import { categorySchema } from "../../schema";
+import { categorySchema } from "@/lib/validation/category.schema";
 
 export async function PATCH(
   request: NextRequest,

@@ -1,9 +1,5 @@
-import {
-  BrushIcon,
-  ChartIcon,
-  PaletteIcon,
-  ScaleIcon,
-} from "@shared/icons/icons";
+
+import { BrushIcon, ChartIcon, PaletteIcon, ScaleIcon } from "@/ui/icons/ui.icons";
 import MechanicsCard from "../ui/MechanicsCard";
 
 const ITEMS = [

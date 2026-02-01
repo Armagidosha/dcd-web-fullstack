@@ -1,6 +1,6 @@
-import { checkRights } from "@/app/lib/actions/checkRights";
-import { CartIcon, HomeIcon, RulesIcon, ShieldIcon } from "../../icons/icons";
+import { checkRights } from "@/lib/actions/check-rights";
 import ClientHeader from "./ClientHeader";
+import { CartIcon, HomeIcon, RulesIcon, ShieldIcon } from "../../../../ui/icons/ui.icons";
 
 const LINKS = [
   {

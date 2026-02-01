@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
-import { checkRights } from "@/app/lib/actions/checkRights";
+import { checkRights } from "@/lib/actions/check-rights";
 import prisma from "@/lib/prisma";
-import { ruleSchema } from "../schema";
+import { ruleSchema } from "@/lib/validation/rule.schema";
 
 export async function GET() {
   try {

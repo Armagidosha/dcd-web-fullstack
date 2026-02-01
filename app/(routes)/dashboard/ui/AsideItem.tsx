@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { memo, useCallback } from "react";
-import { ChevronIcon, EditIcon, TrashIcon } from "@/app/shared/icons/icons";
 import IconButton from "@/app/shared/ui/IconButton";
+import { ChevronIcon, EditIcon, TrashIcon } from "@/ui/icons/ui.icons";
 
 type BaseItem = {
   id: string;

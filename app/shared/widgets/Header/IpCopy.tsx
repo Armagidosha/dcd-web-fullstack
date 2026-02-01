@@ -2,8 +2,8 @@
 
 import clsx from "clsx";
 import { useMemo, useState } from "react";
-import { CheckIcon, ClipboardCopyIcon } from "../../icons/icons";
 import { debounce } from "../../utils/functions";
+import { CheckIcon, ClipboardCopyIcon } from "../../../../ui/icons/ui.icons";
 
 interface IpCopyProps {
   className?: string;

@@ -1,9 +1,7 @@
 import Link from "next/link";
-import {
-  type IconProps,
-  LogoIconWithText,
-  LogoWithoutText,
-} from "../icons/icons";
+import { LogoIconWithText, LogoWithoutText } from "../../../ui/icons/media.icons";
+import { IconProps } from "../../../ui/icons/type";
+
 
 interface LogoProps extends IconProps {
   withText?: boolean;

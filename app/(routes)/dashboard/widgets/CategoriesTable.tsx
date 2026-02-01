@@ -1,4 +1,4 @@
-import { TrashIcon } from "@shared/icons/icons";
+
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import Modal from "@/app/shared/ui/Modal";
@@ -10,6 +10,7 @@ import {
   useUpdateCategoryAction,
 } from "../store/categoryStore";
 import EditCategoryForm from "../ui/forms/EditCategoryForm";
+import { TrashIcon } from "@/ui/icons/ui.icons";
 
 export default function CategoriesTable() {
   const [editing, setEditing] = useState<CategoryWithCount | null>(null);

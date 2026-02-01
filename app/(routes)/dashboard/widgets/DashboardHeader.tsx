@@ -1,13 +1,10 @@
-import {
-  FileTextIcon,
-  HomeIcon,
-  PackageIcon,
-  RulesIcon,
-} from "@shared/icons/icons";
+
 import ImageWithFallback from "@shared/ui/ImageWithFallback";
+import { headers } from "next/headers";
 import Link from "next/link";
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth";
 import LogoutButton from "../ui/LogoutButton";
+import { FileTextIcon, HomeIcon, PackageIcon, RulesIcon } from "@/ui/icons/ui.icons";
 
 const NAV_ITEMS = [
   { icon: HomeIcon, label: "Главная", href: "/" },
@@ -17,9 +14,8 @@ const NAV_ITEMS = [
 ];
 
 export default async function DashboardHeader() {
-  const session = await auth();
+  const session = await auth.api.getSession({ headers: await headers() });
   const user = session?.user;
-
   return (
     <header className="w-full pt-4">
       <div

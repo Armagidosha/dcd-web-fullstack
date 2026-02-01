@@ -2,11 +2,11 @@
 
 import type { Payment } from "@a2seven/yoo-checkout";
 import z from "zod";
-import { checkPlayerPrivilege } from "@/app/lib/actions/checkNickname";
-import { yooCheckout } from "@/app/lib/YooKassa";
+import { checkPlayerPrivilege } from "@/lib/actions/payment/check-nickname";
 import { PAYMENT_ERROR, PAYMENT_METHODS } from "@/app/shared/utils/constants";
 import { createErrorResult } from "@/app/shared/utils/functions";
 import prisma from "@/lib/prisma";
+import { yooCheckout } from "@/lib/yoo-kassa";
 
 type PaymentSuccess = {
   success: true;
@@ -182,7 +182,7 @@ export async function createPayment(
               },
               confirmation: {
                 type: "redirect",
-                return_url: `${process.env.CALLBACK_URL}/store/order/${order.id}`,
+                return_url: `${process.env.BASE_URL}/store/order/${order.id}`,
               },
               capture: true,
               metadata: {

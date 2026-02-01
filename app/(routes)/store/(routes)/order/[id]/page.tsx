@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { AlertIcon } from "@/app/shared/icons/AlertIcon";
-import ClockIcon from "@/app/shared/icons/ClockIcon";
-import { CheckIcon, CrossIcon } from "@/app/shared/icons/icons";
+
 import Paper from "@/app/shared/ui/Paper";
-import { getOrder } from "../../../actions/getOrder";
+import { getOrder } from "../../../../../../lib/actions/payment/get-order";
+import ClockIcon, { AlertIcon, CheckIcon, CrossIcon } from "@/ui/icons/ui.icons";
 
 type OrderStatuses = "canceled" | "pending" | "succeeded" | "failed";
 
