@@ -14,7 +14,7 @@ type ProductCardProps = {
 
 export default function ProductCard({ product, onClick }: ProductCardProps) {
   return (
-    <Card key={product.key} className="transition-transform">
+    <Card key={product.key}>
       <CardContent>
         <div className="relative">
           <ImageWithFallback
