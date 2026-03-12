@@ -1,9 +1,9 @@
-import { coerce, instanceof as instance, object, string } from "zod";
+import { instanceof as instance, number, object, string } from "zod";
 import {
   ACCEPTED_FILE_TYPES,
   MAX_FILE_SIZE,
-} from "../constants/file-validation.config";
-import { validationErrors } from "../constants/validation.config";
+} from "../utils/constants/file-validation.config";
+import { validationErrors } from "../utils/constants/validation.config";
 
 export const productSchema = object({
   description: string({ error: validationErrors.NOT_A_STRING }).min(3, {
@@ -24,8 +24,7 @@ export const productSchema = object({
   key: string({ error: validationErrors.NOT_A_STRING }).min(3, {
     error: validationErrors.MIN_LENGTH(3),
   }),
-  price: coerce
-    .number({ error: validationErrors.NOT_A_NUMBER })
+  price: number({ error: validationErrors.NOT_A_NUMBER })
     .min(50, { error: validationErrors.MIN_VALUE(50) })
     .max(10000, { error: validationErrors.MAX_VALUE(10000) }),
   category: string({ error: validationErrors.NOT_A_STRING })
@@ -34,5 +33,5 @@ export const productSchema = object({
 });
 
 export const editProductSchema = productSchema.extend({
-  image: productSchema.shape.image.nullable().optional(),
+  image: productSchema.shape.image.nullable(),
 });

@@ -71,12 +71,12 @@ const rules: OmitDefault<Rule>[] = [
 
 const policies: OmitDefault<Policy>[] = [
   {
-    type: "privacy" as const,
+    type: "PRIVACY" as const,
     title: "Политика конфиденциальности",
     content: "Политика конфиденциальности, тут пока ничего нет.",
   },
   {
-    type: "terms" as const,
+    type: "TERMS" as const,
     title: "Пользовательское соглашение",
     content: "Пользовательское соглашение, тут пока ничего нет.",
   },
@@ -93,7 +93,7 @@ async function main() {
 
   for (const el of policies) {
     await prisma.policy.upsert({
-      where: { type: el.type as string },
+      where: { type: el.type },
       update: {},
       create: {
         type: el.type,

@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
-import { grantMinecraftPrivilege } from "@/lib/actions/grantPrivilege";
+import { grantMinecraftPrivilege } from "@/lib/actions/grant-privilege";
 import prisma from "@/lib/prisma";
 import { yooCheckout } from "@/lib/yoo-kassa";
 

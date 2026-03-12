@@ -1,0 +1,95 @@
+"use client";
+
+import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils/functions/cn";
+import Logo from "../logo";
+import IpCopyButton from "./ip-copy-button";
+
+interface ILink {
+  title: string;
+  path: string;
+  Icon: React.ReactElement;
+}
+
+interface ClientHeaderProps {
+  links: ILink[];
+}
+
+export default function ClientHeader({ links }: ClientHeaderProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const handleClick = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width:1280px)");
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    setIsDesktop(mq.matches);
+    mq.addEventListener?.("change", handler);
+    return () => mq.removeEventListener?.("change", handler);
+  }, []);
+
+  return (
+    <header
+      className="bg-background/80 fixed w-[calc(100%-1rem)] xl:max-w-330 left-2/4 top-4 
+        -translate-x-2/4 backdrop-blur-sm rounded-[1.75rem] border border-border z-40"
+    >
+      <div
+        className={cn(
+          "grid transition-[grid-template-rows] duration-300 overflow-hidden",
+          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+        )}
+      >
+        <div
+          className="relative flex flex-col items-start xl:items-center 
+        justify-between xl:flex-row gap-8 overflow-y-hidden min-h-15 p-2"
+        >
+          <Logo />
+
+          <button
+            className={cn(
+              "absolute right-3 top-2.5 rounded-full p-2 block xl:hidden hover:bg-primary",
+              isOpen && "bg-primary",
+            )}
+            onClick={handleClick}
+            type="button"
+            aria-expanded={isOpen}
+            aria-controls="main-navigation"
+          >
+            {isOpen ? <X /> : <Menu />}
+          </button>
+
+          <nav
+            id="main-navigation"
+            aria-label="Главная навигация"
+            aria-hidden={!isDesktop && !isOpen}
+            className="flex flex-col xl:flex-row gap-4 xl:gap-8 ml-2"
+          >
+            {links.map((link) => (
+              <Link
+                key={link.title}
+                className="relative flex items-center gap-1.5 px-4 py-2.5 
+                rounded-xl font-semibold hover:text-primary group"
+                href={link.path}
+                tabIndex={!isDesktop && !isOpen ? -1 : undefined}
+                onClick={() => setIsOpen(false)}
+              >
+                {link.Icon}
+                <span>{link.title}</span>
+                {isDesktop && (
+                  <span
+                    className="absolute inset-x-0 bottom-0 h-1 bg-primary scale-x-0 
+                group-hover:scale-x-100 transition-transform duration-300 rounded-full"
+                  />
+                )}
+              </Link>
+            ))}
+          </nav>
+
+          <IpCopyButton className="w-full xl:w-fit" />
+        </div>
+      </div>
+    </header>
+  );
+}

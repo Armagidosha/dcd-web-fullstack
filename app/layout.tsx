@@ -1,8 +1,8 @@
-import { metaConfig } from "@shared/utils/constants";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { metaConfig } from "@/lib/utils/constants/meta";
 
-import "@styles/globals.css";
+import "./globals.css";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -19,7 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html className="scroll-smooth" lang="ru">
-      <body className={montserrat.className}>{children}</body>
+      <body className={montserrat.className}>
+        <div className="flex flex-col min-h-screen px-4">{children}</div>
+      </body>
     </html>
   );
 }

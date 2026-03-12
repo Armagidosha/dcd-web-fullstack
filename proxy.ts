@@ -10,6 +10,8 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith(route),
   );
 
+  console.log(isProtected)
+
   if (isProtected) {
     const { success } = await checkRights();
 
@@ -22,5 +24,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard"],
+  matcher: ["/dashboard/:path*"],
 };

@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -27,10 +28,12 @@ export async function POST(request: NextRequest) {
         content,
         postLink: link,
         ...(attachments && attachments.length > 0
-          ? { image: attachments }
+          ? { image: attachments[0].url }
           : {}),
       },
     });
+
+    revalidateTag("news-PUBLIC", {});
 
     return NextResponse.json({ success: true });
   } catch (error) {

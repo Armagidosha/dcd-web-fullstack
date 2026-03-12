@@ -1,5 +1,5 @@
 import { object, string } from "zod";
-import { validationErrors } from "../constants/validation.config";
+import { validationErrors } from "../utils/constants/validation.config";
 
 export const ruleSchema = object({
   title: string({ error: validationErrors.NOT_A_STRING })

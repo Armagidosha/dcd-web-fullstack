@@ -1,11 +1,11 @@
-import { metaConfig } from "@shared/utils/constants";
 import Link from "next/link";
+import { metaConfig } from "@/lib/utils/constants/meta";
 
 export const metadata = metaConfig.notFound;
 
 const NotFound = () => {
   return (
-    <section className="section grid place-items-center h-screen">
+    <section className="grid place-items-center h-screen">
       <div className="flex flex-col items-center">
         <span className="text-6xl text-shadow-primary text-shadow-[0.25rem_0.25rem] font-bold animate-bounce">
           404
