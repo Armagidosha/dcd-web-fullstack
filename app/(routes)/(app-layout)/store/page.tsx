@@ -11,7 +11,7 @@ export default async function StorePage() {
   const products = await getProductsAction();
   const latest = await getLatestAction();
   return (
-    <div className="mt-13">
+    <div className="mt-25">
       <Products products={products} />
 
       {latest.length > 0 && (

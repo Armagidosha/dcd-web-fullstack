@@ -15,10 +15,10 @@ type ProductCardProps = {
 export default function ProductCard({ product, onClick }: ProductCardProps) {
   return (
     <Card key={product.key}>
-      <CardContent>
-        <div className="relative">
+      <CardContent className="group">
+        <div className="relative rounded-lg border overflow-hidden aspect-square">
           <ImageWithFallback
-            className="w-full h-full aspect-square rounded-lg"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             width={215}
             height={215}
             src={product.image}
