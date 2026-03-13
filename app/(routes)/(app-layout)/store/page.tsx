@@ -1,4 +1,4 @@
-import { getLatestAction } from "@/lib/actions/payment/get-latest";
+import { getLatestAction } from "@/lib/actions/order/get-latest";
 import { getProductsAction } from "@/lib/actions/product/get-products";
 import { metaConfig } from "@/lib/utils/constants/meta";
 import { Section, SectionTitle } from "@/ui/primitives/section";

@@ -1,6 +1,6 @@
 "use client";
 
-import type { Latest } from "@/lib/actions/payment/get-latest";
+import type { Latest } from "@/lib/actions/order/get-latest";
 import ImageWithFallback from "@/ui/components/image-with-fallback";
 import {
   Item,
