@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import { grantMinecraftPrivilege } from "@/lib/actions/grant-privilege";
 import prisma from "@/lib/prisma";
@@ -24,11 +24,11 @@ export async function POST(request: NextRequest) {
           include: { product: { select: { key: true } } },
         });
 
-        if (!foundOrder || foundOrder.status === "succeeded") return;
+        if (!foundOrder || foundOrder.status === "SUCCEEDED") return;
 
         await tx.order.update({
           where: { id: orderId },
-          data: { status: "succeeded" },
+          data: { status: "SUCCEEDED" },
         });
 
         if (foundOrder.promoCode) {
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       });
 
       if (order) {
-        await grantMinecraftPrivilege(order.customerNick, order.product.key);
+        await grantMinecraftPrivilege(order.nickname, order.product.key);
       }
     }
 
@@ -51,15 +51,16 @@ export async function POST(request: NextRequest) {
         where: { id: orderId },
       });
 
-      if (!order || order.status === "canceled") return;
+      if (!order || order.status === "CANCELED") return;
 
       await prisma.order.update({
         where: { id: order.id },
-        data: { status: "canceled" },
+        data: { status: "CANCELED" },
       });
     }
 
     revalidatePath(`/store/order/${orderId}`);
+    revalidateTag("latest-PUBLIC", {});
 
     return NextResponse.json({ ok: true });
   } catch (error) {

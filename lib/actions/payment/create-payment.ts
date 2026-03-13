@@ -82,19 +82,19 @@ export async function createPayment(
             id: true,
             status: true,
             totalPrice: true,
-            customerNick: true,
-            customerEmail: true,
+            nickname: true,
+            email: true,
             promoCode: true,
             productId: true,
           },
         });
 
         if (existingOrder) {
-          if (existingOrder.status === "succeeded") {
+          if (existingOrder.status === "SUCCEEDED") {
             throw new Error(PAYMENT_ERROR.ALREADY_PAID);
           }
 
-          if (existingOrder.status === "pending") {
+          if (existingOrder.status === "PENDING") {
             return existingOrder;
           }
         }
@@ -142,22 +142,22 @@ export async function createPayment(
 
         return await tx.order.create({
           data: {
-            customerEmail: email,
-            customerNick: nickname,
+            email,
+            nickname,
             originalPrice: product.price,
             totalPrice: finalPrice,
             discount,
             idempotencyKey,
             promoCode,
-            status: "pending",
+            status: "PENDING",
             product: { connect: { id: productId } },
           },
           select: {
             id: true,
             status: true,
             totalPrice: true,
-            customerNick: true,
-            customerEmail: true,
+            nickname: true,
+            email: true,
             promoCode: true,
             productId: true,
           },
@@ -183,7 +183,7 @@ export async function createPayment(
           metadata: {
             order_id: order.id,
             product_id: order.productId,
-            player_nick: order.customerNick,
+            player_nick: order.nickname,
             promo_code: order.promoCode,
           },
         },
@@ -200,7 +200,7 @@ export async function createPayment(
       await prisma.order.update({
         where: { id: order.id },
         data: {
-          status: "failed",
+          status: "FAILED",
         },
       });
 

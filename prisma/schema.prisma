@@ -77,24 +77,31 @@ model Verification {
   @@map("verification")
 }
 
+enum OrderStatuses {
+  CANCELED
+  FAILED
+  PENDING
+  SUCCEEDED
+}
+
 model Order {
-  id             String   @id @default(uuid())
+  id             String        @id @default(uuid())
   productId      String
-  product        Product  @relation(fields: [productId], references: [id])
-  paymentId      String?  @unique
+  product        Product       @relation(fields: [productId], references: [id])
+  paymentId      String?       @unique
   originalPrice  Float
   totalPrice     Float
   promoCode      String?
-  discount       Float    @default(0)
-  customerNick   String
-  customerEmail  String
-  idempotencyKey String   @unique
-  status         String   @default("pending")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  discount       Float         @default(0)
+  nickname       String
+  email          String
+  idempotencyKey String        @unique
+  status         OrderStatuses @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 
-  @@index([customerNick])
-  @@index([customerEmail])
+  @@index([nickname])
+  @@index([email])
   @@index([status])
   @@map("order")
 }
