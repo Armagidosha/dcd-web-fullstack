@@ -1,4 +1,4 @@
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import { grantMinecraftPrivilege } from "@/lib/actions/grant-privilege";
 import prisma from "@/lib/prisma";
@@ -59,7 +59,6 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    revalidatePath(`/store/order/${orderId}`);
     revalidateTag("latest-PUBLIC", {});
 
     return NextResponse.json({ ok: true });

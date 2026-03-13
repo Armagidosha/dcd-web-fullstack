@@ -27,7 +27,7 @@ export default function News({ news }: NewsProps) {
         {!!news.length && (
           <ul className="grid justify-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-3">
             {news?.map((post) => (
-              <li key={`${post.author} ${post.createdAt.toString()}`}>
+              <li key={post.id}>
                 <NewsCard
                   newsPost={post}
                   onClick={() => modal.open(post, "view")}

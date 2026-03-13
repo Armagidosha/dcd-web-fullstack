@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 
 export type NewsPost = NewsGetPayload<{
   select: {
+    id: true;
     author: true;
     content: true;
     image: true;
@@ -24,6 +25,7 @@ export async function getNewsAction(limit = 8) {
     orderBy: { createdAt: "desc" },
     take: limit,
     select: {
+      id: true,
       author: true,
       content: true,
       image: true,
