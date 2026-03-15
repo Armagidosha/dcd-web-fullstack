@@ -43,8 +43,10 @@ export default function AddRuleDialog({
     },
   });
 
-  const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
-  const isValid = useStore(form.store, (state) => state.isFieldsValid);
+  const { isSubmitting, isValid } = useStore(form.store, (state) => ({
+    isSubmitting: state.isSubmitting,
+    isValid: state.isFieldsValid,
+  }));
 
   return (
     <Dialog onOpenChange={handleClose} open={opened}>
