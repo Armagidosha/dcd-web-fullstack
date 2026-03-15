@@ -13,7 +13,6 @@ async function getRulesPrivate() {
   "use cache";
   cacheTag("rules-PRIVATE");
 
-  console.log("get-rules.private-worked");
   return prisma.rule.findMany({ orderBy: { order: "asc" } });
 }
 
@@ -28,7 +27,6 @@ export async function getRulesAction() {
   "use cache";
   cacheTag("rules-PUBLIC");
 
-  console.log("get-rules-worked");
   return await prisma.rule.findMany({
     select: {
       order: true,

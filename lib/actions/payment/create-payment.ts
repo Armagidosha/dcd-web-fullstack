@@ -115,7 +115,7 @@ export async function createPayment(
               validTo: true,
             },
           });
-          console.log("Промокод:", promo);
+
           if (!promo || !promo.isActive) {
             throw new Error(PAYMENT_ERROR.PROMO_INVALID);
           }

@@ -29,7 +29,6 @@ export default function RulesWidget({ rules }: RulesManagerProps) {
   const modal = useModal<Rule | null, "add" | "edit">();
 
   const handleCreate = async (title: string, content: string) => {
-    console.log("Creating rule with title:", title, "and content:", content);
     await createRuleActionPrivate(title, content);
   };
 

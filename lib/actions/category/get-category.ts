@@ -13,7 +13,6 @@ async function getCategoriesPrivate() {
   "use cache";
   cacheTag("product-PRIVATE");
 
-  console.log("get-category.private worked");
   return prisma.category.findMany({
     orderBy: { products: { _count: "desc" } },
     include: { _count: { select: { products: true } } },
@@ -33,7 +32,6 @@ export async function getCategoriesAction() {
   "use cache";
   cacheTag("product-PUBLIC");
 
-  console.log("get-category worked");
   return await prisma.category.findMany({
     select: { name: true, _count: { select: { products: true } } },
   });

@@ -19,8 +19,6 @@ export async function getNewsAction(limit = 8) {
   "use cache";
   cacheTag("news-PUBLIC");
 
-  console.log("news-public-cached");
-
   return await prisma.news.findMany({
     orderBy: { createdAt: "desc" },
     take: limit,

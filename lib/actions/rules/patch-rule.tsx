@@ -43,8 +43,6 @@ export async function reorderRuleActionPrivate(
     throw new Error("Unauthorized");
   }
 
-  console.log(ruleId, direction);
-
   await prisma.$transaction(async (tx) => {
     const currentRule = await tx.rule.findUnique({
       where: { id: ruleId },

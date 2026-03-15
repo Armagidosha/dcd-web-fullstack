@@ -14,7 +14,7 @@ export const metadata = metaConfig.privacy;
 
 export default async function PrivacyPage() {
   const privacy = await getPolicyAction("PRIVACY");
-  console.log(privacy);
+
   return (
     <Section className="mt-13">
       <Card>

@@ -15,7 +15,6 @@ async function getPolicyPrivate() {
   "use cache";
   cacheTag(`policy-PRIVATE`);
 
-  console.log("get-policy.private-worked");
   return prisma.policy.findMany({ orderBy: { type: "asc" } });
 }
 
@@ -31,7 +30,6 @@ export async function getPolicyAction(type: PolicyType) {
   "use cache";
   cacheTag(`policy-${type}`);
 
-  console.log("get-policy.public-worked");
   const policy = await prisma.policy.findFirst({
     where: { type },
     select: { title: true, content: true, updatedAt: true, type: true },

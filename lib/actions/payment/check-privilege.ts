@@ -28,7 +28,7 @@ export async function checkPlayerPrivilege(
     );
 
     const checked = await res.json();
-    console.log(checked);
+
     if (checked.status === "error") {
       if (checked.message === "invalid_privilege") {
         return {

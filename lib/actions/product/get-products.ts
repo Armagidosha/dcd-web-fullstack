@@ -19,7 +19,6 @@ async function getProductsPrivate() {
   "use cache";
   cacheTag("product-PRIVATE");
 
-  console.log("get-product-private-worked");
   return prisma.product.findMany({
     include: { category: true },
     orderBy: { createdAt: "desc" },
@@ -39,7 +38,6 @@ export async function getProductsAction() {
   "use cache";
   cacheTag("product-PUBLIC");
 
-  console.log("get-product-worked");
   return await prisma.product.findMany({
     omit: { categoryId: true, createdAt: true, updatedAt: true },
     include: { category: { select: { name: true } } },

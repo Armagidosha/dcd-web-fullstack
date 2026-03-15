@@ -10,8 +10,6 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith(route),
   );
 
-  console.log(isProtected)
-
   if (isProtected) {
     const { success } = await checkRights();
 
