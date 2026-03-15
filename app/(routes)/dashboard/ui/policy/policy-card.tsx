@@ -36,7 +36,7 @@ export default function PolicyCard({ policy, onEdit }: PolicyCardProps) {
                 />
               )}
             </div>
-            <CardTitle className="text-lg">{policy.title}</CardTitle>
+            <CardTitle>{policy.title}</CardTitle>
           </div>
         </div>
       </CardHeader>

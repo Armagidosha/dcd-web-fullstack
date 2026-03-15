@@ -7,6 +7,8 @@ import ProductCardSkeleton from "./ui/product/product-skeleton";
 import ProductsSection from "./ui/product/products-section";
 import ProfileSection from "./ui/profile/profile-section";
 import ProfileSkeleton from "./ui/profile/profile-skeleton";
+import PromoCodeSection from "./ui/promo/promo-section";
+import PromoCardSkeleton from "./ui/promo/promo-skeleton";
 import RulesSection from "./ui/rules/rules-section";
 import { RulesCardSkeleton } from "./ui/rules/rules-skeleton";
 
@@ -31,6 +33,12 @@ export default function DashboardPage() {
       <Suspense fallback={<ProductCardSkeleton />}>
         <ProductsSection />
       </Suspense>
+
+      <div className="grid grid-cols-1 md:gap-4 md:grid-cols-2">
+        <Suspense fallback={<PromoCardSkeleton />}>
+          <PromoCodeSection />
+        </Suspense>
+      </div>
     </Section>
   );
 }

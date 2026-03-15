@@ -4,12 +4,25 @@ import type { ImageProps } from "next/image";
 import Image from "next/image";
 import { useState } from "react";
 
-export default function ImageWithFallback({ src, ...props }: ImageProps) {
+type ImageWithFallbackProps = Omit<ImageProps, "src"> & {
+  src?: string | null;
+};
+
+export default function ImageWithFallback({
+  src,
+  ...props
+}: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
   const fallback = "/images/fallback.png";
-  return error ? (
-    <Image src={fallback} {...props} />
-  ) : (
-    <Image src={src} onError={() => setError(true)} {...props} />
+  const imageSrc = !src || error ? fallback : src;
+  return (
+    <Image
+      {...props}
+      src={imageSrc}
+      onError={(e) => {
+        setError(true);
+        props.onError?.(e);
+      }}
+    />
   );
 }

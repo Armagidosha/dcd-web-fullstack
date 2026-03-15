@@ -3,9 +3,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { checkPlayerPrivilege } from "@/lib/actions/payment/check-privilege";
-import { calculateFinalPrice } from "@/lib/actions/payment/check-promo";
 import { createPayment } from "@/lib/actions/payment/create-payment";
 import type { ProductWithCategoryPublic } from "@/lib/actions/product/get-products";
+import { calculateFinalPrice } from "@/lib/actions/promo-code/check-promo";
 import { cn } from "@/lib/utils/functions/cn";
 import { debounce } from "@/lib/utils/functions/debounce";
 import {
@@ -106,7 +106,6 @@ export default function PurchaseForm({
           onChangeAsync: async ({ value }) => {
             if (product) {
               const result = await debouncedCheckNickname(value, product.id);
-              console.log(result);
               if (!result.success) {
                 return { message: result.message };
               }
@@ -167,14 +166,12 @@ export default function PurchaseForm({
               if (!result.success) {
                 return { message: result.message };
               }
-              console.log("Результат", result);
               setOrder({
                 discount: result.discount,
                 finalPrice: Number(result.finalPrice),
                 originalPrice: Number(result.originalPrice),
               });
             }
-            console.log("order", order);
             return undefined;
           },
         }}

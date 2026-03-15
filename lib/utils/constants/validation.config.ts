@@ -2,6 +2,7 @@ export const validationErrors = {
   NOT_A_STRING: "Значение должно быть строкой",
   NOT_A_FILE: "Значение должно быть файлом",
   NOT_A_NUMBER: "Значение должно быть числом",
+  NOT_A_DATE: "Значение должно быть датой",
 
   UNSUPPORTED_FILE_TYPE: (types: string[] = ["JPEG", "PNG", "WebP"]) =>
     `Недопустимый тип файла. Разрешены ${types.join(", ")}`,

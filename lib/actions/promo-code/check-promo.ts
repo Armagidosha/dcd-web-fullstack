@@ -7,9 +7,18 @@ export async function calculateFinalPrice(
   promoCode: string | undefined,
 ) {
   const priceNum =
-    typeof initialPrice === "string"
-      ? parseFloat(initialPrice)
-      : (initialPrice as number);
+    typeof initialPrice === "string" ? parseFloat(initialPrice) : initialPrice;
+
+  if (Number.isNaN(priceNum) || priceNum < 0) {
+    return {
+      success: false,
+      discount: 0,
+      finalPrice: "0.00",
+      originalPrice: "0.00",
+      error: "INVALID_PRICE",
+      message: "Некорректная цена",
+    };
+  }
 
   if (!promoCode) {
     return {
