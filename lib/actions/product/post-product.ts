@@ -44,7 +44,7 @@ export async function createProductActionPrivate(formData: FormData) {
     });
 
     updateTag("product-PRIVATE");
-    revalidateTag("product-PUBLIC", {});
+    revalidateTag("product-PUBLIC", "max");
 
     return { success: true, data: product };
   } catch (error) {

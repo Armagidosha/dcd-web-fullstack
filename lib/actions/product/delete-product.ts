@@ -20,7 +20,7 @@ export async function deleteProductActionPrivate(productId: string) {
     await prisma.product.delete({ where: { id: productId } });
 
     updateTag("product-PRIVATE");
-    revalidateTag("product-PUBLIC", {});
+    revalidateTag("product-PUBLIC", "max");
 
     return { success: true };
   } catch (error) {

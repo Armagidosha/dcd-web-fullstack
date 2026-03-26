@@ -16,7 +16,7 @@ export async function deleteCategoryActionPrivate(categoryId: string) {
   await prisma.category.delete({ where: { id: categoryId } });
 
   updateTag("product-PRIVATE");
-  revalidateTag("product-PUBLIC", {});
+  revalidateTag("product-PUBLIC", "max");
 
   return { success: true };
 }

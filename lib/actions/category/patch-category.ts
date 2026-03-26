@@ -34,7 +34,7 @@ export async function updateCategoryActionPrivate(
   });
 
   updateTag("product-PRIVATE");
-  revalidateTag("product-PUBLIC", {});
+  revalidateTag("product-PUBLIC", "max");
 
   return updatedCategory;
 }

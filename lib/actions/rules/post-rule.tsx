@@ -33,7 +33,7 @@ export async function createRuleActionPrivate(title: string, content: string) {
   });
 
   updateTag("rules-PRIVATE");
-  revalidateTag("rules-PUBLIC", {});
+  revalidateTag("rules-PUBLIC", "max");
 
   return newRule;
 }

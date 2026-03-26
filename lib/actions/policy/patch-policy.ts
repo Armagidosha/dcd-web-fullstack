@@ -33,7 +33,7 @@ export async function updatePolicyPrivate({
   });
 
   updateTag("policy-PRIVATE");
-  revalidateTag(`policy-${type}`, {});
+  revalidateTag(`policy-${type}`, "max");
 
   return updatedPolicy;
 }

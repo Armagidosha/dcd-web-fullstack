@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    revalidateTag("latest-PUBLIC", {});
+    revalidateTag("latest-PUBLIC", "max");
     revalidatePath(`/store/order/${orderId}`);
 
     return NextResponse.json({ ok: true });

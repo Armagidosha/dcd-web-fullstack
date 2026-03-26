@@ -28,7 +28,7 @@ export async function deleteRuleActionPrivate(ruleId: string) {
   });
 
   updateTag("rules-PRIVATE");
-  revalidateTag("rules-PUBLIC", {});
+  revalidateTag("rules-PUBLIC", "max");
 
   return { success: true };
 }

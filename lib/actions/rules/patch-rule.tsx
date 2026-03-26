@@ -86,7 +86,7 @@ export async function reorderRuleActionPrivate(
   });
 
   updateTag("rules-PRIVATE");
-  revalidateTag("rules-PUBLIC", {});
+  revalidateTag("rules-PUBLIC", "max");
 
   return { success: true };
 }
