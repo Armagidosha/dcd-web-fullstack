@@ -26,11 +26,17 @@ export default async function PrivacyPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <MarkdownRenderer>{privacy?.content}</MarkdownRenderer>
+          {privacy?.content ? (
+            <MarkdownRenderer>{privacy?.content}</MarkdownRenderer>
+          ) : (
+            <p className="text-muted-foreground font-semibold">
+              Нет политики •︵•
+            </p>
+          )}
         </CardContent>
         <CardFooter>
           <p className="text-muted-foreground">
-            Последнее изменение: {privacy.formattedDate}
+            Последнее изменение: {privacy?.formattedDate || "очень давно"}
           </p>
         </CardFooter>
       </Card>

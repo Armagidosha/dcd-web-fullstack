@@ -26,11 +26,17 @@ export default async function TermsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <MarkdownRenderer>{terms?.content}</MarkdownRenderer>
+          {terms?.content ? (
+            <MarkdownRenderer>{terms.content}</MarkdownRenderer>
+          ) : (
+            <p className="text-muted-foreground font-semibold">
+              Нет политики •︵•
+            </p>
+          )}
         </CardContent>
         <CardFooter>
           <p className="text-muted-foreground">
-            Последнее изменение: {terms.formattedDate}
+            Последнее изменение: {terms?.formattedDate || "очень давно"}
           </p>
         </CardFooter>
       </Card>

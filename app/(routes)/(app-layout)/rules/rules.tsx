@@ -18,16 +18,22 @@ export default function Rules({ rules }: RulesProps) {
     <Section className="relative mt-13">
       <Card>
         <CardContent>
-          <Accordion type="single" collapsible>
-            {rules.map((rule) => (
-              <AccordionItem key={rule.order} value={rule.order.toString()}>
-                <AccordionTrigger>{rule.title}</AccordionTrigger>
-                <AccordionContent>
-                  <MarkdownRenderer>{rule.content}</MarkdownRenderer>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          {rules.length > 0 ? (
+            <Accordion type="single" collapsible>
+              {rules.map((rule) => (
+                <AccordionItem key={rule.order} value={rule.order.toString()}>
+                  <AccordionTrigger>{rule.title}</AccordionTrigger>
+                  <AccordionContent>
+                    <MarkdownRenderer>{rule.content}</MarkdownRenderer>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          ) : (
+            <p className="font-semibold text-muted-foreground text-center">
+              Правил пока нет •︵•
+            </p>
+          )}
         </CardContent>
       </Card>
     </Section>

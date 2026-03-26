@@ -24,9 +24,9 @@ export default function News({ news }: NewsProps) {
       <Section>
         <SectionTitle>Новости проекта</SectionTitle>
 
-        {!!news.length && (
+        {news.length > 0 ? (
           <ul className="grid justify-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-3">
-            {news?.map((post) => (
+            {news.map((post) => (
               <li key={post.id}>
                 <NewsCard
                   newsPost={post}
@@ -35,13 +35,11 @@ export default function News({ news }: NewsProps) {
               </li>
             ))}
           </ul>
-        )}
-
-        {!news.length && (
+        ) : (
           <Card className="h-100 w-full">
             <CardContent className="h-full grid place-items-center">
               <span className="text-muted-foreground/50 text-3xl font-semibold">
-                Новостей пока нет
+                Новостей пока нет •︵•
               </span>
             </CardContent>
           </Card>
