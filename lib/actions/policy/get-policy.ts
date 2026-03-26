@@ -37,6 +37,8 @@ export async function getPolicyAction(type: PolicyType) {
 
   return {
     ...policy,
-    formattedDate: format(policy?.updatedAt as Date, "dd.MM.yyyy"),
+    formattedDate: policy?.updatedAt
+      ? format(policy.updatedAt, "dd.MM.yyyy")
+      : null,
   };
 }
