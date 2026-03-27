@@ -48,6 +48,7 @@ export async function createProductActionPrivate(formData: FormData) {
 
     return { success: true, data: product };
   } catch (error) {
+    console.error("Error posting product: ", error);
     if (error instanceof ZodError) {
       return {
         success: false,
