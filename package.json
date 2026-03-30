@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
+    "build:docker": "docker build -t draimcido-web .",
     "analyze": "next experimental-analyze",
     "start": "next start",
+    "start:docker": "docker run -p 3000:3000 draimcido-web",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
