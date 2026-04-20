@@ -59,6 +59,7 @@ export async function updateProductActionPrivate(
 
     updateTag("product-PRIVATE");
     revalidateTag("product-PUBLIC", "max");
+    revalidateTag("latest-PUBLIC", "max");
 
     return { success: true, data: updated };
   } catch (error) {

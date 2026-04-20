@@ -68,6 +68,9 @@ importers:
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
+      stripe:
+        specifier: ^22.0.1
+        version: 22.0.1(@types/node@20.19.18)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
@@ -2588,6 +2591,15 @@ packages:
 
   stringify-entities@4.0.4:
     resolution: {integrity: sha512-IwfBptatlO+QCJUo19AqvrPNqlVMpW9YEL2LIVY+Rpv2qsjCGxaDLNRgeGsQWJhfItebuJhsGSLjaBbNSQ+ieg==}
+
+  stripe@22.0.1:
+    resolution: {integrity: sha512-Yw764pZ6s8Xu4CtUZdD5uWOkw6gc9xzO9OKylCuj1gMhMDLbyGbDtaPNNSFE4mB6njYSHESYIVbF1iIzUfAl2g==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@types/node': '>=18'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
 
   style-to-js@1.1.19:
     resolution: {integrity: sha512-Ev+SgeqiNGT1ufsXyVC5RrJRXdrkRJ1Gol9Qw7Pb72YCKJXrBvP0ckZhBeVSrw2m06DJpei2528uIpjMb4TsoQ==}
@@ -5302,6 +5314,10 @@ snapshots:
     dependencies:
       character-entities-html4: 2.1.0
       character-entities-legacy: 3.0.0
+
+  stripe@22.0.1(@types/node@20.19.18):
+    optionalDependencies:
+      '@types/node': 20.19.18
 
   style-to-js@1.1.19:
     dependencies:

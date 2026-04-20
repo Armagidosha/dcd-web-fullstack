@@ -13,10 +13,13 @@ async function getCategoriesPrivate() {
   "use cache";
   cacheTag("product-PRIVATE");
 
-  return prisma.category.findMany({
-    orderBy: { products: { _count: "desc" } },
-    include: { _count: { select: { products: true } } },
+  const categories = await prisma.category.findMany({
+    include: {
+      _count: { select: { products: { where: { isArchived: false } } } },
+    },
   });
+
+  return categories.sort((a, b) => b._count.products - a._count.products);
 }
 
 export async function getCategoriesActionPrivate(): Promise<
@@ -33,6 +36,9 @@ export async function getCategoriesAction() {
   cacheTag("product-PUBLIC");
 
   return await prisma.category.findMany({
-    select: { name: true, _count: { select: { products: true } } },
+    select: {
+      name: true,
+      _count: { select: { products: { where: { isArchived: false } } } },
+    },
   });
 }

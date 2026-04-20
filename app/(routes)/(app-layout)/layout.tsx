@@ -6,7 +6,7 @@ interface HomePageLayoutProps {
   children: ReactNode;
 }
 
-const HomePageLayout = ({ children }: HomePageLayoutProps) => {
+export default function HomePageLayout({ children }: HomePageLayoutProps) {
   return (
     <>
       <Header />
@@ -14,6 +14,4 @@ const HomePageLayout = ({ children }: HomePageLayoutProps) => {
       <Footer />
     </>
   );
-};
-
-export default HomePageLayout;
+}

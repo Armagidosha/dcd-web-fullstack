@@ -1,5 +1,8 @@
 -- CreateEnum
-CREATE TYPE "PolicyType" AS ENUM ('terms', 'privacy');
+CREATE TYPE "OrderStatuses" AS ENUM ('CANCELED', 'FAILED', 'PENDING', 'SUCCEEDED');
+
+-- CreateEnum
+CREATE TYPE "PolicyType" AS ENUM ('TERMS', 'PRIVACY');
 
 -- CreateTable
 CREATE TABLE "user" (
@@ -65,14 +68,14 @@ CREATE TABLE "order" (
     "id" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
     "paymentId" TEXT,
-    "originalPrice" DOUBLE PRECISION NOT NULL,
-    "totalPrice" DOUBLE PRECISION NOT NULL,
+    "originalPrice" INTEGER NOT NULL,
+    "totalPrice" INTEGER NOT NULL,
     "promoCode" TEXT,
-    "discount" DOUBLE PRECISION NOT NULL DEFAULT 0,
-    "customerNick" TEXT NOT NULL,
-    "customerEmail" TEXT NOT NULL,
+    "discount" INTEGER NOT NULL DEFAULT 0,
+    "nickname" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "idempotencyKey" TEXT NOT NULL,
-    "status" TEXT NOT NULL DEFAULT 'pending',
+    "status" "OrderStatuses" NOT NULL DEFAULT 'PENDING',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -84,7 +87,7 @@ CREATE TABLE "promo" (
     "id" TEXT NOT NULL,
     "code" TEXT NOT NULL,
     "description" TEXT,
-    "discount" DOUBLE PRECISION NOT NULL,
+    "discount" INTEGER NOT NULL,
     "usageLimit" INTEGER,
     "usedCount" INTEGER NOT NULL DEFAULT 0,
     "validFrom" TIMESTAMP(3),
@@ -101,12 +104,13 @@ CREATE TABLE "product" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "price" DOUBLE PRECISION NOT NULL,
+    "price" INTEGER NOT NULL,
     "image" TEXT NOT NULL,
     "key" TEXT NOT NULL,
     "categoryId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "product_pkey" PRIMARY KEY ("id")
 );
@@ -127,7 +131,7 @@ CREATE TABLE "news" (
     "image" TEXT,
     "content" TEXT NOT NULL,
     "author" TEXT NOT NULL,
-    "postLink" TEXT,
+    "postLink" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -180,10 +184,10 @@ CREATE UNIQUE INDEX "order_paymentId_key" ON "order"("paymentId");
 CREATE UNIQUE INDEX "order_idempotencyKey_key" ON "order"("idempotencyKey");
 
 -- CreateIndex
-CREATE INDEX "order_customerNick_idx" ON "order"("customerNick");
+CREATE INDEX "order_nickname_idx" ON "order"("nickname");
 
 -- CreateIndex
-CREATE INDEX "order_customerEmail_idx" ON "order"("customerEmail");
+CREATE INDEX "order_email_idx" ON "order"("email");
 
 -- CreateIndex
 CREATE INDEX "order_status_idx" ON "order"("status");
@@ -205,6 +209,9 @@ CREATE UNIQUE INDEX "category_name_key" ON "category"("name");
 
 -- CreateIndex
 CREATE INDEX "category_id_idx" ON "category"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "news_postLink_key" ON "news"("postLink");
 
 -- CreateIndex
 CREATE INDEX "news_id_createdAt_idx" ON "news"("id", "createdAt");

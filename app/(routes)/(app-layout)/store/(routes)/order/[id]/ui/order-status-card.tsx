@@ -16,7 +16,7 @@ const statusMap = {
   PENDING: "В обработке",
   CANCELED: "Отменен",
   SUCCEEDED: "Выполнен",
-  FAILED: "Неуспешный",
+  FAILED: "Не выполнен",
 };
 
 export default async function OrderStatusCard({ params }: OrderStatusProps) {

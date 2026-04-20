@@ -29,7 +29,7 @@ export async function updateCategoryActionPrivate(
       name: true,
       createdAt: true,
       updatedAt: true,
-      _count: { select: { products: true } },
+      _count: { select: { products: { where: { isArchived: false } } } },
     },
   });
 

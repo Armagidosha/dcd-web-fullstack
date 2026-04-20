@@ -2,116 +2,107 @@
 
 import prisma from "@/lib/prisma";
 
+type SuccessResult = {
+  success: true;
+  discount: number;
+  finalPrice: number;
+  originalPrice: number;
+};
+
+type ErrorResult = {
+  success: false;
+  discount: number;
+  finalPrice: number;
+  originalPrice: number;
+  error: string;
+  message: string;
+};
+
+type Result = SuccessResult | ErrorResult;
+
+const fail = (price: number, error: string, message: string): Result => ({
+  success: false,
+  discount: 0,
+  finalPrice: price,
+  originalPrice: price,
+  error,
+  message,
+});
+
 export async function calculateFinalPrice(
   initialPrice: number | string,
-  promoCode: string | undefined,
-) {
-  const priceNum =
-    typeof initialPrice === "string" ? parseFloat(initialPrice) : initialPrice;
+  promoCode?: string,
+): Promise<Result> {
+  const price = Number(initialPrice);
 
-  if (Number.isNaN(priceNum) || priceNum < 0) {
-    return {
-      success: false,
-      discount: 0,
-      finalPrice: "0.00",
-      originalPrice: "0.00",
-      error: "INVALID_PRICE",
-      message: "Некорректная цена",
-    };
+  if (!Number.isFinite(price) || price < 0) {
+    return fail(0, "INVALID_PRICE", "Некорректная цена");
   }
 
-  if (!promoCode) {
+  if (!promoCode?.trim()) {
     return {
       success: true,
       discount: 0,
-      finalPrice: priceNum.toFixed(2),
-      originalPrice: priceNum.toFixed(2),
+      finalPrice: price,
+      originalPrice: price,
     };
   }
+
+  const code = promoCode.trim().toUpperCase();
 
   try {
     const promo = await prisma.promoCode.findUnique({
-      where: { code: promoCode.toUpperCase().trim() },
+      where: { code },
+      select: {
+        discount: true,
+        isActive: true,
+        validFrom: true,
+        validTo: true,
+        usageLimit: true,
+        usedCount: true,
+      },
     });
 
-    if (!promo) {
-      return {
-        success: false,
-        discount: 0,
-        finalPrice: priceNum.toFixed(2),
-        originalPrice: priceNum.toFixed(2),
-        error: "PROMO_INVALID",
-        message: "Промокод недействителен",
-      };
+    if (!promo || !promo.isActive) {
+      return fail(price, "PROMO_INVALID", "Промокод недействителен");
     }
 
-    if (!promo.isActive) {
-      return {
-        success: false,
-        discount: 0,
-        finalPrice: priceNum.toFixed(2),
-        originalPrice: priceNum.toFixed(2),
-        error: "PROMO_INVALID",
-        message: "Промокод недействителен",
-      };
+    const now = new Date();
+
+    if (promo.validFrom && now < promo.validFrom) {
+      return fail(price, "PROMO_INVALID", "Промокод недействителен");
     }
 
-    const dateNow = new Date();
-
-    if (promo.validFrom && dateNow < promo.validFrom) {
-      return {
-        success: false,
-        discount: 0,
-        finalPrice: priceNum.toFixed(2),
-        originalPrice: priceNum.toFixed(2),
-        error: "PROMO_INVALID",
-        message: "Промокод недействителен",
-      };
+    if (promo.validTo && now > promo.validTo) {
+      return fail(price, "PROMO_EXPIRED", "Срок действия промокода истек.");
     }
 
-    if (promo.usageLimit && promo.usedCount >= promo.usageLimit) {
-      return {
-        success: false,
-        discount: 0,
-        finalPrice: priceNum.toFixed(2),
-        originalPrice: priceNum.toFixed(2),
-        error: "PROMO_LIMIT_EXCEEDED",
-        message: "Достигнут лимит использований промокода.",
-      };
+    if (promo.usageLimit !== null && promo.usedCount >= promo.usageLimit) {
+      return fail(
+        price,
+        "PROMO_LIMIT_EXCEEDED",
+        "Достигнут лимит использований промокода.",
+      );
     }
 
-    if (promo.validTo && dateNow > promo.validTo) {
-      return {
-        success: false,
-        discount: 0,
-        finalPrice: priceNum.toFixed(2),
-        originalPrice: priceNum.toFixed(2),
-        error: "PROMO_EXPIRED",
-        message: "Срок действия промокода истек.",
-      };
-    }
+    const discountPercent = Math.min(Math.max(promo.discount, 0), 100);
 
-    const discountAmount = priceNum * (promo.discount / 100);
-    const finalPrice = priceNum - discountAmount;
-
-    const safeFinalPrice = Math.max(0, finalPrice);
+    const discountAmount = Math.round(price * (discountPercent / 100));
+    const finalPrice = Math.max(0, price - discountAmount);
 
     return {
       success: true,
-      discount: promo.discount,
-      finalPrice: safeFinalPrice.toFixed(2),
-      originalPrice: priceNum.toFixed(2),
+      discount: discountPercent,
+      finalPrice,
+      originalPrice: price,
     };
-  } catch (error) {
-    console.error("Error validating promo code: ", error);
+  } catch (e) {
+    console.error(e);
 
-    return {
-      success: false,
-      discount: 0,
-      finalPrice: priceNum.toFixed(2),
-      originalPrice: priceNum.toFixed(2),
-      error: "PROMO_UNEXPECTED_ERROR",
-      message: "Ошибка при проверке промокода. Попробуйте позже",
-    };
+    return fail(
+      price,
+      "PROMO_UNEXPECTED_ERROR",
+      "Ошибка при проверке промокода. Попробуйте позже",
+    );
   }
 }

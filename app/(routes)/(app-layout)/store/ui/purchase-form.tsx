@@ -2,10 +2,12 @@ import { useForm, useStore } from "@tanstack/react-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { v4 as uuid } from "uuid";
 import { checkPlayerPrivilege } from "@/lib/actions/payment/check-privilege";
 import { createPayment } from "@/lib/actions/payment/create-payment";
 import type { ProductWithCategoryPublic } from "@/lib/actions/product/get-products";
 import { calculateFinalPrice } from "@/lib/actions/promo-code/check-promo";
+import { PaymentProvider } from "@/lib/utils/constants/payment-providers";
 import { cn } from "@/lib/utils/functions/cn";
 import { debounce } from "@/lib/utils/functions/debounce";
 import {
@@ -17,6 +19,7 @@ import { Button } from "@/ui/primitives/button";
 import { Checkbox } from "@/ui/primitives/checkbox";
 import { Field, FieldError, FieldLabel } from "@/ui/primitives/field";
 import { Input } from "@/ui/primitives/input";
+import { RadioGroup, RadioGroupItem } from "@/ui/primitives/radio-group";
 
 type PurchaseFormProps = {
   className?: string;
@@ -28,6 +31,7 @@ export default function PurchaseForm({
   product,
 }: PurchaseFormProps) {
   const router = useRouter();
+  const [idemKey, setIdemKey] = useState<string | null>(null);
   const [order, setOrder] = useState({
     discount: 0,
     originalPrice: product?.price,
@@ -35,33 +39,45 @@ export default function PurchaseForm({
   });
 
   const form = useForm({
+    canSubmitWhenInvalid: true,
     defaultValues: {
       nickname: "",
       email: "",
       promoCode: "",
       terms: false,
+      provider: PaymentProvider.STRIPE,
     },
 
     onSubmit: async ({ value }) => {
-      if (product) {
-        const payment = await createPayment(product.id, value);
-        if (!payment.success) {
-          if (payment.formError !== undefined) {
-            form.setErrorMap({
-              onSubmit: { fields: {}, form: payment.formError },
-            });
-          }
-          if (payment.fieldErrors !== undefined) {
-            Object.entries(payment.fieldErrors).forEach(([field, message]) => {
-              form.setErrorMap({
-                onSubmit: { fields: { [field]: { message } } },
-              });
-            });
-          }
-          return;
-        }
-        return router.push(payment.confirmationUrl);
+      if (!product) return;
+
+      const key = idemKey ?? uuid();
+      setIdemKey(key);
+
+      const payment = await createPayment(product.id, {
+        ...value,
+        idempotencyKey: key,
+      });
+
+      if (payment.success) {
+        router.push(payment.confirmationUrl);
+        return;
       }
+
+      const fields: Record<string, { message: string[] }> = {};
+
+      if (payment.fieldErrors) {
+        Object.entries(payment.fieldErrors).forEach(([field, message]) => {
+          fields[field] = { message };
+        });
+      }
+
+      form.setErrorMap({
+        onSubmit: {
+          form: payment.formError,
+          fields,
+        },
+      });
     },
   });
 
@@ -81,12 +97,11 @@ export default function PurchaseForm({
     [],
   );
 
-  const { isSubmitting, canSubmit, isDirty, errors } = useStore(
+  const { isSubmitting, isValidating, errors } = useStore(
     form.store,
     (state) => ({
       isSubmitting: state.isSubmitting,
-      isDirty: state.isDirty,
-      canSubmit: state.canSubmit,
+      isValidating: state.isFieldsValidating,
       errors: state.errors,
     }),
   );
@@ -95,6 +110,7 @@ export default function PurchaseForm({
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        form.setErrorMap({ onSubmit: { form: undefined, fields: {} } });
         form.handleSubmit();
       }}
       className={cn("flex flex-col gap-3", className)}
@@ -104,11 +120,10 @@ export default function PurchaseForm({
         validators={{
           onChange: nicknameSchema,
           onChangeAsync: async ({ value }) => {
-            if (product) {
-              const result = await debouncedCheckNickname(value, product.id);
-              if (!result.success) {
-                return { message: result.message };
-              }
+            if (!product) return;
+            const result = await debouncedCheckNickname(value, product.id);
+            if (!result.success) {
+              return { message: result.message };
             }
             return undefined;
           },
@@ -118,6 +133,7 @@ export default function PurchaseForm({
           <Field>
             <FieldLabel htmlFor={field.name}>Никнейм</FieldLabel>
             <Input
+              autoComplete="off"
               id={field.name}
               name={field.name}
               value={field.state.value}
@@ -131,6 +147,7 @@ export default function PurchaseForm({
         )}
       </form.Field>
 
+      {/* Email Input */}
       <form.Field name="email" validators={{ onChange: emailSchema }}>
         {(field) => (
           <Field>
@@ -149,29 +166,29 @@ export default function PurchaseForm({
         )}
       </form.Field>
 
+      {/* PromoCode input */}
       <form.Field
         name="promoCode"
         validators={{
           onChange: promoCodeSchema,
           onChangeAsync: async ({ value }) => {
-            if (product) {
+            if (!product) return;
+            if (!value.length) return undefined;
+            const result = await debouncedCheckPromo(product.price, value);
+
+            if (!result.success) {
               setOrder({
                 discount: 0,
                 finalPrice: product.price,
                 originalPrice: product.price,
               });
-              if (!value.length) return undefined;
-              const result = await debouncedCheckPromo(product?.price, value);
-
-              if (!result.success) {
-                return { message: result.message };
-              }
-              setOrder({
-                discount: result.discount,
-                finalPrice: Number(result.finalPrice),
-                originalPrice: Number(result.originalPrice),
-              });
+              return { message: result.message };
             }
+            setOrder({
+              discount: result.discount,
+              finalPrice: Number(result.finalPrice),
+              originalPrice: Number(result.originalPrice),
+            });
             return undefined;
           },
         }}
@@ -193,6 +210,47 @@ export default function PurchaseForm({
         )}
       </form.Field>
 
+      <form.Field name="provider">
+        {(field) => (
+          <Field>
+            <FieldLabel>Способ оплаты</FieldLabel>
+
+            <RadioGroup
+              value={field.state.value}
+              onValueChange={(val) =>
+                field.handleChange(val as PaymentProvider)
+              }
+              className="gap-2"
+            >
+              <label
+                htmlFor="stripe-provider"
+                className="flex items-center gap-3 rounded-lg border p-3 cursor-pointer"
+              >
+                <RadioGroupItem
+                  value={PaymentProvider.STRIPE}
+                  id="stripe-provider"
+                />
+                <p>
+                  Ин. карты{" "}
+                  <span className="text-muted-foreground">(Stripe)</span>
+                </p>
+              </label>
+            </RadioGroup>
+            <Link
+              // TODO: ТУТ ССЫЛКА НА FUNPAY
+              href=""
+              className="flex items-center gap-3 rounded-lg border p-3 cursor-pointer"
+            >
+              <p>
+                Покупка в РФ{" "}
+                <span className="text-muted-foreground">(Funpay)</span>
+              </p>
+            </Link>
+          </Field>
+        )}
+      </form.Field>
+
+      {/* Accept terms */}
       <form.Field name="terms">
         {(field) => (
           <FieldLabel>
@@ -244,8 +302,8 @@ export default function PurchaseForm({
       {errors.length > 0 && (
         <span className="text-destructive text-sm">{errors}</span>
       )}
-      <Button type="submit" disabled={isSubmitting || !canSubmit || !isDirty}>
-        К оплате
+      <Button type="submit" disabled={isSubmitting || isValidating}>
+        {isSubmitting ? "Оформляю..." : "К оплате"}
       </Button>
     </form>
   );

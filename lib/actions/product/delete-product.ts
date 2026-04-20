@@ -3,7 +3,6 @@
 import { revalidateTag, updateTag } from "next/cache";
 import prisma from "@/lib/prisma";
 import { checkRights } from "../check-rights";
-import { deleteImage } from "../media/image";
 
 export async function deleteProductActionPrivate(productId: string) {
   try {
@@ -13,11 +12,14 @@ export async function deleteProductActionPrivate(productId: string) {
     const existing = await prisma.product.findUnique({
       where: { id: productId },
     });
-    if (!existing) throw new Error("ProductNotFound");
+    if (!existing) throw new Error("not_found");
 
-    if (existing.image) await deleteImage(existing.image);
-
-    await prisma.product.delete({ where: { id: productId } });
+    await prisma.product.update({
+      where: { id: productId },
+      data: {
+        isArchived: true,
+      },
+    });
 
     updateTag("product-PRIVATE");
     revalidateTag("product-PUBLIC", "max");
@@ -27,7 +29,7 @@ export async function deleteProductActionPrivate(productId: string) {
     if (error instanceof Error && error.message === "Unauthorized") {
       return { success: false, type: "auth" };
     }
-    if (error instanceof Error && error.message === "ProductNotFound") {
+    if (error instanceof Error && error.message === "not_found") {
       return { success: false, type: "notfound" };
     }
     return { success: false, type: "server" };

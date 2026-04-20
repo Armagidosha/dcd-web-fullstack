@@ -29,14 +29,22 @@ export async function saveImage(file: File): Promise<string> {
 
 export async function deleteImage(imageUrl: string): Promise<void> {
   try {
-    const publicId = imageUrl
-      .split("/")
-      .slice(-2)
-      .join("/")
-      .replace(/\.[^/.]+$/, "");
-
+    // Extract everything after /upload/
+    const uploadIndex = imageUrl.indexOf("/upload/");
+    if (uploadIndex === -1) {
+      console.error("Invalid Cloudinary URL:", imageUrl);
+      return;
+    }
+    let pathAfterUpload = imageUrl.slice(uploadIndex + 8); // 8 = "/upload/".length
+    // Skip version number if present (e.g., v1234567890/)
+    if (/^v\d+\//.test(pathAfterUpload)) {
+      pathAfterUpload = pathAfterUpload.replace(/^v\d+\//, "");
+    }
+    // Remove file extension
+    const publicId = pathAfterUpload.replace(/\.[^/.]+$/, "");
     await cloudinary.uploader.destroy(publicId);
   } catch (error) {
-    console.error("ОШИБКА", error);
+    console.error("Cloudinary deletion error:", error);
+    throw error;
   }
 }
