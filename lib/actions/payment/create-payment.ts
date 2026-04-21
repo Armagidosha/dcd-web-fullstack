@@ -1,6 +1,7 @@
 "use server";
 
 import { flattenError } from "zod";
+import { logger } from "@/lib/logger";
 import prisma from "@/lib/prisma";
 import type { PaymentProvider } from "@/lib/utils/constants/payment-providers";
 import { paymentSchema } from "@/lib/validation/payment.schema";
@@ -35,9 +36,26 @@ export async function createPayment(
   productId: string,
   payload: PaymentPayload,
 ): Promise<CreatePaymentResult> {
+  const log = logger.child({
+    module: "payment",
+    productId,
+    provider: payload.provider,
+  });
+
+  const start = Date.now();
+
   try {
     const parsed = paymentSchema.safeParse(payload);
+
     if (!parsed.success) {
+      log.info(
+        {
+          event: "validation_failed",
+          fieldErrors: flattenError(parsed.error).fieldErrors,
+        },
+        "Payment validation failed",
+      );
+
       return {
         success: false,
         fieldErrors: flattenError(parsed.error).fieldErrors,
@@ -53,7 +71,15 @@ export async function createPayment(
 
     // Privilege check
     const privilege = await checkPlayerPrivilege(nickname, product.id);
+
     if (!privilege.success) {
+      log.info(
+        {
+          event: "privilege_denied",
+        },
+        "Privilege check failed",
+      );
+
       return {
         success: false,
         fieldErrors: {
@@ -62,9 +88,18 @@ export async function createPayment(
       };
     }
 
-    // Promo check
+    // Promo
     const promo = await calculateFinalPrice(product.price, promoCode);
+
     if (!promo.success) {
+      log.info(
+        {
+          event: "promo_invalid",
+          promoCode,
+        },
+        "Promo validation failed",
+      );
+
       return {
         success: false,
         fieldErrors: {
@@ -73,11 +108,10 @@ export async function createPayment(
       };
     }
 
-    // Generating idempotency
+    // Idempotency
     const bucket = Math.floor(Date.now() / 30000);
     const idempotencyKey = `${nickname}:${email}:${product.id}:${bucket}`;
 
-    // Create order
     const order = await prisma.$transaction(
       async (tx) => {
         const existing = await tx.order.findUnique({
@@ -86,12 +120,28 @@ export async function createPayment(
 
         if (existing) {
           if (existing.status === "SUCCEEDED") {
-            throw new Error("ALREADY PAID");
+            log.info(
+              {
+                event: "already_paid",
+                orderId: existing.id,
+              },
+              "Order already paid",
+            );
+            throw new Error("ALREADY_PAID");
           }
+
+          log.info(
+            {
+              event: "order_reused",
+              orderId: existing.id,
+            },
+            "Reusing existing order",
+          );
+
           return existing;
         }
 
-        return tx.order.create({
+        const created = await tx.order.create({
           data: {
             productId: product.id,
             email,
@@ -104,11 +154,21 @@ export async function createPayment(
             status: "PENDING",
           },
         });
+
+        log.info(
+          {
+            event: "order_created",
+            orderId: created.id,
+            amount: created.totalPrice,
+          },
+          "Order created",
+        );
+
+        return created;
       },
       { isolationLevel: "Serializable" },
     );
 
-    // Create payment
     const payment = await createPaymentProvider(provider, {
       amount: order.totalPrice,
       orderId: order.id,
@@ -121,14 +181,35 @@ export async function createPayment(
     });
 
     if (!payment.confirmationUrl) {
+      log.error(
+        {
+          event: "payment_provider_failed",
+          orderId: order.id,
+          provider,
+        },
+        "Payment provider error",
+      );
+
       throw new Error("Payment error");
     }
 
-    // Save payment
     await prisma.order.update({
       where: { id: order.id },
       data: { paymentId: payment.paymentId },
     });
+
+    const duration = Date.now() - start;
+
+    log.info(
+      {
+        event: "payment_created",
+        orderId: order.id,
+        paymentId: payment.paymentId,
+        amount: order.totalPrice,
+        durationMs: duration,
+      },
+      "Payment created",
+    );
 
     return {
       success: true,
@@ -136,13 +217,31 @@ export async function createPayment(
       paymentId: payment.paymentId,
     };
   } catch (error) {
-    console.error("Error creating payment: ", error);
+    const duration = Date.now() - start;
 
-    if (error instanceof Error) {
-      if (error.message === "ALREADY_PAID") {
-        return { success: false, formError: "Платеж уже был обработан" };
-      }
+    if (error instanceof Error && error.message === "ALREADY_PAID") {
+      log.info(
+        {
+          event: "already_paid_error",
+          durationMs: duration,
+        },
+        "Payment already processed",
+      );
+
+      return {
+        success: false,
+        formError: "Платеж уже был обработан",
+      };
     }
+
+    log.error(
+      {
+        event: "payment_unhandled_error",
+        error,
+        durationMs: duration,
+      },
+      "Unhandled payment error",
+    );
 
     return {
       success: false,

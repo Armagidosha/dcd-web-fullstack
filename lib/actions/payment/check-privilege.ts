@@ -1,5 +1,6 @@
 "use server";
 
+import { logger } from "@/lib/logger";
 import prisma from "@/lib/prisma";
 
 type PrivilegeCheckSuccess = { success: true };
@@ -38,12 +39,22 @@ export async function checkPlayerPrivilege(
   nickname: string,
   id: string,
 ): Promise<PrivilegeCheckResult> {
+  const log = logger.child({
+    module: "dcd",
+    nickname,
+    productId: id,
+  });
+
+  const start = Date.now();
+
   const product = await prisma.product.findUnique({
     where: { id },
     select: { key: true },
   });
 
   if (!product) {
+    log.warn({ event: "product_not_found" }, "Product not found");
+
     return { success: false, message: ERROR_MESSAGES.invalid_privilege };
   }
 
@@ -54,27 +65,69 @@ export async function checkPlayerPrivilege(
   let res: Response;
 
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3000);
-
     res = await fetch(url, {
       headers: {
         Authorization: `Bearer ${DCD_SECRET}`,
       },
-      signal: controller.signal,
+      signal: AbortSignal.timeout(3000),
     });
-
-    clearTimeout(timeout);
   } catch (error) {
-    console.error(error);
+    const duration = Date.now() - start;
+
     if (isAbortError(error)) {
+      log.error(
+        {
+          event: "request_timeout",
+          url: url.toString(),
+          timeoutMs: 3000,
+          durationMs: duration,
+        },
+        "DCD request timeout",
+      );
+
       return { success: false, message: ERROR_MESSAGES.server_down };
     }
+
+    log.error(
+      {
+        event: "request_failed",
+        url: url.toString(),
+        error,
+        durationMs: duration,
+      },
+      "DCD request failed",
+    );
+
+    return { success: false, message: ERROR_MESSAGES.unknown };
+  }
+
+  if (!res.ok) {
+    log.error(
+      {
+        event: "bad_http_status",
+        url: url.toString(),
+        status: res.status,
+        durationMs: Date.now() - start,
+      },
+      "DCD returned non-200 response",
+    );
+
     return { success: false, message: ERROR_MESSAGES.unknown };
   }
 
   try {
     const data: DcdResponse = await res.json();
+
+    const duration = Date.now() - start;
+
+    log.info(
+      {
+        event: "check_status",
+        durationMs: duration,
+        status: data.status,
+      },
+      "Privilege check status",
+    );
 
     switch (data.status) {
       case "ok":
@@ -86,11 +139,27 @@ export async function checkPlayerPrivilege(
       case "already":
         return { success: false, message: ERROR_MESSAGES.already };
       case "invalid_privilege":
-        return { success: false, message: ERROR_MESSAGES.invalid_privilege };
+        return {
+          success: false,
+          message: ERROR_MESSAGES.invalid_privilege,
+        };
+
       default:
         return { success: false, message: ERROR_MESSAGES.unknown };
     }
-  } catch {
+  } catch (error) {
+    const duration = Date.now() - start;
+
+    log.error(
+      {
+        event: "json_parse_error",
+        url: url.toString(),
+        error,
+        durationMs: duration,
+      },
+      "Failed to parse DCD response",
+    );
+
     return { success: false, message: ERROR_MESSAGES.unknown };
   }
 }
