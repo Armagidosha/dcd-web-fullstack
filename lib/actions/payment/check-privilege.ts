@@ -102,17 +102,15 @@ export async function checkPlayerPrivilege(
   }
 
   if (!res.ok) {
-    log.error(
+    log.warn(
       {
-        event: "bad_http_status",
+        event: "dcd_bad_response",
         url: url.toString(),
         status: res.status,
         durationMs: Date.now() - start,
       },
-      "DCD returned non-200 response",
+      "DCD returned bad status",
     );
-
-    return { success: false, message: ERROR_MESSAGES.unknown };
   }
 
   try {

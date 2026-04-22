@@ -1,31 +1,33 @@
+import { mkdirSync } from "node:fs";
 import { resolve } from "node:path";
-import { destination as dest, multistream, pino, transport } from "pino";
+import pino, { transport as trsp } from "pino";
 
-const isDev = process.env.NODE_ENV === "development";
-const logPath = resolve(__dirname, "../logs/app.log");
+const logDir = resolve(process.cwd(), "logs");
+mkdirSync(logDir, { recursive: true });
 
-const fileStream = dest({
-  dest: logPath,
-  mkdir: true,
-  sync: false,
+const transport = trsp({
+  targets: [
+    {
+      target: "pino-pretty",
+      level: "info",
+      options: { colorize: true, singleLine: true },
+    },
+    {
+      target: "pino/file",
+      options: { destination: `${logDir}/info.log` },
+      level: "info",
+    },
+    {
+      target: "pino/file",
+      options: { destination: `${logDir}/warn.log` },
+      level: "warn",
+    },
+    {
+      target: "pino/file",
+      options: { destination: `${logDir}/error.log` },
+      level: "error",
+    },
+  ],
 });
 
-const prettyStream = transport({
-  target: "pino-pretty",
-  options: {
-    colorize: true,
-    translateTime: "SYS:standard",
-    ignore: "pid,hostname",
-  },
-});
-
-const streams = isDev
-  ? [{ stream: prettyStream }, { stream: fileStream }]
-  : [{ stream: fileStream }];
-
-export const logger = pino(
-  {
-    level: isDev ? "debug" : "info",
-  },
-  multistream(streams),
-);
+export const logger = pino(transport);
