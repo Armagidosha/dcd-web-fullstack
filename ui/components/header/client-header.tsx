@@ -37,7 +37,7 @@ export default function ClientHeader({ links }: ClientHeaderProps) {
     >
       <div
         className={cn(
-          "grid transition-[grid-template-rows] duration-300 overflow-hidden",
+          "grid pl-2 transition-[grid-template-rows] duration-300 overflow-hidden",
           isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
         )}
       >
